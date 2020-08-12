@@ -60,7 +60,7 @@ Available options are:
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowFootnote`: Whether footnotes are allowed. Defaults to `true`.
 - `brOnBlankLine`: Whether to add a `<br />` tag on empty line. Defaults to `false`.
-- `maxHeader`: Max header level. Defaults to 6 meaning authorized header tags are `<h1>` up to `<h6>` included.
+- `maxHeader`: Max header level from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
 
 Callback functions can be added to the options as well. Callbacks allow to edit the output element (e.g. add custom attributes).
 

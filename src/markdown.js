@@ -91,8 +91,8 @@ const parseBoolean = (value, defaultValue) =>
 
 const parseMaxHeader = (value, defaultValue) => {
   if (Number.isInteger(value)
-  && value > 1
-  && value < 6) {
+  && value >= 1
+  && value <= 6) {
     return value
   }
 
