@@ -74,10 +74,9 @@ Available callbacks are:
 - `onMultilineCode`: Function called when a multiline code is parsed. Second argument is the (optional) language name.
 - `onUnorderedList`: Function called when a unordered list is parsed.
 - `onOrderedList`: Function called when an Ordered list is parsed.
-- `onHozizontalLine`: Function called when a horizontal line is parsed.
+- `onHorizontalLine`: Function called when a horizontal line is parsed.
 - `onQuote`: Function called when a quote is parsed.
 - `onFootnote`: Function called when a footnote is parsed.
-- `onHorizontalLine`: Function called when a horizontal line is parsed.
 
 The first argument of the callback functions is always the parsed element:
 
