@@ -167,6 +167,14 @@ test('Strikethrough', function (t) {
   t.end()
 })
 
+test('Superscript', function (t) {
+  const input = 'A ^superscript^ text'
+  const output = '<p>A <sup>superscript</sup> text</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Link', function (t) {
   const input = 'This is a [link](https://example.com)'
   const output = '<p>This is a <a href="https://example.com">link</a></p>'
@@ -351,6 +359,7 @@ test('Unordered List with complex texts', function (t) {
     - *Italic* item
     - Item **bold**
     - Item ~~strikethrough~~
+    - ^superscript^
     - [Link](url)`
 
   const output = trimO`
@@ -358,6 +367,7 @@ test('Unordered List with complex texts', function (t) {
       <li><em>Italic</em> item</li>
       <li>Item <strong>bold</strong></li>
       <li>Item <s>strikethrough</s></li>
+      <li><sup>superscript</sup></li>
       <li><a href="url">Link</a></li>
     </ul>`
 

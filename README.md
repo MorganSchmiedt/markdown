@@ -2,7 +2,7 @@
 
 > Opinionated Markdown parser
 
-This markdown parser supports: italic, bold and strikethrough texts, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
+This markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
 
 
 ## Usage
@@ -25,6 +25,7 @@ const output = parser.parse('some markdown text').toHtml()
   - [Bold text](#bold-text)
   - [Bold-italic text](#bold-italic-text)
   - [Strikethrough text](#strikethrough-text)
+  - [Superscript text](#superscript-text)
   - [Header](#header)
   - [Link](#link)
   - [Image](#image)
@@ -159,6 +160,21 @@ This is a ~~strikethrough text~~
 *Output*
 ```html
 <p>This is a <s>strikethrough text</s></p>
+```
+
+
+### Superscript text
+
+Superscript text is surrounded by a circumflex sign (`^`).
+
+*Example*
+```
+This is a ^Superscript text^
+```
+
+*Output*
+```html
+<p>This is a <sup>Superscript text</sup></p>
 ```
 
 
