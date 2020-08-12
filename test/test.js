@@ -278,17 +278,17 @@ test('Image inline', function (t) {
   t.end()
 })
 
-test('Image inline can NOT be styled by default', function (t) {
-  const input = 'This is an inline ![alt text](https://example.com/image;height:100px)'
+test('Image with style and default flag', function (t) {
+  const input = 'This is an inline ![alt text](https://example.com/image){height: 100px}'
   const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" /></p>'
 
   t.equal(parse(input), output, 'Output is valid')
   t.end()
 })
 
-test('Image inline CAN be styled if allowImageStyle is true', function (t) {
-  const input = 'This is an inline ![alt text](https://example.com/image;height:100px)'
-  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" style="height:100px" /></p>'
+test('Image with style and allowImageStyle to true', function (t) {
+  const input = 'This is an inline ![alt text](https://example.com/image){height: 100px; width: 50px} with style'
+  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" style="height: 100px; width: 50px" /> with style</p>'
   const opt = {
     allowImageStyle: true,
   }

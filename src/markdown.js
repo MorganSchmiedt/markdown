@@ -502,10 +502,11 @@ module.exports.parse = (markdownText, opt = {}) => {
           && next(1) === '[') {
             if (allowImage) {
               const restLineText = lineText.substring(lineCursor + 1)
-              const endMatch = /^\[([^\]]+)]\(([^;)]+)(;([^)]+))?\)/
+              const endMatch = /^\[([^\]]+)]\(([^;)]+)\)({([^}]+)})?/
                 .exec(restLineText)
 
               if (endMatch) {
+                const syntaxSize = 1 + endMatch[0].length
                 const title = endMatch[1]
                 const url = endMatch[2]
                 const style = endMatch[4]
@@ -526,7 +527,7 @@ module.exports.parse = (markdownText, opt = {}) => {
 
                 flush(imageNode)
 
-                ff = (1 + endMatch[0].length)
+                ff = syntaxSize
                 lastFlushCursor += ff
               }
             }

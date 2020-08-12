@@ -215,11 +215,11 @@ This is a [link](https://deskeen.fr)
 
 Image starts with an exclamation mark (`!`) followed by the alt-text, surrounded by square brackets (`[]`), followed by the URL surrounded by round brackets (`( )`). e.g. `![Alternative image text](image_url)`
 
-Images set on a separate line and inline images have different HTML output.
+Image CSS instructions can be added to the end, surrounded by curly brackets (`{ }`). Instructions are separated by a semicolon (`;`). Parser flag  `allowImageStyle` must be turned on.
 
-An CSS style can be added to the image by adding a semicolon (`;`) and the style next to the URL. `allowImageStyle` flag must be turned on.
+Images set on a separate line and inline images have different HTML outputs.
 
-*Example of inline image*
+*Example of an inline image*
 ```
 This is a ![some alt text](https://example.com/some_image.png)
 ```
@@ -229,7 +229,7 @@ This is a ![some alt text](https://example.com/some_image.png)
 <p>This is a <img src="https://example.com/some_image.png" alt="some alt text" /></p>
 ```
 
-*Example of autonomous image*
+*Example of an autonomous image*
 ```
 ![Image only on a line](https://example.com/some_image.png)
 ```
@@ -242,14 +242,14 @@ This is a ![some alt text](https://example.com/some_image.png)
 </figure>
 ```
 
-*Example of image with inline style*
+*Example of an image with inline style*
 ```
-![Image with inline style](https://example.com/some_image.png;height:100px)
+![Image with inline style](https://example.com/some_image.png){height: 100px; width: 100px}
 ```
 
 *Output*
 ```html
-<figure style="height:100px">
+<figure style="height: 100px; width: 100px">
   <img src="https://example.com/some_image.png" alt="" />
   <figcaption>Image with inline style</figcaption>
 </figure>
