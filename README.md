@@ -23,6 +23,7 @@ const output = parser.parse('some markdown text').toHtml()
 - [Supported Markdown syntax](#supported-markdown-syntax)
   - [Italic text](#italic-text)
   - [Bold text](#bold-text)
+  - [Bold-italic text](#bold-italic-text)
   - [Header](#header)
   - [Link](#link)
   - [Image](#image)
@@ -128,6 +129,21 @@ This is an **italic text**
 *Output*
 ```html
 <p>This is an <strong>italic text</strong></p>
+```
+
+
+### Bold-italic text
+
+Bold-italic text is surrounded by three stars (`***`).
+
+*Example*
+```
+This is a ***bold and italic text***
+```
+
+*Output*
+```html
+<p>This is a <strong><em>bold and italic text</em></strong></p>
 ```
 
 

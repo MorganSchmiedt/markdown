@@ -329,8 +329,13 @@ module.exports.parse = (markdownText, opt = {}) => {
           } else {
             lineCursor = lineCursorMax
             flush()
-            lineCursor += currentLine.ffOnFlush
-            lastFlushCursor += currentLine.ffOnFlush
+            lineCursor += currentLine.ffOnTextEnd
+            lastFlushCursor += currentLine.ffOnTextEnd
+
+            while (currentLine.upOnTextEnd) {
+              currentLine = currentLine.parentNode
+            }
+
             currentLine = currentLine.parentNode
             lineCursorMax = undefined
           }
@@ -341,7 +346,32 @@ module.exports.parse = (markdownText, opt = {}) => {
           lineCursor += match.index
 
           if (char === '*') {
-            if (next(1) === '*') {
+            if (next(1) === '*'
+            && next(2) === '*') {
+              const tag = '***'
+              const tagSize = tag.length
+              const fromIndex = lineCursor + tagSize
+              const endTagIndex = lineText.substring(fromIndex).indexOf(tag)
+
+              if (endTagIndex > 0) {
+                flush()
+                lineCursorMax = fromIndex + endTagIndex
+
+                const emNode = new Element('em')
+                emNode.ffOnTextEnd = tagSize
+                emNode.upOnTextEnd = true
+
+                const strongNode = new Element('strong')
+                strongNode.appendChild(emNode)
+
+                currentLine.appendChild(strongNode)
+                currentLine = emNode
+
+
+                ff = tagSize
+                lastFlushCursor += tagSize
+              }
+            } else if (next(1) === '*') {
               const tagSize = 2
               const fromIndex = lineCursor + tagSize
               const endTagIndex = lineText.substring(fromIndex).indexOf('**')
@@ -351,7 +381,7 @@ module.exports.parse = (markdownText, opt = {}) => {
                 lineCursorMax = fromIndex + endTagIndex
 
                 const strongNode = new Element('strong')
-                strongNode.ffOnFlush = tagSize
+                strongNode.ffOnTextEnd = tagSize
 
                 currentLine.appendChild(strongNode)
                 currentLine = strongNode
@@ -369,7 +399,7 @@ module.exports.parse = (markdownText, opt = {}) => {
                 lineCursorMax = fromIndex + endTagIndex
 
                 const emNode = new Element('em')
-                emNode.ffOnFlush = charSize
+                emNode.ffOnTextEnd = charSize
 
                 currentLine.appendChild(emNode)
                 currentLine = emNode

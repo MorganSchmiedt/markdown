@@ -151,6 +151,14 @@ test('Bold', function (t) {
   t.end()
 })
 
+test('Bold-italic', function (t) {
+  const input = 'A ***bold-italic*** text'
+  const output = '<p>A <strong><em>bold-italic</em></strong> text</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Link', function (t) {
   const input = 'This is a [link](https://example.com)'
   const output = '<p>This is a <a href="https://example.com">link</a></p>'

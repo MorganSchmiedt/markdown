@@ -12,7 +12,7 @@ const trimI = text =>
     .filter(line => line.length > 0)
     .join('\n')
 
-const input = `
+const input = trimI`
   // Some markdown
   // ...`
 
