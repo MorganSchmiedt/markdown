@@ -1,5 +1,19 @@
 /* eslint-env node */
 
+const ESCAPED_CHARS = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  '\'': '&#x27;',
+}
+
+const ESCAPED_CHARS_REGEX =
+  new RegExp(`[${Object.keys(ESCAPED_CHARS).join('')}]`, 'g')
+
+const escapeText = text =>
+  text.replace(ESCAPED_CHARS_REGEX, char => ESCAPED_CHARS[char])
+
 class Element {
   constructor(tagName, attr) {
     this.tagName = tagName
@@ -52,7 +66,7 @@ class Element {
 
     for (const child of this.children) {
       if (typeof child === 'string') {
-        html += child
+        html += escapeText(child)
       } else {
         html += child.toHtml()
       }

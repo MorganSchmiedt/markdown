@@ -594,8 +594,8 @@ test('Quote with allowQuote flag to false', function (t) {
     > Blockquote line 1
     > Blockquote line 2`
   const output = trimO`
-    <p>> Blockquote line 1</p>
-    <p>> Blockquote line 2</p>`
+    <p>&gt; Blockquote line 1</p>
+    <p>&gt; Blockquote line 2</p>`
   const opt = {
     allowQuote: false,
   }
@@ -751,5 +751,13 @@ test('Footnotes with allowFootnote to false', function (t) {
   }
 
   t.equal(parse(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape HTML special chars', function (t) {
+  const input = '<script>Evil code &"\'👿</script>'
+  const output = '<p>&lt;script&gt;Evil code &amp;&quot;&#x27;👿&lt;/script&gt;</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
   t.end()
 })
