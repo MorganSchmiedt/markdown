@@ -112,7 +112,6 @@ Italic text is surrounded by a single star (`*`).
 This is an *italic text*
 ```
 
-*Output*
 ```html
 <p>This is an <em>italic text</em></p>
 ```
@@ -127,7 +126,6 @@ Bold text is surrounded by two stars (`**`).
 This is an **italic text**
 ```
 
-*Output*
 ```html
 <p>This is an <strong>italic text</strong></p>
 ```
@@ -142,7 +140,6 @@ Bold-italic text is surrounded by three stars (`***`).
 This is a ***bold and italic text***
 ```
 
-*Output*
 ```html
 <p>This is a <strong><em>bold and italic text</em></strong></p>
 ```
@@ -156,7 +153,6 @@ Strikethrough text is surrounded by two tilde signs (`~~`).
 This is a ~~strikethrough text~~
 ```
 
-*Output*
 ```html
 <p>This is a <s>strikethrough text</s></p>
 ```
@@ -171,7 +167,6 @@ Superscript text is surrounded by a circumflex sign (`^`).
 This is a ^Superscript text^
 ```
 
-*Output*
 ```html
 <p>This is a <sup>Superscript text</sup></p>
 ```
@@ -188,7 +183,6 @@ Header starts with one, two, or three hashes (`#`).
 ### Sub-sub-title
 ```
 
-*Output*
 ```html
 <h1>Title</h1>
 <h2>Sub-title</h2>
@@ -205,7 +199,6 @@ Link is made up of two parts. The text surrounded by square brackets (`[]`) and 
 This is a [link](https://deskeen.fr)
 ```
 
-*Output*
 ```html
 <p>This is a <a href="https://deskeen.fr">link</a></p>
 ```
@@ -224,7 +217,6 @@ Images set on a separate line and inline images have different HTML outputs.
 This is a ![some alt text](https://example.com/some_image.png)
 ```
 
-*Output*
 ```html
 <p>This is a <img src="https://example.com/some_image.png" alt="some alt text" /></p>
 ```
@@ -234,7 +226,6 @@ This is a ![some alt text](https://example.com/some_image.png)
 ![Image only on a line](https://example.com/some_image.png)
 ```
 
-*Output*
 ```html
 <figure>
   <img src="https://example.com/some_image.png" alt="" />
@@ -247,7 +238,6 @@ This is a ![some alt text](https://example.com/some_image.png)
 ![Image with inline style](https://example.com/some_image.png){height: 100px; width: 100px}
 ```
 
-*Output*
 ```html
 <figure style="height: 100px; width: 100px">
   <img src="https://example.com/some_image.png" alt="" />
@@ -267,7 +257,6 @@ Unordered list items start with a dash (`-`) followed by a space.
 - Item 3
 ```
 
-*Output*
 ```html
 <ul>
   <li>Item 1</li>
@@ -288,7 +277,6 @@ Ordered list items start with a plus sign (`+`) followed by a space.
 + Item 3
 ```
 
-*Output*
 ```html
 <ol>
   <li>Item 1</li>
@@ -309,7 +297,6 @@ Above horizontal line
 Below horizontal line
 ```
 
-*Output*
 ```html
 <p>Above horizontal line</p>
 <hr />
@@ -326,7 +313,6 @@ Technical text is surrounded by a single backtick (`\``)
 This is `some technical term`
 ```
 
-*Output*
 ```html
 <p>This is <code>some technical term</code></p>
 ```
@@ -347,21 +333,19 @@ Some code line 3
 \`\`\`
 ```
 
-*Output*
 ```html
 <pre><code>Some code line 1
 Some code line 2
 Some code line 3</code></pre>
 ```
 
-*Example2*
+*Example with language name*
 ```
 \`\`\`javascript
 console.log('Hello World!')
 \`\`\`
 ```
 
-*Output*
 ```html
 <pre><code>console.log('Hello World!')</code></pre>
 ```
@@ -378,7 +362,6 @@ A quote starts with a "Greater Than" sign (`>`).
 > Quote Line 3
 ```
 
-*Output*
 ```html
 <blockquote>
   <p>Quote Line 1</p>
@@ -397,7 +380,6 @@ My first footnote[^1].
 A second one[^2].
 ```
 
-*Output*
 ```html
 <p>My first footnote<a href="#footnote1"><sup>1</sup></a>.</p>
 <p>A second one<a href="#footnote2"><sup>2</sup></a>.</p>
@@ -418,7 +400,6 @@ parseMarkdown('# Title 1', {
 }).toHtml()
 ```
 
-*Output*
 ```html
 <h1 id="title-1">Title 1</h1>
 ```
@@ -438,7 +419,6 @@ parseMarkdown('See this [page](https:/example.com)!', {
 }).toHtml()
 ```
 
-*Output*
 ```html
 <p>See <a href="https:/example.com" target="_blank">this page</a>!</p>
 ```
@@ -458,7 +438,6 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
 }).toHtml()
 ```
 
-*Output*
 ```html
 <figure>
   <img src="https://example.com/beautiful_image.png" alt="" />
@@ -476,7 +455,6 @@ parseMarkdown('This is body html tag: `<body>`', {
 }).toHtml()
 ```
 
-*Output*
 ```html
 <p>This is body html tag: <code class="some-class"><body></code></p>
 ```
@@ -499,7 +477,6 @@ parseMarkdown(markdownText, {
 }).toHtml()
 ```
 
-*Output*
 ```html
 <pre><code>{
   "some_property": "foo",
