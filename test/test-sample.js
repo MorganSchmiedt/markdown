@@ -2,7 +2,7 @@
 /* eslint-env node, es6 */
 /* eslint-disable */
 
-const parser = require('../src/markdown-node.js')
+const parser = require('../src/markdown.js')
 const parse = (input, opt) => parser.parse(input, opt).toHtml()
 
 const trimI = text =>
@@ -12,17 +12,12 @@ const trimI = text =>
     .filter(line => line.length > 0)
     .join('\n')
 
-const input = '```json\n{"some_property":"foo","some_other_property":"bar"}\n```'
+const input = `
+  // Some markdown
+  // ...`
 
-const output = parse(input, {
-  onMultilineCode: (element, language) => {
-    if (language === 'json') {
-      // element is a <pre> element that includes the <code> element
-      const codeElement = element.firstChild
-      const jsonObj = JSON.parse(codeElement.textContent)
-      codeElement.textContent = JSON.stringify(jsonObj, null, 2)
-    }
-  }
+const html = parse(input, {
+  // Some options
 })
 
-console.log(output)
+console.log(html)

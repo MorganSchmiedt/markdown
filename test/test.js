@@ -3,7 +3,7 @@
 /* eslint-disable prefer-arrow-callback */
 
 const test = require('tape')
-const parser = require('../src/markdown-node.js')
+const parser = require('../src/markdown.js')
 const parse = (input, opt) => parser.parse(input, opt).toHtml()
 
 const trimI = text =>
