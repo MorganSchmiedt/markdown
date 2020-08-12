@@ -318,7 +318,7 @@ module.exports.parse = (markdownText, opt = {}) => {
       && lineCursor <= EOLIndex) {
         let ff = 0
 
-        const match = /[*[`!]/.exec(
+        const match = /[*[`!#~]/.exec(
           lineText.substring(lineCursor, lineCursorMax))
 
         if (match == null) {
@@ -406,6 +406,27 @@ module.exports.parse = (markdownText, opt = {}) => {
 
                 ff = charSize
                 lastFlushCursor += charSize
+              }
+            }
+          } else if (char === '~') {
+            if (next(1) === '~') {
+              const syntax = '~~'
+              const syntaxSize = syntax.length
+              const fromIndex = lineCursor + syntaxSize
+              const endTagIndex = lineText.substring(fromIndex).indexOf(syntax)
+
+              if (endTagIndex > 0) {
+                flush()
+                lineCursorMax = fromIndex + endTagIndex
+
+                const sNode = new Element('s')
+                sNode.ffOnTextEnd = syntaxSize
+
+                currentLine.appendChild(sNode)
+                currentLine = sNode
+
+                ff = syntaxSize
+                lastFlushCursor += syntaxSize
               }
             }
           } else if (char === '[') {

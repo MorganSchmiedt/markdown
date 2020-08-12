@@ -159,6 +159,14 @@ test('Bold-italic', function (t) {
   t.end()
 })
 
+test('Strikethrough', function (t) {
+  const input = 'A ~~strikethrough~~ text'
+  const output = '<p>A <s>strikethrough</s> text</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Link', function (t) {
   const input = 'This is a [link](https://example.com)'
   const output = '<p>This is a <a href="https://example.com">link</a></p>'
@@ -342,12 +350,14 @@ test('Unordered List with complex texts', function (t) {
   const input = trimI`
     - *Italic* item
     - Item **bold**
+    - Item ~~strikethrough~~
     - [Link](url)`
 
   const output = trimO`
     <ul>
       <li><em>Italic</em> item</li>
       <li>Item <strong>bold</strong></li>
+      <li>Item <s>strikethrough</s></li>
       <li><a href="url">Link</a></li>
     </ul>`
 

@@ -2,7 +2,7 @@
 
 > Opinionated Markdown parser
 
-This markdown parser supports: italic text, bold text, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines,  quotes and footnotes.
+This markdown parser supports: italic, bold and strikethrough texts, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
 
 
 ## Usage
@@ -24,6 +24,7 @@ const output = parser.parse('some markdown text').toHtml()
   - [Italic text](#italic-text)
   - [Bold text](#bold-text)
   - [Bold-italic text](#bold-italic-text)
+  - [Strikethrough text](#strikethrough-text)
   - [Header](#header)
   - [Link](#link)
   - [Image](#image)
@@ -144,6 +145,20 @@ This is a ***bold and italic text***
 *Output*
 ```html
 <p>This is a <strong><em>bold and italic text</em></strong></p>
+```
+
+### Strikethrough text
+
+Strikethrough text is surrounded by two tilde signs (`~~`).
+
+*Example*
+```
+This is a ~~strikethrough text~~
+```
+
+*Output*
+```html
+<p>This is a <s>strikethrough text</s></p>
 ```
 
 
