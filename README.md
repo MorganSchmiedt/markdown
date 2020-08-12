@@ -1,13 +1,9 @@
 # Node.js Markdown to HTML Parser
 
-> Opinionated Markdown parser
-
 This markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
 
 
 ## Usage
-
-`parse(markdownText[, options]).toHtml()`
 
 ```javascript
 const parser = require('deskeen-markdown')
@@ -20,7 +16,8 @@ const output = parser.parse('some markdown text').toHtml()
 
 - [Parser options](#parser-options)
 - [Element object](#element-object)
-- [Supported Markdown syntax](#supported-markdown-syntax)
+- [Markdown Cheatsheet](#markdown-cheatsheet)
+- [Markdown syntax](#markdown-syntax)
   - [Italic text](#italic-text)
   - [Bold text](#bold-text)
   - [Bold-italic text](#bold-italic-text)
@@ -45,6 +42,8 @@ const output = parser.parse('some markdown text').toHtml()
 
 
 ## Parser options
+
+`parse(markdownText[, options]).toHtml()`
 
 An option object can be passed to the parser.
 
@@ -101,7 +100,27 @@ Its properties are:
 - `toHtml`: Generate HTML output. *Function* 
 
 
-## Supported Markdown syntax
+## Markdown Cheatsheet
+
+| Type                                      | Markdown syntax              |
+| ----------------------------------------- | ---------------------------- |
+| [Italic text](#italic-text)               | `*Italic text*`              |
+| [Bold text](#italic-text)                 | `**Italic text**`            |
+| [Bold-italic text](#italic-text)          | `***Bold-italic text***`     |
+| [Strikethrough text](#strikethrough-text) | `~~Strikethrough text~~`     |
+| [Superscript text](#superscript-text)     | `^Superscript text^`         |
+| [Header](#header)                         | `# Header`                   |
+| [Link](#link)                             | `[Displayed text](link_url)` |
+| [Image](#image)                           | `![Caption](image_url)`      |
+| [Unordered list](#unordered-list)         | `- List item`                |
+| [Ordered list](#ordered-list)             | `+ Ordered list item`        |
+| [Horizontal Line](#horizontal-line)       | `---`                        |
+| [Code](#code)                             | `` `Code text` ``            |
+| [Quote](#quote)                           | `> Quote`                    |
+| [Footnote](#footnote)                     | `Footnote[^1]`               |
+
+
+## Markdown syntax
 
 ### Italic text
 
