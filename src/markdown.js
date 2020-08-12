@@ -348,17 +348,17 @@ module.exports.parse = (markdownText, opt = {}) => {
           if (char === '*') {
             if (next(1) === '*'
             && next(2) === '*') {
-              const tag = '***'
-              const tagSize = tag.length
-              const fromIndex = lineCursor + tagSize
-              const endTagIndex = lineText.substring(fromIndex).indexOf(tag)
+              const syntax = '***'
+              const syntaxSize = syntax.length
+              const fromIndex = lineCursor + syntaxSize
+              const endTagIndex = lineText.substring(fromIndex).indexOf(syntax)
 
               if (endTagIndex > 0) {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
                 const emNode = new Element('em')
-                emNode.ffOnTextEnd = tagSize
+                emNode.ffOnTextEnd = syntaxSize
                 emNode.upOnTextEnd = true
 
                 const strongNode = new Element('strong')
@@ -368,30 +368,31 @@ module.exports.parse = (markdownText, opt = {}) => {
                 currentLine = emNode
 
 
-                ff = tagSize
-                lastFlushCursor += tagSize
+                ff = syntaxSize
+                lastFlushCursor += syntaxSize
               }
             } else if (next(1) === '*') {
-              const tagSize = 2
-              const fromIndex = lineCursor + tagSize
-              const endTagIndex = lineText.substring(fromIndex).indexOf('**')
+              const syntax = '**'
+              const syntaxSize = 2
+              const fromIndex = lineCursor + syntaxSize
+              const endTagIndex = lineText.substring(fromIndex).indexOf(syntax)
 
               if (endTagIndex > 0) {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
                 const strongNode = new Element('strong')
-                strongNode.ffOnTextEnd = tagSize
+                strongNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(strongNode)
                 currentLine = strongNode
 
-                ff = tagSize
-                lastFlushCursor += tagSize
+                ff = syntaxSize
+                lastFlushCursor += syntaxSize
               }
             } else {
-              const charSize = 1
-              const fromIndex = lineCursor + charSize
+              const syntaxSize = 1
+              const fromIndex = lineCursor + syntaxSize
               const endTagIndex = lineText.substring(fromIndex).indexOf('*')
 
               if (endTagIndex > 0) {
@@ -399,13 +400,13 @@ module.exports.parse = (markdownText, opt = {}) => {
                 lineCursorMax = fromIndex + endTagIndex
 
                 const emNode = new Element('em')
-                emNode.ffOnTextEnd = charSize
+                emNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(emNode)
                 currentLine = emNode
 
-                ff = charSize
-                lastFlushCursor += charSize
+                ff = syntaxSize
+                lastFlushCursor += syntaxSize
               }
             }
           } else if (char === '~') {
