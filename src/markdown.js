@@ -75,6 +75,16 @@ const parseBoolean = (value, defaultValue) =>
     ? value
     : defaultValue
 
+const parseMaxHeader = (value, defaultValue) => {
+  if (Number.isInteger(value)
+  && value > 1
+  && value < 6) {
+    return value
+  }
+
+  return defaultValue
+}
+
 /**
  * @param {string} markdownText Markdown text
  * @param {object} opt Parser options
@@ -115,6 +125,7 @@ module.exports.parse = (markdownText, opt = {}) => {
   const allowQuote = parseBoolean(opt.allowQuote, true)
   const allowFootnote = parseBoolean(opt.allowFootnote, true)
   const brOnBlankLine = parseBoolean(opt.brOnBlankLine, false)
+  const maxHeader = parseMaxHeader(opt.maxHeader, 3)
 
   const body = new Element()
 
@@ -164,15 +175,16 @@ module.exports.parse = (markdownText, opt = {}) => {
 
       if (allowHeader
       && firstChar === '#') {
-        let i = 1
+        let headerLevel = 1
 
-        while (i < 3 && next(i) === '#') {
-          i += 1
+        while (headerLevel < maxHeader
+        && next(headerLevel) === '#') {
+          headerLevel += 1
         }
 
-        if (next(i) === ' ') {
+        if (next(headerLevel) === ' ') {
           const headerText = lineText.substring(lineText.indexOf(' ') + 1)
-          const headerNode = new Element(`h${i}`)
+          const headerNode = new Element(`h${headerLevel}`)
           headerNode.textContent = headerText
 
           if (opt.onHeader) {

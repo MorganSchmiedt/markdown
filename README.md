@@ -60,6 +60,7 @@ Available options are:
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowFootnote`: Whether footnotes are allowed. Defaults to `true`.
 - `brOnBlankLine`: Whether to add a `<br />` tag on empty line. Defaults to `false`.
+- `maxHeader`: Max header level. Defaults to 6 meaning authorized header tags are `<h1>` up to `<h6>` included.
 
 Callback functions can be added to the options as well. Callbacks allow to edit the output element (e.g. add custom attributes).
 
@@ -193,19 +194,25 @@ This is a ^Superscript text^
 
 ### Header
 
-Header starts with one, two, or three hashes (`#`).
+Header starts with a hash sign (`#`), up to six levels (`######`).
 
 *Example*
 ```
-# Title
-## Sub-title
-### Sub-sub-title
+# Title level 1
+## Title level 2
+### Title level 3
+#### Title level 4
+##### Title level 5
+###### Title level 6
 ```
 
 ```html
-<h1>Title</h1>
-<h2>Sub-title</h2>
-<h3>Sub-sub-title</h3>
+<h1>Title level 1</h1>
+<h2>Title level 2</h2>
+<h3>Title level 3</h3>
+<h4>Title level 4</h4>
+<h5>Title level 5</h5>
+<h6>Title level 6</h6>
 ```
 
 

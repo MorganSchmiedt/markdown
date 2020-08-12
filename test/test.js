@@ -135,6 +135,23 @@ test('Header with allowHeader flag to false', function (t) {
   t.end()
 })
 
+test('Header with maxHeaderLevel to 2', function (t) {
+  const input = trimI`
+    # Title
+    ## Sub-title
+    ### Sub-sub-title`
+  const output = trimO`
+    <h1>Title</h1>
+    <h2>Sub-title</h2>
+    <p>### Sub-sub-title</p>`
+  const opt = {
+    maxHeader: 2,
+  }
+
+  t.equal(parse(input, opt), output, 'Output is valid')
+  t.end()
+})
+
 test('Italic', function (t) {
   const input = 'An *italic* text'
   const output = '<p>An <em>italic</em> text</p>'
