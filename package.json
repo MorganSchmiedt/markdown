@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Deskeen Markdown Parser",
   "author": "Morgan Schmiedt",
-  "licence": "MIT",
+  "license": "MIT",
   "repository": "https://github.com/deskeen/markdown",
   "keywords": [
     "markdown",
