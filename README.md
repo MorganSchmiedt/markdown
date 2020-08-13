@@ -6,7 +6,7 @@ This Markdown parser supports: italic, bold, strikethrough and superscript texts
 ## Usage
 
 ```javascript
-const parser = require('deskeen-markdown')
+const parser = require('@deskeen/markdown')
 const output = parser.parse('some markdown text').toHtml()
 
 // output === '<p>some markdown text</p>'
@@ -113,7 +113,7 @@ Its properties are:
 | [Superscript text](#superscript-text)     | `^Superscript text^`         |
 | [Header](#header)                         | `# Header`                   |
 | [Link](#link)                             | `[Link text](link_url)`      |
-| [Image](#image)                           | `![Caption](image_url)       |
+| [Image](#image)                           | `![Caption](image_url)`      |
 | [Unordered list](#unordered-list)         | `- List item`                |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
 | [Horizontal Line](#horizontal-line)       | `---`                        |

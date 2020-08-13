@@ -1,6 +1,6 @@
 {
-  "name": "deskeen-markdown",
-  "version": "0.0.1",
+  "name": "@deskeen/markdown",
+  "version": "1.0.0",
   "description": "Deskeen Markdown Parser",
   "author": "Morgan Schmiedt",
   "licence": "MIT",
@@ -11,6 +11,7 @@
     "html",
     "node.js"
   ],
+  "main": "src/markdown.js",
   "scripts": {
     "test": "node test/test.js"
   },
