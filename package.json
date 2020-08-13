@@ -13,5 +13,8 @@
   ],
   "scripts": {
     "test": "node test/test.js"
+  },
+  "devDependencies": {
+    "tape": "^5.0.1"
   }
 }
