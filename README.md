@@ -1,6 +1,6 @@
 # Node.js Markdown to HTML Parser
 
-This markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
+This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
 
 
 ## Usage
@@ -56,17 +56,16 @@ Available options are:
 - `allowCode`: Whether inline codes are allowed. Defaults to `true`.
 - `allowMultilineCode`: Whether multiline codes are allowed. Defaults to `true`.
 - `allowUnorderedList`: Whether unordered lists are allowed. Defaults to `true`.
-- `allowOrderedList`: Whether unordered lists are allowed. Defaults to `true`.
-- `allowHorizontalLine`: Whether unordered lists are allowed. Defaults to `true`.
+- `allowOrderedList`: Whether ordered lists are allowed. Defaults to `true`.
+- `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowFootnote`: Whether footnotes are allowed. Defaults to `true`.
 - `brOnBlankLine`: Whether to add a `<br />` tag on empty line. Defaults to `false`.
-- `maxHeader`: Max header level from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
+- `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
 
-Callback functions can be added to the options as well. Callbacks allow to edit the output element (e.g. add custom attributes).
+Callback functions can be passed to the options as well. They allow to edit the output [element](#element-object) (e.g. add custom attributes).
 
 Available callbacks are:
-
 - `onHeader`: Function called when a header is parsed.
 - `onLink`: Function called when a link is parsed.
 - `onImage`: Function called when an image is parsed.
@@ -74,12 +73,12 @@ Available callbacks are:
 - `onCode`: Function called when an inline code is parsed.
 - `onMultilineCode`: Function called when a multiline code is parsed. Second argument is the (optional) language name.
 - `onUnorderedList`: Function called when a unordered list is parsed.
-- `onOrderedList`: Function called when an Ordered list is parsed.
+- `onOrderedList`: Function called when an ordered list is parsed.
 - `onHorizontalLine`: Function called when a horizontal line is parsed.
 - `onQuote`: Function called when a quote is parsed.
 - `onFootnote`: Function called when a footnote is parsed.
 
-The first argument of the callback functions is always the parsed element:
+The first argument of the callbacks is always the parsed [element](#element-object):
 
 ```javascript
 function onXXX(element) {
@@ -99,7 +98,8 @@ Its properties are:
 - `children`: List of children. *Array*
 - `firstChild`: Returns the first child. Can be null. *Custom Element*
 - `lastChild`: Returns the last child. Can be null. *Custom Element*
-- `toHtml`: Generate HTML output. *Function* 
+- `textContent`: Element text. *String*
+- `toHtml()`: Returns HTML output. *String* 
 
 
 ## Markdown Cheatsheet
@@ -112,8 +112,8 @@ Its properties are:
 | [Strikethrough text](#strikethrough-text) | `~~Strikethrough text~~`     |
 | [Superscript text](#superscript-text)     | `^Superscript text^`         |
 | [Header](#header)                         | `# Header`                   |
-| [Link](#link)                             | `[Displayed text](link_url)` |
-| [Image](#image)                           | `![Caption](image_url)`      |
+| [Link](#link)                             | `[Link text](link_url)`      |
+| [Image](#image)                           | `![Caption](image_url)       |
 | [Unordered list](#unordered-list)         | `- List item`                |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
 | [Horizontal Line](#horizontal-line)       | `---`                        |
@@ -127,7 +127,7 @@ Its properties are:
 
 ### Italic text
 
-Italic text is surrounded by a single star (`*`).
+An italic text is surrounded by a single star (`*`).
 
 *Example*
 ```
@@ -141,7 +141,7 @@ This is an *italic text*
 
 ### Bold text
 
-Bold text is surrounded by two stars (`**`).
+A bold text is surrounded by two stars (`**`).
 
 *Example*
 ```
@@ -155,7 +155,7 @@ This is an **italic text**
 
 ### Bold-italic text
 
-Bold-italic text is surrounded by three stars (`***`).
+A bold and italic text is surrounded by three stars (`***`).
 
 *Example*
 ```
@@ -168,7 +168,7 @@ This is a ***bold and italic text***
 
 ### Strikethrough text
 
-Strikethrough text is surrounded by two tilde signs (`~~`).
+A strikethrough text is surrounded by two tildes (`~~`).
 
 *Example*
 ```
@@ -182,7 +182,7 @@ This is a ~~strikethrough text~~
 
 ### Superscript text
 
-Superscript text is surrounded by a circumflex sign (`^`).
+A superscript text is surrounded by a circumflex (`^`).
 
 *Example*
 ```
@@ -196,7 +196,7 @@ This is a ^Superscript text^
 
 ### Header
 
-Header starts with a hash sign (`#`), up to six levels (`######`).
+A header starts with one up to six hashes (`#`) followed by a space.
 
 *Example*
 ```
@@ -220,7 +220,7 @@ Header starts with a hash sign (`#`), up to six levels (`######`).
 
 ### Link
 
-Link is made up of two parts. The text surrounded by square brackets (`[]`) and an URL surrounded by round brackets (`( )`). e.g. `[Link](url)`
+A link is made up of two parts. The text surrounded by square brackets (`[]`) followed by an URL surrounded by round brackets (`( )`). i.e. `[Link](url)`
 
 *Example*
 ```
@@ -234,22 +234,22 @@ This is a [link](https://deskeen.fr)
 
 ### Image
 
-Image starts with an exclamation mark (`!`) followed by the alt-text, surrounded by square brackets (`[]`), followed by the URL surrounded by round brackets (`( )`). e.g. `![Alternative image text](image_url)`
+An image starts with an exclamation mark (`!`) followed by the caption surrounded by square brackets (`[]`), followed by the URL surrounded by round brackets (`( )`). i.e. `![caption](image_url)`
 
-Image CSS instructions can be added to the end, surrounded by curly brackets (`{ }`). Instructions are separated by a semicolon (`;`). Parser flag  `allowImageStyle` must be turned on.
+CSS instructions can be added to the end, surrounded by curly brackets (`{ }`). Instructions are separated by a semicolon (`;`). Parser flag  `allowImageStyle` must be turned on to make it work.
 
 Images set on a separate line and inline images have different HTML outputs.
 
 *Example of an inline image*
 ```
-This is a ![some alt text](https://example.com/some_image.png)
+This is an ![inline image](https://example.com/some_image.png)
 ```
 
 ```html
-<p>This is a <img src="https://example.com/some_image.png" alt="some alt text" /></p>
+<p>This is an <img src="https://example.com/some_image.png" alt="inline image" /></p>
 ```
 
-*Example of an autonomous image*
+*Example of an image on a single line*
 ```
 ![Image only on a line](https://example.com/some_image.png)
 ```
@@ -316,7 +316,7 @@ Ordered list items start with a plus sign (`+`) followed by a space.
 
 ## Horizontal Line
 
-Horizontal line is shown with three dashes (`---`).
+A Horizontal line is shown with three dashes (`---`).
 
 *Example*
 ```
@@ -334,7 +334,7 @@ Below horizontal line
 
 ## Code
 
-Technical text is surrounded by a single backtick (`\``)
+A technical text is surrounded by a single backtick (`\``)
 
 *Example*
 ```
@@ -348,9 +348,9 @@ This is `some technical term`
 
 ## Multiline Code
 
-Multiline code-text is surrounded by three backticks (`\``) on separate lines.
+A multiline code is surrounded by three backticks (`\``) set on separate lines.
 
-The language name of the code can be added to the opening backtick tag. It is not added to the output HTML but it is passed to the `onMultilineCode` callback. See example further down.
+The language name of the code can be added to the opening backticks. It is shown in the output HTML but it is passed to the `onMultilineCode` callback. See example further down.
 
 *Example*
 ```
@@ -381,7 +381,7 @@ console.log('Hello World!')
 
 ## Quote
 
-A quote starts with a "Greater Than" sign (`>`).
+A quote starts with a "greater than" sign (`>`).
 
 *Example*
 ```
@@ -400,7 +400,7 @@ A quote starts with a "Greater Than" sign (`>`).
 
 ## Footnote
 
-A footnote is made up of: An opening square bracket (`[`), a circumflex sign (`^`), the footnote number and a closing square brackets (`]`). e.g. `[^1]`
+A footnote is made up of: An opening square bracket (`[`), a circumflex (`^`), a footnote number and a closing square brackets (`]`). e.g. `[^1]`
 
 *Example*
 ```
@@ -518,10 +518,12 @@ const markdownText = '```json\n{"some_property":"foo","some_other_property":"bar
 parseMarkdown(markdownText, {
   onMultilineCode: (element, language) => {
     if (language === 'json') {
-      // element is a <pre> element that includes the <code> element
+      // element is a <pre> tag that includes the <code> tag
       const codeElement = element.firstChild
-      const jsonObj = JSON.parse(codeElement.textContent)
-      codeElement.textContent = JSON.stringify(jsonObj, null, 2)
+      const codeText = codeElement.textContent
+      const jsonObject = JSON.parse(codeText)
+
+      codeElement.textContent = JSON.stringify(jsonObject, null, 2)
     }
   }
 }).toHtml()
