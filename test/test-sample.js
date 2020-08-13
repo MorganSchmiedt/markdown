@@ -1,6 +1,6 @@
 'use strict'
 /* eslint-env node, es6 */
-/* eslint-disable */
+/* eslint-disable no-console */
 
 const parser = require('../src/markdown.js')
 const parse = (input, opt) => parser.parse(input, opt).toHtml()

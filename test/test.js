@@ -761,3 +761,75 @@ test('Escape HTML special chars', function (t) {
   t.equal(parse(input), output, 'Output is valid')
   t.end()
 })
+
+test('Escape "*"', function (t) {
+  const input = 'Some \\*text*'
+  const output = '<p>Some *text*</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape "["', function (t) {
+  const input = 'This is a \\[link](https://example.com)'
+  const output = '<p>This is a [link](https://example.com)</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape "`"', function (t) {
+  const input = 'A \\`code` text'
+  const output = '<p>A `code` text</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape "!"', function (t) {
+  const input = '\\![link](https://example.com)'
+  const output = '<p>!<a href="https://example.com">link</a></p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape "#"', function (t) {
+  const input = '\\# Title escaped'
+  const output = '<p># Title escaped</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape "~"', function (t) {
+  const input = 'A \\~~strikethrough~~ text'
+  const output = '<p>A ~~strikethrough~~ text</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape "^"', function (t) {
+  const input = 'A \\^superscript^ text'
+  const output = '<p>A ^superscript^ text</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape "\\"', function (t) {
+  const input = 'A backslash: \\'
+  const output = '<p>A backslash: \\</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Keep escaped char if not followed by a special char', function (t) {
+  const input = 'Useless \\, backslash'
+  const output = '<p>Useless \\, backslash</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})

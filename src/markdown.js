@@ -1,6 +1,6 @@
 /* eslint-env node */
 
-const ESCAPED_CHARS = {
+const HTML_ESCAPED_CHAR_MAP = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
@@ -8,11 +8,39 @@ const ESCAPED_CHARS = {
   '\'': '&#x27;',
 }
 
-const ESCAPED_CHARS_REGEX =
-  new RegExp(`[${Object.keys(ESCAPED_CHARS).join('')}]`, 'g')
+const HTML_ESCAPED_CHAR_REGEX =
+  new RegExp(`[${Object.keys(HTML_ESCAPED_CHAR_MAP).join('')}]`, 'g')
 
-const escapeText = text =>
-  text.replace(ESCAPED_CHARS_REGEX, char => ESCAPED_CHARS[char])
+const replaceHtmlChars = text =>
+  text.replace(HTML_ESCAPED_CHAR_REGEX, char => HTML_ESCAPED_CHAR_MAP[char])
+
+const MARKDOWN_CHARS = [
+  '*',
+  '[',
+  '`',
+  '!',
+  '#',
+  '~',
+  '^',
+].join('')
+
+const MARKDOWN_ESCAPE_CHAR = '\\'
+
+const ESCAPE_CHAR_REGEX =
+  new RegExp(`\\${MARKDOWN_ESCAPE_CHAR}([${MARKDOWN_CHARS}])`, 'g')
+
+const removeEscapeChar = text =>
+  text.replace(ESCAPE_CHAR_REGEX, (match, char) => char)
+
+const pipe = (...funcs) => value =>
+  funcs.reduce((res, func) => func(res), value)
+
+const escapeText = text => pipe(
+  replaceHtmlChars,
+  removeEscapeChar
+)(text)
+
+const TEXT_REGEX = new RegExp(`[${MARKDOWN_CHARS}]`)
 
 class Element {
   constructor(tagName, attr) {
@@ -187,7 +215,9 @@ module.exports.parse = (markdownText, opt = {}) => {
 
       const firstChar = lineText[0]
 
-      if (allowHeader
+      if (firstChar === MARKDOWN_ESCAPE_CHAR) {
+        lineCursor = 1
+      } else if (allowHeader
       && firstChar === '#') {
         let headerLevel = 1
 
@@ -344,7 +374,7 @@ module.exports.parse = (markdownText, opt = {}) => {
       && lineCursor <= EOLIndex) {
         let ff = 0
 
-        const match = /[*[`!#~^]/.exec(
+        const match = TEXT_REGEX.exec(
           lineText.substring(lineCursor, lineCursorMax))
 
         if (match == null) {
@@ -371,7 +401,9 @@ module.exports.parse = (markdownText, opt = {}) => {
           ff = 1
           lineCursor += match.index
 
-          if (char === '*') {
+          if (next(-1) === MARKDOWN_ESCAPE_CHAR) {
+            // Do nothing
+          } else if (char === '*') {
             if (next(1) === '*'
             && next(2) === '*') {
               const syntax = '***'

@@ -33,6 +33,7 @@ const output = parser.parse('some markdown text').toHtml()
   - [Multiline Code](#multiline-code)
   - [Quote](#quote)
   - [Footnote](#footnote)
+  - [Escape character](#escape-character)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
   - [Open external links in a new tab](#open-external-links-in-a-new-tab)
@@ -119,6 +120,7 @@ Its properties are:
 | [Code](#code)                             | `` `Code text` ``            |
 | [Quote](#quote)                           | `> Quote`                    |
 | [Footnote](#footnote)                     | `Footnote[^1]`               |
+| [Escaped character](#escaped-character)   | `\# Header not parsed`       |
 
 
 ## Markdown syntax
@@ -409,6 +411,28 @@ A second one[^2].
 ```html
 <p>My first footnote<a href="#footnote1"><sup>1</sup></a>.</p>
 <p>A second one<a href="#footnote2"><sup>2</sup></a>.</p>
+```
+
+## Escape character
+
+The escape character is a backslash (`\`). It can be used to tell the parser not to interpret Markdown syntax characters, i.e. `*`, `[`, `` ` ``, `!`, `#`, `~`, `^` and `\`. Other characters do not need to be escaped.
+
+*Example*
+```
+This \*bold text\* is not converted into html.
+```
+
+```html
+<p>This *bold text* is not converted into html.</p>
+```
+
+*Example 2*
+```
+This backslash \ is not removed because it is not followed by a special character.
+```
+
+```html
+<p>This backslash \ is not removed because it is not followed by a special character.</p>
 ```
 
 
