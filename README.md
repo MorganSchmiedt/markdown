@@ -1,4 +1,6 @@
 # Node.js Markdown to HTML Parser
+<a href="#README.md"><img src="./img/gb.svg" height="16px"></a>
+<a href="#README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
 This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
 
@@ -17,7 +19,7 @@ const html = parser.parse('some markdown text').toHtml()
 - [Installation](#installation)
 - [Parser options](#parser-options)
 - [Element object](#element-object)
-- [Markdown Cheatsheet](#markdown-cheatsheet)
+- [Markdown syntax cheat sheet](#markdown-syntax-cheat-sheet)
 - [Markdown syntax](#markdown-syntax)
   - [Italic text](#italic-text)
   - [Bold text](#bold-text)
@@ -52,19 +54,19 @@ This package can be added to your [Node.js](https://nodejs.org/en/) dependencies
 npm install @deskeen/markdown`
 ```
 
-To import the parser to your javascript code, use: 
+To import the parser to your JavaScript code, use: 
 
 ```javascript
 const parser = require('@deskeen/markdown')
 ```
 
-To parse a a text and transform it into HTML code, use:
+To parse a text and transform it into HTML code, use:
 
 ```javascript
 const htmlCode = parser.parse('some markdown text').toHtml()
 ```
 
-It has been tested on Node.js v10+ but it may be working on previous Node.js versions too.
+The parser has been tested on Node.js v10+ but it may be working on previous Node.js versions too.
 
 
 ## Parser options
@@ -115,25 +117,25 @@ function onXXX(element) {
 
 ## Element object
 
-The parser returns a custom Element object. 
+The parser returns a custom `Element` object. 
 
 Its properties are:
 - `tagName`: Tag name. *String*
 - `attr`: Element attributes. *Object*
 - `children`: List of children. *Array*
-- `firstChild`: Returns the first child. Can be null. *Custom Element*
-- `lastChild`: Returns the last child. Can be null. *Custom Element*
+- `firstChild`: First child. Can be null. *Element*
+- `lastChild`: Last child. Can be null. *Element*
 - `textContent`: Element text. *String*
 - `toHtml()`: Returns HTML output. *String* 
 
 
-## Markdown Cheatsheet
+## Markdown syntax cheat sheet
 
 | Type                                      | Markdown syntax              |
 | ----------------------------------------- | ---------------------------- |
 | [Italic text](#italic-text)               | `*Italic text*`              |
-| [Bold text](#italic-text)                 | `**Italic text**`            |
-| [Bold-italic text](#italic-text)          | `***Bold-italic text***`     |
+| [Bold text](#bold-text)                   | `**Bold text**`              |
+| [Bold-italic text](#bold-italic-text)     | `***Bold-italic text***`     |
 | [Strikethrough text](#strikethrough-text) | `~~Strikethrough text~~`     |
 | [Superscript text](#superscript-text)     | `^Superscript text^`         |
 | [Header](#header)                         | `# Header`                   |
@@ -145,7 +147,7 @@ Its properties are:
 | [Code](#code)                             | `` `Code text` ``            |
 | [Quote](#quote)                           | `> Quote`                    |
 | [Footnote](#footnote)                     | `Footnote[^1]`               |
-| [Escaped character](#escaped-character)   | `\# Header not parsed`       |
+| [Escape character](#escape-character)     | `\# Header not parsed`       |
 
 
 ## Markdown syntax
@@ -211,17 +213,17 @@ A superscript text is surrounded by a circumflex (`^`).
 
 *Example*
 ```
-This is a ^Superscript text^
+This is a ^superscript text^
 ```
 
 ```html
-<p>This is a <sup>Superscript text</sup></p>
+<p>This is a <sup>superscript text</sup></p>
 ```
 
 
 ### Header
 
-A header starts with one up to six hashes (`#`) followed by a space.
+A header starts with one to six hashes (`#`) followed by a space.
 
 *Example*
 ```
@@ -249,11 +251,11 @@ A link is made up of two parts. The text surrounded by square brackets (`[]`) fo
 
 *Example*
 ```
-This is a [link](https://deskeen.fr)
+This is a [link](https://example.com)
 ```
 
 ```html
-<p>This is a <a href="https://deskeen.fr">link</a></p>
+<p>This is a <a href="https://example.com">link</a></p>
 ```
 
 
@@ -301,7 +303,7 @@ This is an ![inline image](https://example.com/some_image.png)
 
 ## Video
 
-Videos work the same way as images, i.e `![caption][video_url]`.
+Videos work the same way as images, i.e. `![caption][video_url]`.
 
 *Example*
 
@@ -460,7 +462,7 @@ A second one[^2].
 
 ## Escape character
 
-The escape character is a backslash (`\`). It can be used to tell the parser not to interpret Markdown syntax characters, i.e. `*`, `[`, `` ` ``, `!`, `#`, `~`, `^` and `\`. Other characters do not need to be escaped.
+The escape character is a backslash (`\`). It can be used to tell the parser not to interpret Markdown syntax characters, i.e. `*`, `[`, `` ` ``, `!`, `#`, `~`, `^` and `\`.
 
 *Example*
 ```
@@ -503,7 +505,7 @@ parseMarkdown('# Title 1', {
 ### Open external links in a new tab
 
 ```javascript
-parseMarkdown('See this [page](https:/example.com)!', {
+parseMarkdown('See [this page](https:/example.com)!', {
   onLink: element => {
     // element.attr.href === 'http:/example.com'
 

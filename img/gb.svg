@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <!-- UK -->
+
+  <!-- blue background -->
+  <rect width="600" height="400" fill="#00247d"/>
+
+  <!-- white cross -->
+  <!-- horizontal -->
+  <rect width="600" height="120"  y="140" fill="#fff"/>
+
+  <!-- vertical -->
+  <rect width="140" height="400" x="230"  fill="#fff"/>
+
+  <!-- red cross -->
+  <rect width="600" height="60"  y="170" fill="#DC1E35"/>
+  <rect width="60" height="400" x="270"  fill="#DC1E35"/>
+
+  <!-- top left white -->
+  <polygon points="0,0 50,0 230,120 230,140 130,140 0,50" fill="#fff" />
+  <!-- bottom left white -->
+  <polygon points="0,400 50,400 230,280 230,260 130,260 0,350" fill="#fff" />
+  <!-- top right white -->
+  <polygon points="600,0 550,0 370,120 370,140 470,140 600,50" fill="#fff" />
+  <!-- bottom right white -->
+  <polygon points="600,400 550,400 370,280 370,260 470,260 600,350" fill="#fff" />
+
+  <!-- top left red -->
+  <polygon points="0,0 200,140 160,140 0,30" fill="#DC1E35" />
+  <!-- bottom left red -->
+  <polygon points="0,400 200,260 160,260 0,370" fill="#DC1E35" />
+  <!-- top right red -->
+  <polygon points="600,0 400,140 440,140 600,30" fill="#DC1E35" />
+  <!-- bottom right red -->
+  <polygon points="600,400 400,260 440,260 600,370" fill="#DC1E35" />
+</svg>

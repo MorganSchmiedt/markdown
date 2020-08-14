@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <!-- France -->
+  <!-- blue -->
+  <rect width="200" height="400" fill="#002395"/>
+
+  <!-- white -->
+  <rect width="200" height="400" x="200" fill="#fff"/>
+
+  <!-- red -->
+  <rect width="200" height="400" x="400" fill="#ED2939"/>
+</svg>
