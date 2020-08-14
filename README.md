@@ -1,6 +1,6 @@
 # Node.js Markdown to HTML Parser
-<a href="#README.md"><img src="./img/gb.svg" height="16px"></a>
-<a href="#README.fr.md"><img src="./img/fr.svg" height="16px"></a>
+<a href="README.md"><img src="./img/gb.svg" height="16px"></a>
+<a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
 This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
 

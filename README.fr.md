@@ -1,6 +1,6 @@
 # Parseur Markdown vers HTML pour Node.js 
-<a href="#README.md"><img src="./img/gb.svg" height="16px"></a>
-<a href="#README.fr.md"><img src="./img/fr.svg" height="16px"></a>
+<a href="README.md"><img src="./img/gb.svg" height="16px"></a>
+<a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
 Ce parseur est compatible avec: les textes en italique, textes en gras et textes barrés, les exposants, les liens, les titres et sous-titres, les images et vidéos, du code mono ou multi lignes, les listes numérotées et non-numérotées, les lignes horizontales, les citations et les notes de bas de page.
 
