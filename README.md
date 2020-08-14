@@ -2,7 +2,7 @@
 <a href="README.md"><img src="./img/gb.svg" height="16px"></a>
 <a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
-This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
+This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and references.
 
 
 ## Usage
@@ -36,7 +36,7 @@ const html = parser.parse('some markdown text').toHtml()
   - [Code](#code)
   - [Multiline Code](#multiline-code)
   - [Quote](#quote)
-  - [Footnote](#footnote)
+  - [Reference](#reference)
   - [Escape character](#escape-character)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
@@ -86,7 +86,7 @@ Available options are:
 - `allowOrderedList`: Whether ordered lists are allowed. Defaults to `true`.
 - `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
-- `allowFootnote`: Whether footnotes are allowed. Defaults to `true`.
+- `allowReference`: Whether references are allowed. Defaults to `true`.
 - `brOnBlankLine`: Whether to add a `<br />` tag on empty line. Defaults to `false`.
 - `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
 
@@ -103,7 +103,7 @@ Available callbacks are:
 - `onOrderedList`: Function called when an ordered list is parsed.
 - `onHorizontalLine`: Function called when a horizontal line is parsed.
 - `onQuote`: Function called when a quote is parsed.
-- `onFootnote`: Function called when a footnote is parsed.
+- `onReference`: Function called when a reference is parsed.
 
 The first argument of the callbacks is always the parsed [element](#element-object):
 
@@ -146,7 +146,7 @@ Its properties are:
 | [Horizontal Line](#horizontal-line)       | `---`                        |
 | [Code](#code)                             | `` `Code text` ``            |
 | [Quote](#quote)                           | `> Quote`                    |
-| [Footnote](#footnote)                     | `Footnote[^1]`               |
+| [Reference](#reference)                   | `Reference[^1]`               |
 | [Escape character](#escape-character)     | `\# Header not parsed`       |
 
 
@@ -445,19 +445,19 @@ A quote starts with a "greater than" sign (`>`).
 </blockquote>
 ```
 
-## Footnote
+## Reference
 
-A footnote is made up of: An opening square bracket (`[`), a circumflex (`^`), a footnote number and a closing square brackets (`]`). e.g. `[^1]`
+A reference is made up of: An opening square bracket (`[`), a circumflex (`^`), a reference number and a closing square brackets (`]`). e.g. `[^1]`
 
 *Example*
 ```
-My first footnote[^1].
-A second one[^2].
+This is the fist reference[^1].
+And the second one[^2].
 ```
 
 ```html
-<p>My first footnote<a href="#footnote1"><sup>1</sup></a>.</p>
-<p>A second one<a href="#footnote2"><sup>2</sup></a>.</p>
+<p>This is the fist reference<a href="#reference1"><sup>1</sup></a>.</p>
+<p>And the second one<a href="#reference2"><sup>2</sup></a>.</p>
 ```
 
 ## Escape character

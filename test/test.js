@@ -720,19 +720,19 @@ test('br ARE added on blank lines if brOnBlankLine is true', function (t) {
   t.end()
 })
 
-test('Footnotes', function (t) {
-  const input = 'See footnote[^1]'
-  const output = '<p>See footnote<a href="#footnote1"><sup>1</sup></a></p>'
+test('Reference', function (t) {
+  const input = 'See reference[^1]'
+  const output = '<p>See reference<a href="#reference1"><sup>1</sup></a></p>'
 
   t.equal(parse(input), output, 'Output is valid')
   t.end()
 })
 
-test('Footnotes with callback', function (t) {
-  const input = 'See footnote[^1]'
+test('Reference with callback', function (t) {
+  const input = 'See reference[^1]'
   const opt = {
-    allowFootnote: true,
-    onFootnote: node => {
+    allowReference: true,
+    onReference: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'a', 'Tagname is valid')
       t.notEqual(node.firstChild, '1', 'firstChild is there')
@@ -743,11 +743,11 @@ test('Footnotes with callback', function (t) {
   parse(input, opt)
 })
 
-test('Footnotes with allowFootnote to false', function (t) {
-  const input = 'See footnote[^1]'
-  const output = '<p>See footnote[^1]</p>'
+test('Reference with allowReference to false', function (t) {
+  const input = 'See reference[^1]'
+  const output = '<p>See reference[^1]</p>'
   const opt = {
-    allowFootnote: false,
+    allowReference: false,
   }
 
   t.equal(parse(input, opt), output, 'Output is valid')

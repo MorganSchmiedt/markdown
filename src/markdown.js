@@ -142,7 +142,7 @@ const parseMaxHeader = (value, defaultValue) => {
  * @param {boolean} [opt.allowOrderedList=true]
  * @param {boolean} [opt.allowHorizontalLine=true]
  * @param {boolean} [opt.allowQuote=true]
- * @param {boolean} [opt.allowFootnote=true]
+ * @param {boolean} [opt.allowReference=true]
  * @param {function} [opt.onHeader]
  * @param {function} [opt.onLink]
  * @param {function} [opt.onImage]
@@ -153,7 +153,7 @@ const parseMaxHeader = (value, defaultValue) => {
  * @param {function} [opt.onOrderedList]
  * @param {function} [opt.onHorizontalLine]
  * @param {function} [opt.onQuote]
- * @param {function} [opt.onFootnote]
+ * @param {function} [opt.onReference]
  */
 module.exports.parse = (markdownText, opt = {}) => {
   const allowHeader = parseBoolean(opt.allowHeader, true)
@@ -166,7 +166,7 @@ module.exports.parse = (markdownText, opt = {}) => {
   const allowOrderedList = parseBoolean(opt.allowOrderedList, true)
   const allowHorizontalLine = parseBoolean(opt.allowHorizontalLine, true)
   const allowQuote = parseBoolean(opt.allowQuote, true)
-  const allowFootnote = parseBoolean(opt.allowFootnote, true)
+  const allowReference = parseBoolean(opt.allowReference, true)
   const brOnBlankLine = parseBoolean(opt.brOnBlankLine, false)
   const maxHeader = parseMaxHeader(opt.maxHeader, 3)
 
@@ -511,28 +511,28 @@ module.exports.parse = (markdownText, opt = {}) => {
           } else if (char === '[') {
             const restLineText = lineText.substring(lineCursor + 1)
 
-            if (allowFootnote
+            if (allowReference
             && next(1) === '^') {
-              const footnoteMatch = /\^(\d+)]/.exec(restLineText)
+              const refMatch = /\^(\d+)]/.exec(restLineText)
 
-              if (footnoteMatch) {
-                const noteNb = footnoteMatch[1]
+              if (refMatch) {
+                const noteNb = refMatch[1]
 
                 const supNode = new Element('sup')
                 supNode.textContent = noteNb
 
                 const linkNode = new Element('a', {
-                  href: `#footnote${noteNb}`,
+                  href: `#reference${noteNb}`,
                 })
                 linkNode.appendChild(supNode)
 
-                if (opt.onFootnote) {
-                  opt.onFootnote(linkNode)
+                if (opt.onReference) {
+                  opt.onReference(linkNode)
                 }
 
                 flush(linkNode)
 
-                ff = (1 + footnoteMatch[0].length)
+                ff = (1 + refMatch[0].length)
                 lastFlushCursor += ff
               }
             } else if (allowLink) {

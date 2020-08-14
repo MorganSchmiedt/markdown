@@ -2,7 +2,7 @@
 <a href="README.md"><img src="./img/gb.svg" height="16px"></a>
 <a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
-Ce parseur est compatible avec: les textes en italique, textes en gras et textes barrés, les exposants, les liens, les titres et sous-titres, les images et vidéos, du code mono ou multi lignes, les listes numérotées et non-numérotées, les lignes horizontales, les citations et les notes de bas de page.
+Ce parseur est compatible avec: les textes en italique, textes en gras et textes barrés, les exposants, les liens, les titres et sous-titres, les images et vidéos, du code mono ou multi lignes, les listes numérotées et non-numérotées, les lignes horizontales, les citations et les références.
 
 
 ## Utilisation
@@ -36,7 +36,7 @@ const html = parser.parse('mon texte markdown').toHtml()
   - [Code](#code)
   - [Code multi lignes](code-multi-lignes)
   - [Citation](#citation)
-  - [Pied de page](#pied-de-page)
+  - [Référence](#reference)
   - [Caractère d'échappement](#escape-character)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
@@ -86,7 +86,7 @@ Les options disponibles sont:
 - `allowOrderedList`: Si les listes numérotées sont autorisées. `true` par défaut.
 - `allowHorizontalLine`: Si les lignes horizontales sont autorisées. `true` par défaut.
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
-- `allowFootnote`: Si les pieds de page sont autorisés. `true` par défaut.
+- `allowReference`: Si les références sont autorisées. `true` par défaut.
 - `brOnBlankLine`: Si une balise `<br />` est ajouté lorsqu'il y a une ligne vide. `false` par défaut.
 - `maxHeader`: Niveau maximal des titres. Nombre de 1 à 6 inclus. e.g. 2 signifie que les balises autorisées sont `<h1>` et `<h2>`. 6 par défaut.
 
@@ -103,7 +103,7 @@ Les Callbacks disponibles sont:
 - `onOrderedList`: Fonction appelée lorsqu'une liste numérotée est parsée.
 - `onHorizontalLine`: Fonction appelée lorsqu'une ligne horizontale est parsée.
 - `onQuote`: Fonction appelée lorsqu'une citation est parsée.
-- `onFootnote`: Fonction appelée lorsqu'un pied de page est parsé.
+- `onReference`: Fonction appelée lorsqu'une référence est parsée.
 
 Le premier argument des Callbacks est toujours l'[élément](#l-objet-element) parsé.
 
@@ -146,7 +146,7 @@ Ses propriétés sont:
 | [Ligne horizontale](#ligne-horizontale)   | `---`                        |
 | [Code](#code)                             | `` `Code` ``                 |
 | [Citation](#citation)                     | `> Citation`                 |
-| [Pied de page](#pied-de-page)             | `Voir la note[^1]`           |
+| [Référence](#reference)                   | `Référence[^1]`           |
 | [Caractère d'échappement](#caractere-d-échappement)| `\# Titre non parsé`|
 
 
@@ -445,19 +445,19 @@ Une citation débute avec un signe supérieur (`>`).
 </blockquote>
 ```
 
-## Pied de page
+## référence
 
-Un pied de page est composé de: Un crochet ouvrant (`[`), un accent circonflexe (`^`), un numéro de pied de page, et un crochet fermant (`]`). e.g. `[^1]`
+Une référence est composée de: Un crochet ouvrant (`[`), un accent circonflexe (`^`), un numéro de référence, et un crochet fermant (`]`). e.g. `[^1]`
 
 *Exemple*
 ```
-Mon premier pied de page[^1].
-Mon second one[^2].
+Ma première référence[^1].
+Ma seconde[^2].
 ```
 
 ```html
-<p>Mon premier pied de page<a href="#footnote1"><sup>1</sup></a>.</p>
-<p>Mon second one<a href="#footnote2"><sup>2</sup></a>.</p>
+<p>Ma première référence<a href="#reference1"><sup>1</sup></a>.</p>
+<p>Ma seconde<a href="#reference2"><sup>2</sup></a>.</p>
 ```
 
 ## Caractère d'échappement
