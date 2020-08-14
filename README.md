@@ -1,6 +1,6 @@
 # Node.js Markdown to HTML Parser
 
-This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
+This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and footnotes.
 
 
 ## Usage
@@ -27,6 +27,7 @@ const html = parser.parse('some markdown text').toHtml()
   - [Header](#header)
   - [Link](#link)
   - [Image](#image)
+  - [Video](#video)
   - [Unordered list](#unordered-list)
   - [Ordered list](#ordered-list)
   - [Horizontal Line](#horizontal-line)
@@ -137,7 +138,7 @@ Its properties are:
 | [Superscript text](#superscript-text)     | `^Superscript text^`         |
 | [Header](#header)                         | `# Header`                   |
 | [Link](#link)                             | `[Link text](link_url)`      |
-| [Image](#image)                           | `![Caption](image_url)`      |
+| [Image](#image) and [Video](#video)       | `![Caption](image_url)`      |
 | [Unordered list](#unordered-list)         | `- List item`                |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
 | [Horizontal Line](#horizontal-line)       | `---`                        |
@@ -294,6 +295,26 @@ This is an ![inline image](https://example.com/some_image.png)
 <figure style="height: 100px; width: 100px">
   <img src="https://example.com/some_image.png" alt="" />
   <figcaption>Image with inline style</figcaption>
+</figure>
+```
+
+
+## Video
+
+Videos work the same way as images, i.e `![caption][video_url]`.
+
+*Example*
+
+```
+![my caption][https://example.com/some_video.mp4]
+```
+
+```html
+<figure>
+  <video>
+    <source src="https://example.com/some_video.mp4" type="video/mp4" />
+  </video>
+  <figcaption>my caption</figcaption>
 </figure>
 ```
 
