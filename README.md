@@ -7,13 +7,14 @@ This Markdown parser supports: italic, bold, strikethrough and superscript texts
 
 ```javascript
 const parser = require('@deskeen/markdown')
-const output = parser.parse('some markdown text').toHtml()
+const html = parser.parse('some markdown text').toHtml()
 
-// output === '<p>some markdown text</p>'
+// html === '<p>some markdown text</p>'
 ```
 
 ## Learn more
 
+- [Installation](#installation)
 - [Parser options](#parser-options)
 - [Element object](#element-object)
 - [Markdown Cheatsheet](#markdown-cheatsheet)
@@ -40,6 +41,29 @@ const output = parser.parse('some markdown text').toHtml()
   - [Add a base URL to images with a relative link](#add-a-base-url-to-images-with-a-relative-link)
   - [Add a CSS Class to inline codes](#add-a-css-class-to-inline-codes)
   - [Pretty print JSON objects](#pretty-print-json-objects)
+
+
+## Installation
+
+This package can be added to your [Node.js](https://nodejs.org/en/) dependencies by running:
+
+```
+npm install @deskeen/markdown`
+```
+
+To import the parser to your javascript code, use: 
+
+```javascript
+const parser = require('@deskeen/markdown')
+```
+
+To parse a a text and transform it into HTML code, use:
+
+```javascript
+const htmlCode = parser.parse('some markdown text').toHtml()
+```
+
+It has been tested on Node.js v10+ but it may be working on previous Node.js versions too.
 
 
 ## Parser options
