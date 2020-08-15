@@ -45,7 +45,7 @@ const html = parser.parse('mon texte markdown').toHtml()
   - [Ajouter un préfixe aux liens relatifs des images](#ajouter-un-préfixe-aux-liens-relatifs-des-images)
   - [Ajouter une classe CSS au code](#ajouter-une-classe-CSS-au-code)
   - [Afficher joliment les objets JSON](#afficher-joliment-les-objets-json)
-
+- [Licence](#licence)
 
 ## Installation
 
@@ -660,3 +660,8 @@ parseMarkdown(markdownText, {
   "une_autre_propriete": "valeur2"
 }</code></pre>
 ```
+
+
+## Licence
+
+Licence MIT - Copyright (c) Morgan Schmiedt

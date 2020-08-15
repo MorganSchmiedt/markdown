@@ -45,6 +45,7 @@ const html = parser.parse('some markdown text').toHtml()
   - [Add a base URL to images with a relative link](#add-a-base-url-to-images-with-a-relative-link)
   - [Add a CSS Class to inline codes](#add-a-css-class-to-inline-codes)
   - [Pretty print JSON objects](#pretty-print-json-objects)
+- [Licence](#licence)
 
 
 ## Installation
@@ -657,3 +658,8 @@ parseMarkdown(markdownText, {
   "some_other_property": "bar"
 }</code></pre>
 ```
+
+
+## Licence
+
+MIT Licence - Copyright (c) Morgan Schmiedt
