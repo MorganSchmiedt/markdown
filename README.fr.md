@@ -2,7 +2,9 @@
 <a href="README.md"><img src="./img/gb.svg" height="16px"></a>
 <a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
-Ce parseur est compatible avec: les textes en italique, textes en gras et textes barrés, les exposants, les liens, les titres et sous-titres, les images et vidéos, du code mono ou multi lignes, les listes numérotées et non-numérotées, les listes imbriquées, les lignes horizontales, les citations et les références.
+Ce parseur Markdown-vers-HTML utilise une syntaxe personnalisée et allégée du language Markdown.
+
+Il permet de créer: des textes en italique, textes en gras et textes barrés, des exposants, des liens, des titres et sous-titres, des images, des vidéos, du code mono ou multi lignes, des listes numérotées et non-numérotées, des listes imbriquées, des lignes horizontales, des citations et des références.
 
 
 ## Utilisation
@@ -39,6 +41,7 @@ const html = parser.parse('mon texte markdown').toHtml()
   - [Référence](#reference)
   - [Caractère d'échappement](#escape-character)
   - [Saut de ligne](#saut-de-ligne)
+- [Différences avec la syntaxe Markdown standard](#différences-avec-la-syntaxe-markdown-standard)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
   - [Ouvrir les liens externes dans un nouvel onglet](#ouvrir-les-liens-externes-dans-un-nouvel-onglet)
@@ -47,6 +50,7 @@ const html = parser.parse('mon texte markdown').toHtml()
   - [Afficher joliment les objets JSON](#afficher-joliment-les-objets-json)
 - [Contact](#contact)
 - [Licence](#licence)
+
 
 ## Installation
 
@@ -560,6 +564,22 @@ Encore du texte.
 <br />
 <p>Encore du texte.</p>
 ```
+
+
+## Différences avec la syntaxe Markdown standard
+
+- Les textes en italic, grand, italic-et-gras avec un, deux et trois caractères underscore ne sont pas supportés.
+- Les titres avec des tirets ou des signes égal en dessous ne sont pas supportés.
+- Les listes non-numérotées commencent avec un tiret, pas un signe plus ou une étoile.
+- Les listes numérotées commencent avec un signe plus, pas un nombre.
+- Les sauts de lignes ne sont pas supportés dans les listes.
+- Échapper du code avec deux accents aigus n'est pas supporté.
+- Les lignes horizontales avec des étoiles ou des caractères underscore ne sont pas supportés.
+- Les titres d'image et les titres de liens ne sont pas supportés.
+- Les liens entre caractères inférieur et supérieur ne sont pas supportés.
+- Les balises HTML ne sont pas acceptées.
+- Les textes barrés, les exposants, les video et les références sont supportés.
+- Les images qui sont seules sur une ligne sont intégrées à une balise HTML `figure`.
 
 
 ## Exemples

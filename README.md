@@ -2,7 +2,9 @@
 <a href="README.md"><img src="./img/gb.svg" height="16px"></a>
 <a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
-This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and references.
+This Markdown-to-HTML parser uses a custom, lightweight, Markdown syntax.
+
+It allows to create: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and references.
 
 
 ## Usage
@@ -39,6 +41,7 @@ const html = parser.parse('some markdown text').toHtml()
   - [Reference](#reference)
   - [Escape character](#escape-character)
   - [Newline](#newline)
+- [Differences with standard Markdown syntax](#differences-with-standard-Markdown-syntax)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
   - [Open external links in a new tab](#open-external-links-in-a-new-tab)
@@ -558,6 +561,22 @@ Some more text.
 <br />
 <p>Some more text.</p>
 ```
+
+
+## Differences with standard Markdown syntax
+
+- Italic, bold and italic-bold texts with one, two and three underscore characters are not supported.
+- Headers with underneath dashes/equal signs are not supported.
+- Unordered Lists start with a dash, not a plus sign or a star.
+- Ordered Lists start with a plus sign, not a number.
+- New lines are not supported in lists.
+- Escaping code with two backticks is not supported.
+- Horizontal lines with stars or underscores are not supported.
+- Image titles and Link titles are not supported.
+- Links in between less-than and greater-than characters are not supported.
+- HTML tags are not allowed.
+- Strikethrough, superscript texts, videos, and references are supported.
+- Images on a single line are embedded in a `figure` HTML tag.
 
 
 ## Examples
