@@ -920,6 +920,25 @@ test('br ARE added on blank lines if brOnBlankLine is true', function (t) {
   t.end()
 })
 
+test('Line of spaces are considered empty', function (t) {
+  const input = 'Line 1\n  \nLine 2'
+  const output = '<p>Line 1</p><p>Line 2</p>'
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Space-only lines are considered empty', function (t) {
+  const input = 'Line 1\n  \nLine 2'
+  const output = '<p>Line 1</p><br /><p>Line 2</p>'
+  const opt = {
+    brOnBlankLine: true,
+  }
+
+  t.equal(parse(input, opt), output, 'Output is valid')
+  t.end()
+})
+
 test('Reference', function (t) {
   const input = 'See reference[^1]'
   const output = '<p>See reference<a href="#reference1"><sup>1</sup></a></p>'

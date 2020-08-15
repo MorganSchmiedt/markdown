@@ -38,6 +38,7 @@ const html = parser.parse('mon texte markdown').toHtml()
   - [Citation](#citation)
   - [Référence](#reference)
   - [Caractère d'échappement](#escape-character)
+  - [Saut de ligne](#saut-de-ligne)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
   - [Ouvrir les liens externes dans un nouvel onglet](#ouvrir-les-liens-externes-dans-un-nouvel-onglet)
@@ -531,6 +532,32 @@ Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécia
 
 ```html
 <p>Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécial.</p>
+```
+
+
+## Saut de ligne
+
+Les sauts de lignes sont ignorés, sauf si la paramètre `brOnBlankLine` est activé.
+
+*Exemple*
+```
+Du texte suivi de deux sauts de ligne.
+
+
+Encore du texte.
+```
+
+```html
+<p>Du texte suivi de deux sauts de ligne.</p>
+<p>Encore du texte.</p>
+```
+
+*Même Exemple avec brOnBlankLine activé*
+
+```html
+<p>Du texte suivi de deux sauts de ligne.</p>
+<br />
+<p>Encore du texte.</p>
 ```
 
 

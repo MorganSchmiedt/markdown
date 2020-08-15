@@ -5,6 +5,7 @@
 **🌟 New**
 - Unordered and ordered nested lists are supported.
 - `allowNestedList` option is added.
+- Space-only lines are considered empty.
 
 **⚠ Breaking changes**
 - `allowFootnote` becomes `allowReference`

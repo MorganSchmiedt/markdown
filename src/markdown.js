@@ -185,7 +185,7 @@ module.exports.parse = (markdownText, opt = {}) => {
     const lineText = restText.substring(0, EOLIndex)
     const nextRestText = restText.substring(EOLIndex + 1)
 
-    if (lineText.length === 0) {
+    if (lineText.trim().length === 0) {
       if (brOnBlankLine) {
         body.appendChild(new Element('br'))
       }

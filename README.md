@@ -38,6 +38,7 @@ const html = parser.parse('some markdown text').toHtml()
   - [Quote](#quote)
   - [Reference](#reference)
   - [Escape character](#escape-character)
+  - [Newline](#newline)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
   - [Open external links in a new tab](#open-external-links-in-a-new-tab)
@@ -528,6 +529,32 @@ This backslash \ is not removed because it is not followed by a special characte
 
 ```html
 <p>This backslash \ is not removed because it is not followed by a special character.</p>
+```
+
+
+## Newline
+
+Newlines are ignored unless `brOnBlankLine` is true.
+
+*Example*
+```
+Some text followed by two newlines.
+
+
+Some more text.
+```
+
+```html
+<p>Some text followed by two newlines.</p>
+<p>Some more text.</p>
+```
+
+*Same Example with brOnBlankLine to true*
+
+```html
+<p>Some text followed by two newlines.</p>
+<br />
+<p>Some more text.</p>
 ```
 
 
