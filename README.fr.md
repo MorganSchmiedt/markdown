@@ -48,6 +48,7 @@ const html = parser.parse('mon texte markdown').toHtml()
   - [Ajouter un préfixe aux liens relatifs des images](#ajouter-un-préfixe-aux-liens-relatifs-des-images)
   - [Ajouter une classe CSS au code](#ajouter-une-classe-CSS-au-code)
   - [Afficher joliment les objets JSON](#afficher-joliment-les-objets-json)
+- [Autres ressources](#autres-ressources)
 - [Contact](#contact)
 - [Licence](#licence)
 
@@ -681,6 +682,15 @@ parseMarkdown(markdownText, {
   "une_autre_propriete": "valeur2"
 }</code></pre>
 ```
+
+
+## Autres ressources
+
+- Guide Markdown: https://www.markdownguide.org/
+- CommonMark: https://commonmark.org/
+- GitHub Markdown: https://guides.github.com/features/mastering-markdown/
+- Reddit Markdown: https://www.reddit.com/wiki/markdown
+
 
 ## Contact
 

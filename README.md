@@ -48,6 +48,7 @@ const html = parser.parse('some markdown text').toHtml()
   - [Add a base URL to images with a relative link](#add-a-base-url-to-images-with-a-relative-link)
   - [Add a CSS Class to inline codes](#add-a-css-class-to-inline-codes)
   - [Pretty print JSON objects](#pretty-print-json-objects)
+- [Other ressources](#other-ressources)
 - [Contact](#contact)
 - [Licence](#licence)
 
@@ -678,6 +679,15 @@ parseMarkdown(markdownText, {
   "some_other_property": "bar"
 }</code></pre>
 ```
+
+
+## Other ressources
+
+- Markdown Guide: https://www.markdownguide.org/
+- CommonMark: https://commonmark.org/
+- GitHub Markdown: https://guides.github.com/features/mastering-markdown/
+- Reddit Markdown: https://www.reddit.com/wiki/markdown
+
 
 ## Contact
 
