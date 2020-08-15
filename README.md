@@ -143,9 +143,9 @@ Its properties are:
 | [Link](#link)                             | `[Link text](link_url)`      |
 | [Image](#image) and [Video](#video)       | `![Caption](image_url)`      |
 | [Unordered list](#unordered-list)         | `- List item`                |
-| [Unoredered nested list](#unordered-list) | `  - Nested List item`       |
+| [Unoredered nested list](#unordered-list) | <code>&nbsp;&nbsp;- Nested list item</code> |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
-| [Ordered nested list](#ordered-list)      | `  + Nested list item`       |
+| [Ordered nested list](#ordered-list)      | <code>&nbsp;&nbsp;+ Nested list item</code> |
 | [Horizontal Line](#horizontal-line)       | `---`                        |
 | [Code](#code)                             | `` `Code text` ``            |
 | [Quote](#quote)                           | `> Quote`                    |
