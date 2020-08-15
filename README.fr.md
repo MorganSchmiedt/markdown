@@ -143,9 +143,9 @@ Ses propriétés sont:
 | [Lien](#lien)                             | `[Texte affiche](lien)`      |
 | [Image](#image) and [Vidéo](#video)       | `![Légende](lien)`           |
 | [Liste non-numérotée](#liste-non-numérotée)| `- Item de la liste`        |
-| [Liste non-numérotée imbriqué](#liste-non-numérotée)| <code>&nbsp;&nbsp;- Nested list item</code> |
+| [Liste non-numérotée imbriqué](#liste-non-numérotée)| <code>&nbsp;&nbsp;- Item imbriqué</code> |
 | [Liste numérotée](#liste-numérotée)       | `+ Item de liste numérotée`  |
-| [Liste numérotée imbriquée](#liste-numérotée)| <code>&nbsp;&nbsp;+ Nested list item</code> |
+| [Liste numérotée imbriquée](#liste-numérotée)| <code>&nbsp;&nbsp;+ Item imbriqué</code> |
 | [Ligne horizontale](#ligne-horizontale)   | `---`                        |
 | [Code](#code)                             | `` `Code` ``                 |
 | [Citation](#citation)                     | `> Citation`                 |
