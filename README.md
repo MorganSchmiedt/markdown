@@ -2,7 +2,7 @@
 <a href="README.md"><img src="./img/gb.svg" height="16px"></a>
 <a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
-This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, horizontal lines, quotes and references.
+This Markdown parser supports: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and references.
 
 
 ## Usage
@@ -84,6 +84,7 @@ Available options are:
 - `allowMultilineCode`: Whether multiline codes are allowed. Defaults to `true`.
 - `allowUnorderedList`: Whether unordered lists are allowed. Defaults to `true`.
 - `allowOrderedList`: Whether ordered lists are allowed. Defaults to `true`.
+- `allowNestedList`: Whether nested lists are allowed. Defaults to `true`.
 - `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowReference`: Whether references are allowed. Defaults to `true`.
@@ -99,8 +100,8 @@ Available callbacks are:
 - `onVideo`: Function called when a video is parsed.
 - `onCode`: Function called when an inline code is parsed.
 - `onMultilineCode`: Function called when a multiline code is parsed. Second argument is the (optional) language name.
-- `onUnorderedList`: Function called when a unordered list is parsed.
-- `onOrderedList`: Function called when an ordered list is parsed.
+- `onUnorderedList`: Function called when a unordered list is parsed. Second argument is the list level. `1` for top level lists and `2` for nested lists.
+- `onOrderedList`: Function called when an ordered list is parsed. Second argument is the list level. `1` for top level lists and `2` for nested lists.
 - `onHorizontalLine`: Function called when a horizontal line is parsed.
 - `onQuote`: Function called when a quote is parsed.
 - `onReference`: Function called when a reference is parsed.
@@ -142,7 +143,9 @@ Its properties are:
 | [Link](#link)                             | `[Link text](link_url)`      |
 | [Image](#image) and [Video](#video)       | `![Caption](image_url)`      |
 | [Unordered list](#unordered-list)         | `- List item`                |
+| [Unoredered nested list](#unordered-list) | `  - Nested List item`       |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
+| [Ordered nested list](#ordered-list)      | `  + Nested list item`       |
 | [Horizontal Line](#horizontal-line)       | `---`                        |
 | [Code](#code)                             | `` `Code text` ``            |
 | [Quote](#quote)                           | `> Quote`                    |
@@ -325,6 +328,8 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
 
 Unordered list items start with a dash (`-`) followed by a space.
 
+Nested list items start with at least one space, followed by a dash and a space.
+
 *Example*
 ```
 - Item 1
@@ -340,10 +345,33 @@ Unordered list items start with a dash (`-`) followed by a space.
 </ul>
 ```
 
+*Example with nested list*
+```
+- Item 1
+  - Item 1.1
+  - Item 1.2
+- Item 2
+```
+
+```html
+<ul>
+  <li>
+    Item 1
+    <ul>
+      <li>Item 1.1</li>
+      <li>Item 1.2</li>
+    </ul>
+  </li>
+  <li>Item 2</li>
+</ul>
+```
+
 
 ## Ordered list
 
 Ordered list items start with a plus sign (`+`) followed by a space.
+
+Nested list items start with at least one space, followed by a plus sign and a space.
 
 *Example*
 ```
@@ -360,6 +388,26 @@ Ordered list items start with a plus sign (`+`) followed by a space.
 </ol>
 ```
 
+*Example with nested list*
+```
++ Item 1
+  + Item 1.1
+  + Item 1.2
++ Item 2
+```
+
+```html
+<ol>
+  <li>
+    Item 1
+    <ol>
+      <li>Item 1.1</li>
+      <li>Item 1.2</li>
+    </ol>
+  </li>
+  <li>Item 2</li>
+  </ol>
+```
 
 ## Horizontal Line
 

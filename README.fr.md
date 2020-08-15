@@ -2,7 +2,7 @@
 <a href="README.md"><img src="./img/gb.svg" height="16px"></a>
 <a href="README.fr.md"><img src="./img/fr.svg" height="16px"></a>
 
-Ce parseur est compatible avec: les textes en italique, textes en gras et textes barrés, les exposants, les liens, les titres et sous-titres, les images et vidéos, du code mono ou multi lignes, les listes numérotées et non-numérotées, les lignes horizontales, les citations et les références.
+Ce parseur est compatible avec: les textes en italique, textes en gras et textes barrés, les exposants, les liens, les titres et sous-titres, les images et vidéos, du code mono ou multi lignes, les listes numérotées et non-numérotées, les listes imbriquées, les lignes horizontales, les citations et les références.
 
 
 ## Utilisation
@@ -84,6 +84,7 @@ Les options disponibles sont:
 - `allowMultilineCode`: Si du code multi lignes est autorisé. `true` par défaut.
 - `allowUnorderedList`: Si les listes non-numérotées sont autorisées. `true` par défaut.
 - `allowOrderedList`: Si les listes numérotées sont autorisées. `true` par défaut.
+- `allowNestedList`: Si les listes imbriquées sont autorisées. Defaults to `true`.
 - `allowHorizontalLine`: Si les lignes horizontales sont autorisées. `true` par défaut.
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
 - `allowReference`: Si les références sont autorisées. `true` par défaut.
@@ -99,8 +100,8 @@ Les Callbacks disponibles sont:
 - `onVidéo`: Fonction appelée lorsqu'une video est parsée.
 - `onCode`: Fonction appelée lorsque du code est parsé.
 - `onMultilineCode`: Fonction appelée lorsque du code multi lignes est parsé. Le deuxième argument est le nom (optionnel) du langage.
-- `onUnorderedList`: Fonction appelée lorsqu'une liste non numérotée est parsée.
-- `onOrderedList`: Fonction appelée lorsqu'une liste numérotée est parsée.
+- `onUnorderedList`: Fonction appelée lorsqu'une liste non numérotée est parsée. Le deuxième argument le niveau de la liste. `1` pour les listes de premier niveau, `2` pour les listes imbriquées.
+- `onOrderedList`: Fonction appelée lorsqu'une liste numérotée est parsée. Le deuxième argument le niveau de la liste. `1` pour les listes de premier niveau, `2` pour les listes imbriquées.
 - `onHorizontalLine`: Fonction appelée lorsqu'une ligne horizontale est parsée.
 - `onQuote`: Fonction appelée lorsqu'une citation est parsée.
 - `onReference`: Fonction appelée lorsqu'une référence est parsée.
@@ -142,7 +143,9 @@ Ses propriétés sont:
 | [Lien](#lien)                             | `[Texte affiche](lien)`      |
 | [Image](#image) and [Vidéo](#video)       | `![Légende](lien)`           |
 | [Liste non-numérotée](#liste-non-numérotée)| `- Item de la liste`        |
+| [Liste non-numérotée imbriqué](#liste-non-numérotée)| `  - Item imbriqué`|
 | [Liste numérotée](#liste-numérotée)       | `+ Item de liste numérotée`  |
+| [Liste numérotée imbriquée](#liste-numérotée)       | `  + Item imbriqué`|
 | [Ligne horizontale](#ligne-horizontale)   | `---`                        |
 | [Code](#code)                             | `` `Code` ``                 |
 | [Citation](#citation)                     | `> Citation`                 |
@@ -325,6 +328,8 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
 
 Les éléments d'une liste non numérotée commencent avec un tiret (`-`) suivi par un espace.
 
+Une liste peut être imbriquée dans une autre liste en commençant avec au moins un espace, suivi d'un tiret, et d'un espace. 
+
 *Exemple*
 ```
 - Item 1
@@ -340,10 +345,33 @@ Les éléments d'une liste non numérotée commencent avec un tiret (`-`) suivi 
 </ul>
 ```
 
+*Exemple avec une liste imbriquée*
+```
+- Item 1
+  - Item 1.1
+  - Item 1.2
+- Item 2
+```
+
+```html
+<ul>
+  <li>
+    Item 1
+    <ul>
+      <li>Item 1.1</li>
+      <li>Item 1.2</li>
+    </ul>
+  </li>
+  <li>Item 2</li>
+</ul>
+```
+
 
 ## Liste numérotée
 
 Les éléments d'une liste numérotée commencent avec un signe plus (`+`) suivi par un espace.
+
+Une liste peut être imbriquée dans une autre liste en commençant avec au moins un espace, suivi d'un signe plus, et d'un espace. 
 
 *Exemple*
 ```
@@ -358,6 +386,27 @@ Les éléments d'une liste numérotée commencent avec un signe plus (`+`) suivi
   <li>Item 2</li>
   <li>Item 3</li>
 </ol>
+```
+
+*Exemple avec une liste imbriquée*
+```
++ Item 1
+  + Item 1.1
+  + Item 1.2
++ Item 2
+```
+
+```html
+<ol>
+  <li>
+    Item 1
+    <ol>
+      <li>Item 1.1</li>
+      <li>Item 1.2</li>
+    </ol>
+  </li>
+  <li>Item 2</li>
+  </ol>
 ```
 
 

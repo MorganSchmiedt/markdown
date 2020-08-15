@@ -400,10 +400,11 @@ test('Unordered List with callback', function (t) {
     Not at the end of the file`
 
   const opt = {
-    onUnorderedList: node => {
+    onUnorderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'ul', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
+      t.equal(level, 1, 'Level is valid')
     },
   }
 
@@ -415,14 +416,15 @@ test('Unordered List with callback', function (t) {
     - List 1, Item 2 at the end of the file`
 
   const opt2 = {
-    onUnorderedList: node => {
+    onUnorderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'ul', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
-      t.end()
+      t.equal(level, 1, 'Level is valid')
     },
   }
 
+  t.plan(8)
   parse(input2, opt2)
 })
 
@@ -467,10 +469,11 @@ test('Ordered List with callback', function (t) {
     Not at the end of the file`
 
   const opt = {
-    onOrderedList: node => {
+    onOrderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'ol', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
+      t.equal(level, 1, 'Level is valid')
     },
   }
 
@@ -482,14 +485,15 @@ test('Ordered List with callback', function (t) {
     + List 1, Item 2 at the end of the file`
 
   const opt2 = {
-    onOrderedList: node => {
+    onOrderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'ol', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
-      t.end()
+      t.equal(level, 1, 'Level is valid')
     },
   }
 
+  t.plan(8)
   parse(input2, opt2)
 })
 
@@ -504,6 +508,202 @@ test('Ordered list with allowOrderedList flag to false', function (t) {
     <p>+ Third list item</p>`
   const opt = {
     allowOrderedList: false,
+  }
+
+  t.equal(parse(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Unordered Nested List', function (t) {
+  const input =
+`- Item 1
+  - Item 1.1
+- Item 2
+  - Item 2.1
+  - Item 2.2
+Some text
+- Item 3
+- Item 4`
+
+  const output = trimO`
+    <ul>
+      <li>
+        Item 1
+        <ul>
+          <li>Item 1.1</li>
+        </ul>
+      </li>
+      <li>
+        Item 2
+        <ul>
+          <li>Item 2.1</li>
+          <li>Item 2.2</li>
+        </ul>
+      </li>
+    </ul>
+    <p>Some text</p>
+    <ul>
+    <li>Item 3</li>
+    <li>Item 4</li>
+  </ul>`
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Ordered Nested List', function (t) {
+  const input =
+`+ Item 1
+  + Item 1.1
++ Item 2
+  + Item 2.1
+  + Item 2.2
+Some text
++ Item 3
++ Item 4`
+
+  const output = trimO`
+    <ol>
+      <li>
+        Item 1
+        <ol>
+          <li>Item 1.1</li>
+        </ol>
+      </li>
+      <li>
+        Item 2
+        <ol>
+          <li>Item 2.1</li>
+          <li>Item 2.2</li>
+        </ol>
+      </li>
+    </ol>
+    <p>Some text</p>
+    <ol>
+    <li>Item 3</li>
+    <li>Item 4</li>
+  </ol>`
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Nested List with unordered in ordered', function (t) {
+  const input =
+`- Item 1
+  + Item 1.1`
+
+  const output = trimO`
+    <ul>
+      <li>Item 1</li>
+    </ul>
+    <p>  + Item 1.1</p>`
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Nested List with ordered in unordered', function (t) {
+  const input =
+`+ Item 1
+  - Item 1.1`
+
+  const output = trimO`
+    <ol>
+      <li>Item 1</li>
+    </ol>
+    <p>  - Item 1.1</p>`
+
+  t.equal(parse(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Nested unordered List with callback', function (t) {
+  const input =
+`- Item 1
+  - Item 1.1`
+
+  const opt = {
+    onUnorderedList: (node, level) => {
+      if (node == null) {
+        t.fail(`Level ${level}: Node param is null`)
+      }
+
+      const liNode = node.firstChild
+
+      if (liNode.firstChild === 'Item 1') {
+        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
+        t.equal(level, 1, 'Level 1: Level is valid')
+      } else if (liNode.firstChild === 'Item 1.1') {
+        t.equal(node.children.length, 1, 'Level 2: Number of children is valid')
+        t.equal(level, 2, 'Level 2: Level is valid')
+      }
+    },
+  }
+
+  t.plan(4)
+  parse(input, opt)
+})
+
+test('Nested ordered List with callback', function (t) {
+  const input =
+`+ Item 1
+  + Item 1.1`
+
+  const opt = {
+    onOrderedList: (node, level) => {
+      if (node == null) {
+        t.fail(`Level ${level}: Node param is null`)
+      }
+
+      const liNode = node.firstChild
+
+      if (liNode.firstChild === 'Item 1') {
+        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
+        t.equal(level, 1, 'Level 1: Level is valid')
+      } else if (liNode.firstChild === 'Item 1.1') {
+        t.equal(node.children.length, 1, 'Level 2: Number of children is valid')
+        t.equal(level, 2, 'Level 2: Level is valid')
+      }
+    },
+  }
+
+  t.plan(4)
+  parse(input, opt)
+})
+
+test('Unordered Nested List with allowNestedList to false', function (t) {
+  const input =
+`- Item 1
+  - Item 1.1`
+
+  const output = trimO`
+    <ul>
+      <li>Item 1</li>
+    </ul>
+    <p>  - Item 1.1</p>`
+
+  const opt = {
+    allowNestedList: false,
+  }
+
+  t.equal(parse(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Ordered Nested List with allowNestedList to false', function (t) {
+  const input =
+`+ Item 1
+  + Item 1.1`
+
+  const output = trimO`
+    <ol>
+      <li>Item 1</li>
+    </ol>
+    <p>  + Item 1.1</p>`
+
+  const opt = {
+    allowNestedList: false,
   }
 
   t.equal(parse(input, opt), output, 'Output is valid')
