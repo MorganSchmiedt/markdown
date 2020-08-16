@@ -20,6 +20,13 @@ const trimO = text =>
     .filter(line => line.length > 0)
     .join('')
 
+test('Module Exports', function (t) {
+  t.equal(typeof parser.Element, 'function', 'Element is there')
+  t.equal(typeof parser.parse, 'function', 'parse is there')
+
+  t.end()
+})
+
 test('Element tagName', function (t) {
   const input = 'Some text'
   const element = parser.parse(input)
