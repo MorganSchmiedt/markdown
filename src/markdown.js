@@ -124,8 +124,6 @@ class Element {
   }
 }
 
-module.exports.Element = Element
-
 const parseBoolean = (value, defaultValue) =>
   typeof value === 'boolean'
     ? value
@@ -169,7 +167,7 @@ const parseMaxHeader = (value, defaultValue) => {
  * @param {function} [opt.onQuote]
  * @param {function} [opt.onReference]
  */
-module.exports.parse = (markdownText, opt = {}) => {
+const parse = (markdownText, opt = {}) => {
   const allowHeader = parseBoolean(opt.allowHeader, true)
   const allowLink = parseBoolean(opt.allowLink, true)
   const allowImage = parseBoolean(opt.allowImage, true)
@@ -725,3 +723,6 @@ module.exports.parse = (markdownText, opt = {}) => {
 
   return body
 }
+
+module.exports.Element = Element
+module.exports.parse = parse
