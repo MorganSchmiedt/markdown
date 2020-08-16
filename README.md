@@ -140,6 +140,14 @@ Its properties are:
 - `removeAttribute(attributeName)`: Removes an element attribute.
 - `toHtml()`: Returns HTML output. *String* 
 
+New elements can be created by using the `Element` class:
+
+```javascript
+const parser = require('@deskeen/markdown')
+const Element = parser.Element
+const myDivElement = new Element('div')
+```
+
 
 ## Markdown syntax cheat sheet
 

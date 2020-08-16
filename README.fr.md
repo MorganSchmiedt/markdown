@@ -140,6 +140,14 @@ Ses propriétés sont:
 - `removeAttribute(attributeName)`: Enlève un attribute de l'élément.
 - `toHtml()`: Retourne le code HTML de sortie. *Chaîne de caractères* 
 
+De nouveaux éléments peuvent être créés en utilisant la classe `Element`:
+
+```javascript
+const parser = require('@deskeen/markdown')
+const Element = parser.Element
+const myDivElement = new Element('div')
+```
+
 
 ## Résumé des syntaxes Markdown
 
