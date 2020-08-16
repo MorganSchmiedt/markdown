@@ -147,7 +147,6 @@ class Element {
 const document = {
   createElement: tagName => new Element(tagName),
   createTextNode: text => text,
-  createDocumentFragment: () => new Element(),
 }
 
 const parseBoolean = (value, defaultValue) =>
@@ -209,10 +208,7 @@ const parse = (markdownText, opt = {}) => {
   const brOnBlankLine = parseBoolean(opt.brOnBlankLine, false)
   const maxHeader = parseMaxHeader(opt.maxHeader, 3)
 
-  const createElement = document.createElement
-  const createTextNode = document.createTextNode
-
-  const body = document.createDocumentFragment()
+  const body = new Element()
 
   let cursor = 0
 
@@ -227,7 +223,7 @@ const parse = (markdownText, opt = {}) => {
 
     if (lineText.trim().length === 0) {
       if (brOnBlankLine) {
-        body.appendChild(createElement('BR'))
+        body.appendChild(document.createElement('BR'))
       }
     } else {
       let lineCursor = 0
@@ -241,11 +237,11 @@ const parse = (markdownText, opt = {}) => {
 
       const flush = node => {
         if (currentLine == null) {
-          currentLine = createElement('P')
+          currentLine = document.createElement('P')
         }
 
         if (lastFlushCursor < lineCursor) {
-          const textNode = createTextNode(
+          const textNode = document.createTextNode(
             lineText.substring(lastFlushCursor, lineCursor))
 
           currentLine.appendChild(textNode)
@@ -273,7 +269,7 @@ const parse = (markdownText, opt = {}) => {
 
         if (next(headerLevel) === ' ') {
           const headerText = lineText.substring(lineText.indexOf(' ') + 1)
-          const headerNode = createElement(`H${headerLevel}`)
+          const headerNode = document.createElement(`H${headerLevel}`)
           headerNode.textContent = headerText
 
           if (opt.onHeader) {
@@ -295,7 +291,7 @@ const parse = (markdownText, opt = {}) => {
             const url = endMatch[2]
             const style = endMatch[4]
 
-            const figureNode = createElement('FIGURE')
+            const figureNode = document.createElement('FIGURE')
 
             if (allowImageStyle
             && style != null) {
@@ -305,11 +301,11 @@ const parse = (markdownText, opt = {}) => {
             const isVideo = url.endsWith('.mp4')
 
             if (isVideo) {
-              const sourceNode = createElement('SOURCE')
+              const sourceNode = document.createElement('SOURCE')
               sourceNode.setAttribute('src', url)
               sourceNode.setAttribute('type', 'video/mp4')
 
-              const videoNode = createElement('VIDEO')
+              const videoNode = document.createElement('VIDEO')
 
               videoNode.appendChild(sourceNode)
 
@@ -319,7 +315,7 @@ const parse = (markdownText, opt = {}) => {
 
               figureNode.appendChild(videoNode)
             } else {
-              const imageNode = createElement('IMG')
+              const imageNode = document.createElement('IMG')
               imageNode.setAttribute('src', url)
               imageNode.setAttribute('alt', '')
 
@@ -330,7 +326,7 @@ const parse = (markdownText, opt = {}) => {
               figureNode.appendChild(imageNode)
             }
 
-            const captionNode = createElement('FIGCAPTION')
+            const captionNode = document.createElement('FIGCAPTION')
             captionNode.textContent = title
 
             figureNode.appendChild(captionNode)
@@ -342,7 +338,7 @@ const parse = (markdownText, opt = {}) => {
       } else if (firstChar === '-') {
         if (allowHorizontalLine
         && lineText === '---') {
-          const hrNode = createElement('HR')
+          const hrNode = document.createElement('HR')
 
           if (opt.onHorizontalLine) {
             opt.onHorizontalLine(hrNode)
@@ -354,11 +350,11 @@ const parse = (markdownText, opt = {}) => {
         && next(1) === ' ') {
           if (body.lastChild == null
           || body.lastChild.tagName !== 'UL') {
-            body.appendChild(createElement('UL'))
+            body.appendChild(document.createElement('UL'))
           }
 
           targetNode = body.lastChild
-          currentLine = createElement('LI')
+          currentLine = document.createElement('LI')
           lineCursor = 2
           lastFlushCursor = lineCursor
 
@@ -379,11 +375,11 @@ const parse = (markdownText, opt = {}) => {
         if (next(1) === ' ') {
           if (body.lastChild == null
           || body.lastChild.tagName !== 'OL') {
-            body.appendChild(createElement('OL'))
+            body.appendChild(document.createElement('OL'))
           }
 
           targetNode = body.lastChild
-          currentLine = createElement('LI')
+          currentLine = document.createElement('LI')
           lineCursor = 2
           lastFlushCursor = lineCursor
 
@@ -426,11 +422,11 @@ const parse = (markdownText, opt = {}) => {
             if (itemContentNode.tagName === listTag) {
               targetNode = itemContentNode
             } else {
-              lastItemNode.appendChild(createElement(listTag))
+              lastItemNode.appendChild(document.createElement(listTag))
               targetNode = lastItemNode.lastChild
             }
 
-            currentLine = createElement('LI')
+            currentLine = document.createElement('LI')
             lineCursor = matchSize
             lastFlushCursor = lineCursor
 
@@ -458,7 +454,7 @@ const parse = (markdownText, opt = {}) => {
         if (next(1) === ' ') {
           if (body.lastChild == null
           || body.lastChild.tagName !== 'BLOCKQUOTE') {
-            body.appendChild(createElement('BLOCKQUOTE'))
+            body.appendChild(document.createElement('BLOCKQUOTE'))
           }
 
           targetNode = body.lastChild
@@ -477,10 +473,10 @@ const parse = (markdownText, opt = {}) => {
 
         if (endTagIndex > 0) {
           const content = remainingText.substring(0, endTagIndex - 1)
-          const codeNode = createElement('CODE')
+          const codeNode = document.createElement('CODE')
           codeNode.textContent = content
 
-          const preNode = createElement('PRE')
+          const preNode = document.createElement('PRE')
           preNode.appendChild(codeNode)
 
           if (opt.onMultilineCode) {
@@ -541,11 +537,11 @@ const parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const emNode = createElement('EM')
+                const emNode = document.createElement('EM')
                 emNode.ffOnTextEnd = syntaxSize
                 emNode.upOnTextEnd = true
 
-                const strongNode = createElement('STRONG')
+                const strongNode = document.createElement('STRONG')
                 strongNode.appendChild(emNode)
 
                 currentLine.appendChild(strongNode)
@@ -565,7 +561,7 @@ const parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const strongNode = createElement('STRONG')
+                const strongNode = document.createElement('STRONG')
                 strongNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(strongNode)
@@ -583,7 +579,7 @@ const parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const emNode = createElement('EM')
+                const emNode = document.createElement('EM')
                 emNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(emNode)
@@ -604,7 +600,7 @@ const parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const sNode = createElement('S')
+                const sNode = document.createElement('S')
                 sNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(sNode)
@@ -624,7 +620,7 @@ const parse = (markdownText, opt = {}) => {
               flush()
               lineCursorMax = fromIndex + endTagIndex
 
-              const supNode = createElement('SUP')
+              const supNode = document.createElement('SUP')
               supNode.ffOnTextEnd = syntaxSize
 
               currentLine.appendChild(supNode)
@@ -643,10 +639,10 @@ const parse = (markdownText, opt = {}) => {
               if (refMatch) {
                 const noteNb = refMatch[1]
 
-                const supNode = createElement('SUP')
+                const supNode = document.createElement('SUP')
                 supNode.textContent = noteNb
 
-                const linkNode = createElement('A')
+                const linkNode = document.createElement('A')
                 linkNode.setAttribute('href', `#reference${noteNb}`)
                 linkNode.appendChild(supNode)
 
@@ -666,7 +662,7 @@ const parse = (markdownText, opt = {}) => {
                 const title = endMatch[1]
                 const url = endMatch[2]
 
-                const linkNode = createElement('A')
+                const linkNode = document.createElement('A')
                 linkNode.setAttribute('href', url)
                 linkNode.textContent = title
 
@@ -693,7 +689,7 @@ const parse = (markdownText, opt = {}) => {
                 const url = endMatch[2]
                 const style = endMatch[4]
 
-                const imageNode = createElement('IMG')
+                const imageNode = document.createElement('IMG')
                 imageNode.setAttribute('src', url)
                 imageNode.setAttribute('alt', title)
 
@@ -719,7 +715,7 @@ const parse = (markdownText, opt = {}) => {
 
             if (endTagIndex > 0) {
               const content = restLineText.substring(0, endTagIndex)
-              const codeNode = createElement('CODE')
+              const codeNode = document.createElement('CODE')
               codeNode.textContent = content
 
               if (opt.onCode) {
