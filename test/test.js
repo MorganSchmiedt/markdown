@@ -20,6 +20,30 @@ const trimO = text =>
     .filter(line => line.length > 0)
     .join('')
 
+test('Element Attributes', function (t) {
+  const input = 'Some text'
+  const element = parser.parse(input)
+
+  t.equal(typeof element.hasAttribute, 'function', 'hasAttribute is a function')
+  t.equal(element.hasAttribute('style'), false, 'hasAttribute returns the right value when false')
+  t.equal(typeof element.setAttribute, 'function', 'setAttribute is a function')
+
+  element.setAttribute('style', 'some style')
+
+  t.equal(element.hasAttribute('style'), true, 'hasAttribute returns the right value when true')
+  t.equal(typeof element.getAttribute, 'function', 'getAttribute is a function')
+  t.equal(element.getAttribute('style'), 'some style', 'getAttribute returns the right value')
+
+  t.equal(typeof element.removeAttribute, 'function', 'removeAttribute is a function')
+
+  const removeAttrReturnValue = element.removeAttribute('style')
+
+  t.equal(removeAttrReturnValue, undefined, 'removeAttribute returns valus is valid')
+  t.equal(element.hasAttribute('style'), false, 'removeAttribute works')
+
+  t.end()
+})
+
 test('Text', function (t) {
   const input = 'My name is James Bond'
   const output = '<p>My name is James Bond</p>'
@@ -206,7 +230,7 @@ test('Link with callback', function (t) {
     onLink: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'A', 'Tagname is valid')
-      t.equal(node.attr.href, 'https://example.com', 'Node.attr.href is valid')
+      t.equal(node.getAttribute('href'), 'https://example.com', 'href attribute is valid')
       t.equal(node.firstChild, 'link', 'Content is valid')
       t.end()
     },

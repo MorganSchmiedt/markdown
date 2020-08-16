@@ -118,22 +118,26 @@ Le premier argument des Callbacks est toujours l'[élément](#l-objet-element) p
 ```javascript
 function onXXX(element) {
  // Votre code ici
- // e.g.: element.attr.class = ...
+ // e.g.: element.setAttribute('class', 'css-class')
 }
 ```
 
 
 ## L'objet Element
 
-Le parseur retourne un objet de type `Element`.
+Le parseur retourne un objet de type `Element` qui est similaire à un objet DOM Element dans le navigateur.
 
 Ses propriétés sont:
 - `tagName`: Nom de la balise en majuscules. *Chaîne de caractères*
-- `attr`: Attributes de la balise. *Objet*
+- `attributes`: Attributes de la balise. *Objet en lecture-seule*
 - `children`: Liste of enfants. *Tableau*
 - `firstChild`: Premier enfant. Peut être null. *Element*
 - `lastChild`: Dernier enfant. Peut être null. *Element*
 - `textContent`: Texte de l'élément. *Chaîne de caractères*
+- `hasAttribute(attributeName)`: Retourne si l'élément à un élément spécifique. *Booléen*
+- `setAttribute(attributeName, attributeValue)`: Ajoute un attribut à l'élément.
+- `getAttribute(attributeName)`: Retourne un attribute de l'élément. *Chaîne de caractères*
+- `removeAttribute(attributeName)`: Enlève un attribute de l'élément.
 - `toHtml()`: Retourne le code HTML de sortie. *Chaîne de caractères* 
 
 
@@ -588,48 +592,53 @@ Encore du texte.
 ### Ajouter un identifiant aux titres
 
 ```javascript
-parseMarkdown('# Titre 1', {
+parseMarkdown('# Title 1', {
   onHeader: element => {
-    // node.attr === { }
-    // node.firstChild === 'Titre 1'
-    element.attr.id = element.firstChild.replace(/ /g, '-').toLowerCase()
+    // node.firstChild === 'Title 1'
+    const id = element.firstChild.replace(/ /g, '-').toLowerCase()
+
+    element.setAttribute('id', id)
   }
 }).toHtml()
 ```
 
 ```html
-<h1 id="titre-1">Titre 1</h1>
+<h1 id="title-1">Title 1</h1>
 ```
 
 
 ### Ouvrir les liens externes dans un nouvel onglet
 
 ```javascript
-parseMarkdown('Voir [cette page](https:/exemple.com)!', {
+parseMarkdown('See [this page](https:/example.com)!', {
   onLink: element => {
-    // element.attr.href === 'http:/exemple.com'
+    // element.getAttribute('href') === 'http:/example.com'
+    const href = element.getAttribute('href')
 
-    if (element.attr.href.startsWith('https://MY_SITE.com') === false) {
-      element.attr.target = '_blank'
+    if (href.startsWith('https://MY_SITE.com') === false) {
+      element.setAttribute('target', '_blank')
     }
   }
 }).toHtml()
 ```
 
 ```html
-<p>Voir <a href="https:/exemple.com" target="_blank">cette page</a>!</p>
+<p>See <a href="https:/example.com" target="_blank">this page</a>!</p>
 ```
 
 ### Ajouter un préfixe aux liens relatifs des images
 
 ```javascript
-parseMarkdown('![Belle image](belle_image.png)', {
+parseMarkdown('![Beautiful image](beautiful_image.png)', {
   onImage: element => {
-    // element.attr.src === 'belle_image.png'
+    // element.getAttribute('src') === 'beautiful_image.png'
 
-    if (element.attr.src != null
-    && element.attr.src.startsWith('http') === false) {
-      element.attr.src = 'https://exemple.com/' + element.attr.src
+    if (element.hasAttribute('src')) {
+      const src = element.getAttribute('src')
+
+      if (src.startsWith('http') === false) {
+        element.setAttribute('src', 'https://example.com/' + src)
+      }
     }
   }
 }).toHtml()
@@ -637,40 +646,40 @@ parseMarkdown('![Belle image](belle_image.png)', {
 
 ```html
 <figure>
-  <img src="https://exemple.com/belle_image.png" alt="" />
-  <figcaption>Belle image</figcaption>
+  <img src="https://example.com/beautiful_image.png" alt="" />
+  <figcaption>Beautiful image</figcaption>
 </figure>
 ```
 
 ### Ajouter une classe CSS au code
 
 ```javascript
-parseMarkdown('Ceci est une balise body en HTML: `<body>`', {
+parseMarkdown('This is body html tag: `<body>`', {
   onCode: element => {
-    element.attr.class = 'ma-class'
+    element.setAttribute('class', 'some-class')
   }
 }).toHtml()
 ```
 
 ```html
-<p>Ceci est une balise body en HTML: <code class="ma-class"><body></code></p>
+<p>This is body html tag: <code class="some-class"><body></code></p>
 ```
 
 
 ### Afficher joliment les objets JSON
 
 ```javascript
-const markdownText = '```json\n{"une_propriete":"valeur1","une_autre_propriete":"valeur2"}\n```'
+const markdownText = '```json\n{"some_property":"foo","some_other_property":"bar"}\n```'
 
 parseMarkdown(markdownText, {
   onMultilineCode: (element, language) => {
     if (language === 'json') {
-      // l'élément est une balise <pre> qui contient une balise <code>
+      // element is a <pre> tag that includes the <code> tag
       const codeElement = element.firstChild
-      const codeTexte = codeElement.textContent
-      const jsonObjet = JSON.parse(codeTexte)
+      const codeText = codeElement.textContent
+      const jsonObject = JSON.parse(codeText)
 
-      codeElement.textContent = JSON.stringify(jsonObjet, null, 2)
+      codeElement.textContent = JSON.stringify(jsonObject, null, 2)
     }
   }
 }).toHtml()
@@ -678,8 +687,8 @@ parseMarkdown(markdownText, {
 
 ```html
 <pre><code>{
-  "une_propriete": "valeur1",
-  "une_autre_propriete": "valeur2"
+  "some_property": "foo",
+  "some_other_property": "bar"
 }</code></pre>
 ```
 

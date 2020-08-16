@@ -62,6 +62,26 @@ class Element {
     this.children.push(node)
   }
 
+  hasAttribute(attributeName) {
+    return this.attr[attributeName] !== undefined
+  }
+
+  setAttribute(attributeName, attributeValue) {
+    this.attr[attributeName] = attributeValue
+  }
+
+  getAttribute(attributeName) {
+    return this.attr[attributeName]
+  }
+
+  removeAttribute(attributeName) {
+    this.attr[attributeName] = undefined
+  }
+
+  get attributes() {
+    return this.attr
+  }
+
   get tagName() {
     return this._tagName
   }
@@ -268,7 +288,7 @@ const parse = (markdownText, opt = {}) => {
 
             if (allowImageStyle
             && style != null) {
-              figureNode.attr.style = style
+              figureNode.setAttribute('style', style)
             }
 
             const isVideo = url.endsWith('.mp4')
@@ -673,7 +693,7 @@ const parse = (markdownText, opt = {}) => {
 
                 if (allowImageStyle
                 && style != null) {
-                  imageNode.attr.style = style
+                  imageNode.setAttribute('style', style)
                 }
 
                 if (opt.onImage) {

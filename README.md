@@ -118,22 +118,26 @@ The first argument of the callbacks is always the parsed [element](#element-obje
 ```javascript
 function onXXX(element) {
  // Your logic here
- // e.g.: element.attr.class = ...
+ // e.g.: element.setAttribute('class', 'css-class')
 }
 ```
 
 
 ## Element object
 
-The parser returns a custom `Element` object. 
+The parser returns a custom `Element` that is similar to a DOM Element in the browser.
 
 Its properties are:
 - `tagName`: Tag name in uppercase. *String*
-- `attr`: Element attributes. *Object*
+- `attributes`: Element attributes. *Readonly Object*
 - `children`: List of children. *Array*
 - `firstChild`: First child. Can be null. *Element*
 - `lastChild`: Last child. Can be null. *Element*
 - `textContent`: Element text. *String*
+- `hasAttribute(attributeName)`: Returns whether the element has the specified attribute. *Boolean*
+- `setAttribute(attributeName, attributeValue)`: Adds an attribute to the element.
+- `getAttribute(attributeName)`: Returns an element attribute. *String*
+- `removeAttribute(attributeName)`: Removes an element attribute.
 - `toHtml()`: Returns HTML output. *String* 
 
 
@@ -587,9 +591,10 @@ Some more text.
 ```javascript
 parseMarkdown('# Title 1', {
   onHeader: element => {
-    // node.attr === { }
     // node.firstChild === 'Title 1'
-    element.attr.id = element.firstChild.replace(/ /g, '-').toLowerCase()
+    const id = element.firstChild.replace(/ /g, '-').toLowerCase()
+
+    element.setAttribute('id', id)
   }
 }).toHtml()
 ```
@@ -604,10 +609,11 @@ parseMarkdown('# Title 1', {
 ```javascript
 parseMarkdown('See [this page](https:/example.com)!', {
   onLink: element => {
-    // element.attr.href === 'http:/example.com'
+    // element.getAttribute('href') === 'http:/example.com'
+    const href = element.getAttribute('href')
 
-    if (element.attr.href.startsWith('https://MY_SITE.com') === false) {
-      element.attr.target = '_blank'
+    if (href.startsWith('https://MY_SITE.com') === false) {
+      element.setAttribute('target', '_blank')
     }
   }
 }).toHtml()
@@ -622,11 +628,14 @@ parseMarkdown('See [this page](https:/example.com)!', {
 ```javascript
 parseMarkdown('![Beautiful image](beautiful_image.png)', {
   onImage: element => {
-    // element.attr.src === 'beautiful_image.png'
+    // element.getAttribute('src') === 'beautiful_image.png'
 
-    if (element.attr.src != null
-    && element.attr.src.startsWith('http') === false) {
-      element.attr.src = 'https://example.com/' + element.attr.src
+    if (element.hasAttribute('src')) {
+      const src = element.getAttribute('src')
+
+      if (src.startsWith('http') === false) {
+        element.setAttribute('src', 'https://example.com/' + src)
+      }
     }
   }
 }).toHtml()
@@ -644,7 +653,7 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
 ```javascript
 parseMarkdown('This is body html tag: `<body>`', {
   onCode: element => {
-    element.attr.class = 'some-class'
+    element.setAttribute('class', 'some-class')
   }
 }).toHtml()
 ```
