@@ -128,7 +128,7 @@ function onXXX(element) {
 The parser returns a custom `Element` object. 
 
 Its properties are:
-- `tagName`: Tag name. *String*
+- `tagName`: Tag name in uppercase. *String*
 - `attr`: Element attributes. *Object*
 - `children`: List of children. *Array*
 - `firstChild`: First child. Can be null. *Element*

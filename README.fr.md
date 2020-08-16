@@ -128,7 +128,7 @@ function onXXX(element) {
 Le parseur retourne un objet de type `Element`.
 
 Ses propriétés sont:
-- `tagName`: Nom de la balise. *Chaîne de caractères*
+- `tagName`: Nom de la balise en majuscules. *Chaîne de caractères*
 - `attr`: Attributes de la balise. *Objet*
 - `children`: Liste of enfants. *Tableau*
 - `firstChild`: Premier enfant. Peut être null. *Element*

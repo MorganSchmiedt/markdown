@@ -1,5 +1,6 @@
 'use strict'
 /* eslint-env node */
+/* eslint-disable no-underscore-dangle */
 
 const HTML_ESCAPED_CHAR_MAP = {
   '&': '&amp;',
@@ -45,7 +46,10 @@ const TEXT_REGEX = new RegExp(`[${MARKDOWN_CHARS}]`)
 
 class Element {
   constructor(tagName, attr) {
-    this.tagName = tagName
+    if (tagName) {
+      this.tagName = tagName
+    }
+
     this.attr = attr || {}
     this.children = []
   }
@@ -56,6 +60,15 @@ class Element {
     }
 
     this.children.push(node)
+  }
+
+  get tagName() {
+    return this._tagName
+  }
+
+  // https://dom.spec.whatwg.org/#dom-element-tagname
+  set tagName(value) {
+    this._tagName = value.toUpperCase()
   }
 
   get textContent() {
@@ -77,8 +90,8 @@ class Element {
   toHtml() {
     let html = ''
 
-    if (this.tagName != null) {
-      html += `<${this.tagName}`
+    if (this._tagName != null) {
+      html += `<${this.tagName.toLowerCase()}`
 
       if (this.attr != null) {
         for (const attrName of Object.keys(this.attr)) {
@@ -103,7 +116,7 @@ class Element {
 
     if (this.tagName != null) {
       if (this.children.length) {
-        html += `</${this.tagName}>`
+        html += `</${this.tagName.toLowerCase()}>`
       }
     }
 
@@ -313,7 +326,7 @@ module.exports.parse = (markdownText, opt = {}) => {
         } else if (allowUnorderedList
         && next(1) === ' ') {
           if (body.lastChild == null
-          || body.lastChild.tagName !== 'ul') {
+          || body.lastChild.tagName !== 'UL') {
             body.appendChild(new Element('ul'))
           }
 
@@ -338,7 +351,7 @@ module.exports.parse = (markdownText, opt = {}) => {
       && firstChar === '+') {
         if (next(1) === ' ') {
           if (body.lastChild == null
-          || body.lastChild.tagName !== 'ol') {
+          || body.lastChild.tagName !== 'OL') {
             body.appendChild(new Element('ol'))
           }
 
@@ -364,9 +377,9 @@ module.exports.parse = (markdownText, opt = {}) => {
       && body.lastChild != null) {
         const lastListTag = body.lastChild.tagName
 
-        if (lastListTag === 'ul'
-        || lastListTag === 'ol') {
-          const lastListSign = lastListTag === 'ul'
+        if (lastListTag === 'UL'
+        || lastListTag === 'OL') {
+          const lastListSign = lastListTag === 'UL'
             ? '-'
             : '+'
           const listRegex = new RegExp(`( )+(\\${lastListSign}) `)
@@ -376,8 +389,8 @@ module.exports.parse = (markdownText, opt = {}) => {
             const matchSize = listMatch[0].length
             const listSign = listMatch[2]
             const listTag = listSign === '-'
-              ? 'ul'
-              : 'ol'
+              ? 'UL'
+              : 'OL'
 
             const parentNode = body.lastChild
             const lastItemNode = parentNode.lastChild
@@ -398,13 +411,13 @@ module.exports.parse = (markdownText, opt = {}) => {
 
             if (nextLineMatch == null) {
               if (opt.onUnorderedList
-              && listTag === 'ul') {
+              && listTag === 'UL') {
                 onLineEnd = body => {
                   opt.onUnorderedList(body.lastChild.lastChild.lastChild, 2)
                   opt.onUnorderedList(body.lastChild, 1)
                 }
               } else if (opt.onOrderedList
-              && listTag === 'ol') {
+              && listTag === 'OL') {
                 onLineEnd = body => {
                   opt.onOrderedList(body.lastChild.lastChild.lastChild, 2)
                   opt.onOrderedList(body.lastChild, 1)
@@ -417,7 +430,7 @@ module.exports.parse = (markdownText, opt = {}) => {
       && firstChar === '>') {
         if (next(1) === ' ') {
           if (body.lastChild == null
-          || body.lastChild.tagName !== 'blockquote') {
+          || body.lastChild.tagName !== 'BLOCKQUOTE') {
             body.appendChild(new Element('blockquote'))
           }
 

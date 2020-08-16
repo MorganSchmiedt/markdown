@@ -49,7 +49,7 @@ test('Header with callback', function (t) {
   const opt = {
     onHeader: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'h1', 'Tagname is valid')
+      t.equal(node.tagName, 'H1', 'Tagname is valid')
       t.equal(node.firstChild, 'Title 1', 'Content is valid')
       t.end()
     },
@@ -79,7 +79,7 @@ test('Header lvl 2 with callback', function (t) {
   const opt = {
     onHeader: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'h2', 'Tagname is valid')
+      t.equal(node.tagName, 'H2', 'Tagname is valid')
       t.equal(node.firstChild, 'Sub-title 2', 'Content is valid')
       t.end()
     },
@@ -109,7 +109,7 @@ test('Header lvl 3 with callback', function (t) {
   const opt = {
     onHeader: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'h3', 'Tagname is valid')
+      t.equal(node.tagName, 'H3', 'Tagname is valid')
       t.equal(node.firstChild, 'Sub sub title 3', 'Content is valid')
       t.end()
     },
@@ -205,7 +205,7 @@ test('Link with callback', function (t) {
   const opt = {
     onLink: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'a', 'Tagname is valid')
+      t.equal(node.tagName, 'A', 'Tagname is valid')
       t.equal(node.attr.href, 'https://example.com', 'Node.attr.href is valid')
       t.equal(node.firstChild, 'link', 'Content is valid')
       t.end()
@@ -278,7 +278,7 @@ test('Image as a figure with callback', function (t) {
   const opt = {
     onImage: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'img', 'Tagname is valid')
+      t.equal(node.tagName, 'IMG', 'Tagname is valid')
       t.equal(node.firstChild, undefined, 'firstChild is undefined')
       t.end()
     },
@@ -319,7 +319,7 @@ test('Image inline with callback', function (t) {
   const opt = {
     onImage: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'img', 'Tagname is valid')
+      t.equal(node.tagName, 'IMG', 'Tagname is valid')
       t.equal(node.firstChild, undefined, 'firstChild is undefined')
       t.end()
     },
@@ -347,7 +347,7 @@ test('Video with callback', function (t) {
   const opt = {
     onVideo: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'video', 'Tagname is valid')
+      t.equal(node.tagName, 'VIDEO', 'Tagname is valid')
       t.end()
     },
   }
@@ -402,7 +402,7 @@ test('Unordered List with callback', function (t) {
   const opt = {
     onUnorderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'ul', 'Tagname is valid')
+      t.equal(node.tagName, 'UL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
       t.equal(level, 1, 'Level is valid')
     },
@@ -418,7 +418,7 @@ test('Unordered List with callback', function (t) {
   const opt2 = {
     onUnorderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'ul', 'Tagname is valid')
+      t.equal(node.tagName, 'UL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
       t.equal(level, 1, 'Level is valid')
     },
@@ -471,7 +471,7 @@ test('Ordered List with callback', function (t) {
   const opt = {
     onOrderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'ol', 'Tagname is valid')
+      t.equal(node.tagName, 'OL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
       t.equal(level, 1, 'Level is valid')
     },
@@ -487,7 +487,7 @@ test('Ordered List with callback', function (t) {
   const opt2 = {
     onOrderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'ol', 'Tagname is valid')
+      t.equal(node.tagName, 'OL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
       t.equal(level, 1, 'Level is valid')
     },
@@ -732,7 +732,7 @@ test('Horizontal line with callback', function (t) {
   const opt = {
     onHorizontalLine: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'hr', 'Tagname is valid')
+      t.equal(node.tagName, 'HR', 'Tagname is valid')
       t.equal(node.firstChild, undefined, 'firstChild is undefined')
       t.end()
     },
@@ -779,7 +779,7 @@ test('Quote with callback', function (t) {
   const opt = {
     onQuote: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'blockquote', 'Tagname is valid')
+      t.equal(node.tagName, 'BLOCKQUOTE', 'Tagname is valid')
       t.notEqual(node.children, null, 'Node has child(en)')
       t.equal(node.children.length, 2, 'Node has 2 children')
       t.end()
@@ -818,7 +818,7 @@ test('Code with callback', function (t) {
   const opt = {
     onCode: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'code', 'Tagname is valid')
+      t.equal(node.tagName, 'CODE', 'Tagname is valid')
       t.equal(node.firstChild, 'keyword', 'Tagname is valid')
       t.end()
     },
@@ -872,7 +872,7 @@ test('Multiline code with callback', function (t) {
   const opt = {
     onMultilineCode: (node, language) => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'pre', 'Tagname is valid')
+      t.equal(node.tagName, 'PRE', 'Tagname is valid')
       t.equal(language, 'javascript', 'language is valid')
       t.end()
     },
@@ -953,7 +953,7 @@ test('Reference with callback', function (t) {
     allowReference: true,
     onReference: node => {
       t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'a', 'Tagname is valid')
+      t.equal(node.tagName, 'A', 'Tagname is valid')
       t.notEqual(node.firstChild, '1', 'firstChild is there')
       t.end()
     },
