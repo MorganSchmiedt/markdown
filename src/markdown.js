@@ -200,7 +200,7 @@ module.exports.parse = (markdownText, opt = {}) => {
 
     if (lineText.trim().length === 0) {
       if (brOnBlankLine) {
-        body.appendChild(new Element('br'))
+        body.appendChild(new Element('BR'))
       }
     } else {
       let lineCursor = 0
@@ -214,7 +214,7 @@ module.exports.parse = (markdownText, opt = {}) => {
 
       const flush = node => {
         if (currentLine == null) {
-          currentLine = new Element('p')
+          currentLine = new Element('P')
         }
 
         if (lastFlushCursor < lineCursor) {
@@ -266,7 +266,7 @@ module.exports.parse = (markdownText, opt = {}) => {
             const url = endMatch[2]
             const style = endMatch[4]
 
-            const figureNode = new Element('figure')
+            const figureNode = new Element('FIGURE')
 
             if (allowImageStyle
             && style != null) {
@@ -276,12 +276,12 @@ module.exports.parse = (markdownText, opt = {}) => {
             const isVideo = url.endsWith('.mp4')
 
             if (isVideo) {
-              const sourceNode = new Element('source', {
+              const sourceNode = new Element('SOURCE', {
                 src: url,
                 type: 'video/mp4',
               })
 
-              const videoNode = new Element('video')
+              const videoNode = new Element('VIDEO')
 
               videoNode.appendChild(sourceNode)
 
@@ -291,7 +291,7 @@ module.exports.parse = (markdownText, opt = {}) => {
 
               figureNode.appendChild(videoNode)
             } else {
-              const imageNode = new Element('img', {
+              const imageNode = new Element('IMG', {
                 src: url,
                 alt: '',
               })
@@ -303,7 +303,7 @@ module.exports.parse = (markdownText, opt = {}) => {
               figureNode.appendChild(imageNode)
             }
 
-            const captionNode = new Element('figcaption')
+            const captionNode = new Element('FIGCAPTION')
             captionNode.textContent = title
 
             figureNode.appendChild(captionNode)
@@ -315,7 +315,7 @@ module.exports.parse = (markdownText, opt = {}) => {
       } else if (firstChar === '-') {
         if (allowHorizontalLine
         && lineText === '---') {
-          const hrNode = new Element('hr')
+          const hrNode = new Element('HR')
 
           if (opt.onHorizontalLine) {
             opt.onHorizontalLine(hrNode)
@@ -327,11 +327,11 @@ module.exports.parse = (markdownText, opt = {}) => {
         && next(1) === ' ') {
           if (body.lastChild == null
           || body.lastChild.tagName !== 'UL') {
-            body.appendChild(new Element('ul'))
+            body.appendChild(new Element('UL'))
           }
 
           targetNode = body.lastChild
-          currentLine = new Element('li')
+          currentLine = new Element('LI')
           lineCursor = 2
           lastFlushCursor = lineCursor
 
@@ -352,11 +352,11 @@ module.exports.parse = (markdownText, opt = {}) => {
         if (next(1) === ' ') {
           if (body.lastChild == null
           || body.lastChild.tagName !== 'OL') {
-            body.appendChild(new Element('ol'))
+            body.appendChild(new Element('OL'))
           }
 
           targetNode = body.lastChild
-          currentLine = new Element('li')
+          currentLine = new Element('LI')
           lineCursor = 2
           lastFlushCursor = lineCursor
 
@@ -403,7 +403,7 @@ module.exports.parse = (markdownText, opt = {}) => {
               targetNode = lastItemNode.lastChild
             }
 
-            currentLine = new Element('li')
+            currentLine = new Element('LI')
             lineCursor = matchSize
             lastFlushCursor = lineCursor
 
@@ -431,7 +431,7 @@ module.exports.parse = (markdownText, opt = {}) => {
         if (next(1) === ' ') {
           if (body.lastChild == null
           || body.lastChild.tagName !== 'BLOCKQUOTE') {
-            body.appendChild(new Element('blockquote'))
+            body.appendChild(new Element('BLOCKQUOTE'))
           }
 
           targetNode = body.lastChild
@@ -450,10 +450,10 @@ module.exports.parse = (markdownText, opt = {}) => {
 
         if (endTagIndex > 0) {
           const content = remainingText.substring(0, endTagIndex - 1)
-          const codeNode = new Element('code')
+          const codeNode = new Element('CODE')
           codeNode.textContent = content
 
-          const preNode = new Element('pre')
+          const preNode = new Element('PRE')
           preNode.appendChild(codeNode)
 
           if (opt.onMultilineCode) {
@@ -514,11 +514,11 @@ module.exports.parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const emNode = new Element('em')
+                const emNode = new Element('EM')
                 emNode.ffOnTextEnd = syntaxSize
                 emNode.upOnTextEnd = true
 
-                const strongNode = new Element('strong')
+                const strongNode = new Element('STRONG')
                 strongNode.appendChild(emNode)
 
                 currentLine.appendChild(strongNode)
@@ -538,7 +538,7 @@ module.exports.parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const strongNode = new Element('strong')
+                const strongNode = new Element('STRONG')
                 strongNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(strongNode)
@@ -556,7 +556,7 @@ module.exports.parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const emNode = new Element('em')
+                const emNode = new Element('EM')
                 emNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(emNode)
@@ -577,7 +577,7 @@ module.exports.parse = (markdownText, opt = {}) => {
                 flush()
                 lineCursorMax = fromIndex + endTagIndex
 
-                const sNode = new Element('s')
+                const sNode = new Element('S')
                 sNode.ffOnTextEnd = syntaxSize
 
                 currentLine.appendChild(sNode)
@@ -597,7 +597,7 @@ module.exports.parse = (markdownText, opt = {}) => {
               flush()
               lineCursorMax = fromIndex + endTagIndex
 
-              const supNode = new Element('sup')
+              const supNode = new Element('SUP')
               supNode.ffOnTextEnd = syntaxSize
 
               currentLine.appendChild(supNode)
@@ -616,10 +616,10 @@ module.exports.parse = (markdownText, opt = {}) => {
               if (refMatch) {
                 const noteNb = refMatch[1]
 
-                const supNode = new Element('sup')
+                const supNode = new Element('SUP')
                 supNode.textContent = noteNb
 
-                const linkNode = new Element('a', {
+                const linkNode = new Element('A', {
                   href: `#reference${noteNb}`,
                 })
                 linkNode.appendChild(supNode)
@@ -640,7 +640,7 @@ module.exports.parse = (markdownText, opt = {}) => {
                 const title = endMatch[1]
                 const url = endMatch[2]
 
-                const linkNode = new Element('a', {
+                const linkNode = new Element('A', {
                   href: url,
                 })
                 linkNode.textContent = title
@@ -668,7 +668,7 @@ module.exports.parse = (markdownText, opt = {}) => {
                 const url = endMatch[2]
                 const style = endMatch[4]
 
-                const imageNode = new Element('img', {
+                const imageNode = new Element('IMG', {
                   src: url,
                   alt: title,
                 })
@@ -695,7 +695,7 @@ module.exports.parse = (markdownText, opt = {}) => {
 
             if (endTagIndex > 0) {
               const content = restLineText.substring(0, endTagIndex)
-              const codeNode = new Element('code')
+              const codeNode = new Element('CODE')
               codeNode.textContent = content
 
               if (opt.onCode) {
