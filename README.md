@@ -95,7 +95,7 @@ Available options are:
 - `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowReference`: Whether references are allowed. Defaults to `true`.
-- `brOnBlankLine`: Whether to add a `<br />` tag on empty line. Defaults to `false`.
+- `brOnBlankLine`: Whether to add a `<br>` tag on empty line. Defaults to `false`.
 - `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
 
 Callback functions can be passed to the options as well. They allow to edit the output [element](#element-object) (e.g. add custom attributes).
@@ -295,7 +295,7 @@ This is an ![inline image](https://example.com/some_image.png)
 ```
 
 ```html
-<p>This is an <img src="https://example.com/some_image.png" alt="inline image" /></p>
+<p>This is an <img src="https://example.com/some_image.png" alt="inline image"></p>
 ```
 
 *Example of an image on a single line*
@@ -305,7 +305,7 @@ This is an ![inline image](https://example.com/some_image.png)
 
 ```html
 <figure>
-  <img src="https://example.com/some_image.png" alt="" />
+  <img src="https://example.com/some_image.png" alt="">
   <figcaption>Image only on a line</figcaption>
 </figure>
 ```
@@ -317,7 +317,7 @@ This is an ![inline image](https://example.com/some_image.png)
 
 ```html
 <figure style="height: 100px; width: 100px">
-  <img src="https://example.com/some_image.png" alt="" />
+  <img src="https://example.com/some_image.png" alt="">
   <figcaption>Image with inline style</figcaption>
 </figure>
 ```
@@ -336,7 +336,7 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
 ```html
 <figure>
   <video>
-    <source src="https://example.com/some_video.mp4" type="video/mp4" />
+    <source src="https://example.com/some_video.mp4" type="video/mp4">
   </video>
   <figcaption>my caption</figcaption>
 </figure>
@@ -441,7 +441,7 @@ Below horizontal line
 
 ```html
 <p>Above horizontal line</p>
-<hr />
+<hr>
 <p>Below horizontal line</p>
 ```
 
@@ -571,7 +571,7 @@ Some more text.
 
 ```html
 <p>Some text followed by two newlines.</p>
-<br />
+<br>
 <p>Some more text.</p>
 ```
 
@@ -651,7 +651,7 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
 
 ```html
 <figure>
-  <img src="https://example.com/beautiful_image.png" alt="" />
+  <img src="https://example.com/beautiful_image.png" alt="">
   <figcaption>Beautiful image</figcaption>
 </figure>
 ```

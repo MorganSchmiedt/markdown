@@ -1,20 +1,33 @@
 'use strict'
-/* eslint-env node */
+/* eslint-env node, es6 */
 /* eslint-disable no-underscore-dangle */
 
-const HTML_ESCAPED_CHAR_MAP = {
+const HTML_CHAR_MAP = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
   '"': '&quot;',
-  '\'': '&#x27;',
 }
 
-const HTML_ESCAPED_CHAR_REGEX =
-  new RegExp(`[${Object.keys(HTML_ESCAPED_CHAR_MAP).join('')}]`, 'g')
+const HTML_CONTENT_ESCAPE_CHARS = '&<>'
+const HTML_ATTR_VALUE_ESCAPE_CHARS = '&"'
 
-const replaceHtmlChars = text =>
-  text.replace(HTML_ESCAPED_CHAR_REGEX, char => HTML_ESCAPED_CHAR_MAP[char])
+const HTML_CONTENT_ESCAPE_REGEX =
+  new RegExp(`[${HTML_CONTENT_ESCAPE_CHARS}]`, 'g')
+
+const HTML_ATTR_VALUE_ESCAPE_REGEX =
+  new RegExp(`[${HTML_ATTR_VALUE_ESCAPE_CHARS}]`, 'g')
+
+const replaceHtmlCharsInValue = text =>
+  text.replace(HTML_CONTENT_ESCAPE_REGEX, char => HTML_CHAR_MAP[char])
+
+const replaceHtmlCharsInAttrValue = text =>
+  text.replace(HTML_ATTR_VALUE_ESCAPE_REGEX, char => HTML_CHAR_MAP[char])
+
+const HTML_FORBIDDEN_CHARS_ATTR_NAME = '<>&"\''
+
+const hasForbiddenCharInAttrName = text =>
+  new RegExp(`[${HTML_FORBIDDEN_CHARS_ATTR_NAME}]`, 'g').exec(text) != null
 
 const MARKDOWN_CHARS = [
   '*',
@@ -37,12 +50,33 @@ const removeEscapeChar = text =>
 const pipe = (...funcs) => value =>
   funcs.reduce((res, func) => func(res), value)
 
-const escapeText = text => pipe(
-  replaceHtmlChars,
+const escapeContent = text => pipe(
+  replaceHtmlCharsInValue,
   removeEscapeChar
 )(text)
 
 const TEXT_REGEX = new RegExp(`[${MARKDOWN_CHARS}]`)
+
+// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+const VOID_TAGS = new Set([
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr'
+])
+
+const isVoidTag = tagName =>
+  VOID_TAGS.has(tagName)
 
 class Element {
   constructor(tagName) {
@@ -67,6 +101,10 @@ class Element {
   }
 
   setAttribute(attributeName, attributeValue) {
+    if (hasForbiddenCharInAttrName(attributeName)) {
+      throw new Error('String contains an invalid character')
+    }
+
     this.attr[attributeName] = attributeValue
   }
 
@@ -108,35 +146,44 @@ class Element {
   }
 
   toHtml() {
+    const isVoidElement = isVoidTag(this.tagName)
+
     let html = ''
 
+    // https://html.spec.whatwg.org/multipage/syntax.html#start-tags
     if (this._tagName != null) {
       html += `<${this.tagName.toLowerCase()}`
 
       if (this.attr != null) {
         for (const attrName of Object.keys(this.attr)) {
-          html += ` ${attrName}="${this.attr[attrName]}"`
+          const attrValue = this.attr[attrName]
+          const attrValueHtml = replaceHtmlCharsInAttrValue(attrValue)
+
+          html += ` ${attrName}="${attrValueHtml}"`
         }
       }
 
-      if (this.children.length === 0) {
+      if (isVoidElement
+      && this.children.length === 0) {
         html += ' /'
       }
 
       html += '>'
     }
 
-    for (const child of this.children) {
-      if (typeof child === 'string') {
-        html += escapeText(child)
-      } else {
-        html += child.toHtml()
+    if (isVoidElement === false) {
+      for (const child of this.children) {
+        if (typeof child === 'string') {
+          html += escapeContent(child)
+        } else {
+          html += child.toHtml()
+        }
       }
-    }
 
-    if (this.tagName != null) {
-      if (this.children.length) {
-        html += `</${this.tagName.toLowerCase()}>`
+      if (this.tagName != null) {
+        if (this.children.length) {
+          html += `</${this.tagName.toLowerCase()}>`
+        }
       }
     }
 

@@ -95,7 +95,7 @@ Les options disponibles sont:
 - `allowHorizontalLine`: Si les lignes horizontales sont autorisées. `true` par défaut.
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
 - `allowReference`: Si les références sont autorisées. `true` par défaut.
-- `brOnBlankLine`: Si une balise `<br />` est ajouté lorsqu'il y a une ligne vide. `false` par défaut.
+- `brOnBlankLine`: Si une balise `<br>` est ajouté lorsqu'il y a une ligne vide. `false` par défaut.
 - `maxHeader`: Niveau maximal des titres. Nombre de 1 à 6 inclus. e.g. 2 signifie que les balises autorisées sont `<h1>` et `<h2>`. 6 par défaut.
 
 Des fonctions Callback peuvent aussi être ajoutées aux options du parseur. Ces fonctions permettent de modifier l'[élément](#l-objet-element) de sortie (e.g. ajouter des attributs personnalisés)
@@ -295,7 +295,7 @@ Cette ![image](https://exemple.com/une_image.png) fait partie d'une ligne de tex
 ```
 
 ```html
-<p>Cette <img src="https://exemple.com/une_image.png" alt="image" /> fait partie d'une ligne de texte</p>
+<p>Cette <img src="https://exemple.com/une_image.png" alt="image"> fait partie d'une ligne de texte</p>
 ```
 
 *Exemple d'une image seule sur une ligne*
@@ -305,7 +305,7 @@ Cette ![image](https://exemple.com/une_image.png) fait partie d'une ligne de tex
 
 ```html
 <figure>
-  <img src="https://exemple.com/some_image.png" alt="" />
+  <img src="https://exemple.com/some_image.png" alt="">
   <figcaption>Image seule sur la ligne</figcaption>
 </figure>
 ```
@@ -317,7 +317,7 @@ Cette ![image](https://exemple.com/une_image.png) fait partie d'une ligne de tex
 
 ```html
 <figure style="height: 100px; width: 100px">
-  <img src="https://exemple.com/une_image.png" alt="" />
+  <img src="https://exemple.com/une_image.png" alt="">
   <figcaption>Image with CSS</figcaption>
 </figure>
 ```
@@ -336,7 +336,7 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
 ```html
 <figure>
   <video>
-    <source src="https://exemple.com/une_video.mp4" type="video/mp4" />
+    <source src="https://exemple.com/une_video.mp4" type="video/mp4">
   </video>
   <figcaption>ma légende</figcaption>
 </figure>
@@ -442,7 +442,7 @@ En dessous de la ligne horizontale
 
 ```html
 <p>Au dessus de la ligne horizontale</p>
-<hr />
+<hr>
 <p>En dessous de la ligne horizontale</p>
 ```
 
@@ -574,7 +574,7 @@ Encore du texte.
 
 ```html
 <p>Du texte suivi de deux sauts de ligne.</p>
-<br />
+<br>
 <p>Encore du texte.</p>
 ```
 

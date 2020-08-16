@@ -280,7 +280,7 @@ test('Image as a figure', function (t) {
   const input = '![alt text](https://example.com/image)'
   const output = trimO`
     <figure>
-      <img src="https://example.com/image" alt="" />
+      <img src="https://example.com/image" alt="">
       <figcaption>alt text</figcaption>
     </figure>`
 
@@ -292,7 +292,7 @@ test('Image as a figure can NOT be styled by default', function (t) {
   const input = '![alt text](https://example.com/image;height:100px)'
   const output = trimO`
     <figure>
-      <img src="https://example.com/image" alt="" />
+      <img src="https://example.com/image" alt="">
       <figcaption>alt text</figcaption>
     </figure>`
 
@@ -304,7 +304,7 @@ test('Image as a figure CAN be styled if allowImageStyle is true', function (t) 
   const input = '![alt text](https://example.com/image;height:100px)'
   const output = trimO`
     <figure style="height:100px">
-      <img src="https://example.com/image" alt="" />
+      <img src="https://example.com/image" alt="">
       <figcaption>alt text</figcaption>
     </figure>`
   const opt = {
@@ -321,7 +321,6 @@ test('Image as a figure with callback', function (t) {
     onImage: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'IMG', 'Tagname is valid')
-      t.equal(node.firstChild, undefined, 'firstChild is undefined')
       t.end()
     },
   }
@@ -331,7 +330,7 @@ test('Image as a figure with callback', function (t) {
 
 test('Image inline', function (t) {
   const input = 'This is an inline ![alt text](https://example.com/image)'
-  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" /></p>'
+  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text"></p>'
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -339,7 +338,7 @@ test('Image inline', function (t) {
 
 test('Image with style and default flag', function (t) {
   const input = 'This is an inline ![alt text](https://example.com/image){height: 100px}'
-  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" /></p>'
+  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text"></p>'
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -347,7 +346,7 @@ test('Image with style and default flag', function (t) {
 
 test('Image with style and allowImageStyle to true', function (t) {
   const input = 'This is an inline ![alt text](https://example.com/image){height: 100px; width: 50px} with style'
-  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" style="height: 100px; width: 50px" /> with style</p>'
+  const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" style="height: 100px; width: 50px"> with style</p>'
   const opt = {
     allowImageStyle: true,
   }
@@ -362,7 +361,6 @@ test('Image inline with callback', function (t) {
     onImage: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'IMG', 'Tagname is valid')
-      t.equal(node.firstChild, undefined, 'firstChild is undefined')
       t.end()
     },
   }
@@ -375,7 +373,7 @@ test('Video', function (t) {
   const output = trimO`
     <figure>
       <video>
-        <source src="https://example.com/video.mp4" type="video/mp4" />
+        <source src="https://example.com/video.mp4" type="video/mp4">
       </video>
       <figcaption>alt text</figcaption>
     </figure>`
@@ -673,12 +671,12 @@ test('Nested unordered List with callback', function (t) {
 
       const liNode = node.firstChild
 
-      if (liNode.firstChild === 'Item 1') {
-        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
-        t.equal(level, 1, 'Level 1: Level is valid')
-      } else if (liNode.firstChild === 'Item 1.1') {
+      if (liNode.textContent === 'Item 1.1') {
         t.equal(node.children.length, 1, 'Level 2: Number of children is valid')
         t.equal(level, 2, 'Level 2: Level is valid')
+      } else {
+        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
+        t.equal(level, 1, 'Level 1: Level is valid')
       }
     },
   }
@@ -700,12 +698,12 @@ test('Nested ordered List with callback', function (t) {
 
       const liNode = node.firstChild
 
-      if (liNode.firstChild === 'Item 1') {
-        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
-        t.equal(level, 1, 'Level 1: Level is valid')
-      } else if (liNode.firstChild === 'Item 1.1') {
+      if (liNode.textContent === 'Item 1.1') {
         t.equal(node.children.length, 1, 'Level 2: Number of children is valid')
         t.equal(level, 2, 'Level 2: Level is valid')
+      } else {
+        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
+        t.equal(level, 1, 'Level 1: Level is valid')
       }
     },
   }
@@ -759,7 +757,7 @@ test('Horizontal line', function (t) {
     Post line text`
   const output = trimO`
     <p>Pre line text</p>
-    <hr />
+    <hr>
     <p>Post line text</p>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
@@ -775,7 +773,6 @@ test('Horizontal line with callback', function (t) {
     onHorizontalLine: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'HR', 'Tagname is valid')
-      t.equal(node.firstChild, undefined, 'firstChild is undefined')
       t.end()
     },
   }
@@ -861,7 +858,7 @@ test('Code with callback', function (t) {
     onCode: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'CODE', 'Tagname is valid')
-      t.equal(node.firstChild, 'keyword', 'Tagname is valid')
+      t.equal(node.textContent, 'keyword', 'Tagname is valid')
       t.end()
     },
   }
@@ -942,7 +939,6 @@ test('Multiline Code with allowMultilineCode flag to false', function (t) {
   t.end()
 })
 
-
 test('br are NOT added on blank lines by default', function (t) {
   const input = 'Line 1\n\nLine 2'
   const output = '<p>Line 1</p><p>Line 2</p>'
@@ -953,7 +949,7 @@ test('br are NOT added on blank lines by default', function (t) {
 
 test('br ARE added on blank lines if brOnBlankLine is true', function (t) {
   const input = 'Line 1\n\nLine 2'
-  const output = '<p>Line 1</p><br /><p>Line 2</p>'
+  const output = '<p>Line 1</p><br><p>Line 2</p>'
   const opt = {
     brOnBlankLine: true,
   }
@@ -972,7 +968,7 @@ test('Line of spaces are considered empty', function (t) {
 
 test('Space-only lines are considered empty', function (t) {
   const input = 'Line 1\n  \nLine 2'
-  const output = '<p>Line 1</p><br /><p>Line 2</p>'
+  const output = '<p>Line 1</p><br><p>Line 2</p>'
   const opt = {
     brOnBlankLine: true,
   }
@@ -1015,11 +1011,65 @@ test('Reference with allowReference to false', function (t) {
   t.end()
 })
 
-test('Escape HTML special chars', function (t) {
-  const input = '<script>Evil code &"\'👿</script>'
-  const output = '<p>&lt;script&gt;Evil code &amp;&quot;&#x27;👿&lt;/script&gt;</p>'
+test('Escape HTML special chars in content', function (t) {
+  const input = '<>&"\''
+  const output = '<p>&lt;&gt;&amp;"\'</p>'
 
   t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Escape HTML special chars in attribute value', function (t) {
+  const input = 'My evil image ![<>&"\'](some_url)'
+  const output = '<p>My evil image <img src="some_url" alt="<>&amp;&quot;\'"></p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Fail when HTML special chars in attribute name', function (t) {
+  const input = '# Dummy'
+
+  try {
+    parse(input, {
+      onHeader: node => node.setAttribute('<', 'value'),
+    })
+  } catch (err) {
+    t.notLooseEqual(err, null, '_<_ throws')
+  }
+
+  try {
+    parse(input, {
+      onHeader: node => node.setAttribute('<', 'value'),
+    })
+  } catch (err) {
+    t.notLooseEqual(err, null, '_<_ throws')
+  }
+
+  try {
+    parse(input, {
+      onHeader: node => node.setAttribute('&', 'value'),
+    })
+  } catch (err) {
+    t.notLooseEqual(err, null, '_&_ throws')
+  }
+
+  try {
+    parse(input, {
+      onHeader: node => node.setAttribute('"', 'value'),
+    })
+  } catch (err) {
+    t.notLooseEqual(err, null, '_"_ throws')
+  }
+
+  try {
+    parse(input, {
+      onHeader: node => node.setAttribute('\'', 'value'),
+    })
+  } catch (err) {
+    t.notLooseEqual(err, null, '_\'_ throws')
+  }
+
   t.end()
 })
 
