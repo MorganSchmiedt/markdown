@@ -244,7 +244,7 @@ module.exports.parse = (markdownText, opt = {}) => {
 
         if (next(headerLevel) === ' ') {
           const headerText = lineText.substring(lineText.indexOf(' ') + 1)
-          const headerNode = new Element(`h${headerLevel}`)
+          const headerNode = new Element(`H${headerLevel}`)
           headerNode.textContent = headerText
 
           if (opt.onHeader) {
