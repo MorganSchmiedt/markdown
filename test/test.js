@@ -20,6 +20,15 @@ const trimO = text =>
     .filter(line => line.length > 0)
     .join('')
 
+test('Element tagName', function (t) {
+  const input = 'Some text'
+  const element = parser.parse(input)
+
+  t.equal(element.firstChild.tagName, 'P', 'tagName is uppercase')
+
+  t.end()
+})
+
 test('Element Attributes', function (t) {
   const input = 'Some text'
   const element = parser.parse(input)
