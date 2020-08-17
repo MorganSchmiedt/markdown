@@ -49,6 +49,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Add a CSS Class to inline codes](#add-a-css-class-to-inline-codes)
   - [Pretty print JSON objects](#pretty-print-json-objects)
 - [Other ressources](#other-ressources)
+- [FAQ](#faq)
 - [Contact](#contact)
 - [Licence](#licence)
 
@@ -707,9 +708,25 @@ parseMarkdown(markdownText, {
 - Reddit Markdown: https://www.reddit.com/wiki/markdown
 
 
+## FAQ
+
+### What can I do if I have a problem?
+
+You can [raise an issue](https://github.com/deskeen/markdown/issues/new) and ask for help.
+
+
+### What can I do to help?
+
+You can:
+- Have a look at the issues and see if you can help someone.
+- Have a look at the code and see if you can improve it.
+- Translate this README is your language.
+- Star this repo.
+
+
 ## Contact
 
-You can reach me at [my_firstname]@[my_name].fr
+You can reach me at {my_firstname}@{my_name}.fr
 
 
 ## Licence

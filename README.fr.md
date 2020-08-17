@@ -710,9 +710,25 @@ parseMarkdown(markdownText, {
 - Reddit Markdown: https://www.reddit.com/wiki/markdown
 
 
+## FAQ
+
+### Que faire si j'ai un problème?
+
+Vous pouvez [reporter un problème](https://github.com/deskeen/markdown/issues/new) et demander de l'aide.
+
+
+### Que puis-je faire pour aider?
+
+Vous pouvez:
+- Jeter un coup d'oeil aux problème et voir si vous pouvez aider quelqu'un.
+- Jeter un coup d'oeil au code et voir si vous pouvez l'améliorer.
+- Traduire cette page dans votre langue.
+- Mettre une étoile à ce dépôt.
+
+
 ## Contact
 
-Vous pouvez me contacter à l'adresse [mon_prenom]@[mon_nom].fr
+Vous pouvez me contacter à l'adresse {mon_prenom}@{mon_nom}.fr
 
 
 ## Licence

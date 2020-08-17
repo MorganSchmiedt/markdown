@@ -69,7 +69,7 @@ const VOID_TAGS = new Set([
 class Element {
   constructor(tagName) {
     this.tagName = tagName
-    this.attr = {}
+    this._attributes = {}
     this.children = []
   }
 
@@ -82,7 +82,7 @@ class Element {
   }
 
   hasAttribute(attributeName) {
-    return this.attr[attributeName] !== undefined
+    return this._attributes[attributeName] !== undefined
   }
 
   setAttribute(attributeName, attributeValue) {
@@ -104,29 +104,27 @@ class Element {
       attrValueText = attributeValue.toString()
     }
 
-    this.attr[attributeName] = attrValueText
+    this._attributes[attributeName] = attrValueText
   }
 
   getAttribute(attributeName) {
-    return this.attr[attributeName] || null
+    return this._attributes[attributeName] || null
   }
 
   removeAttribute(attributeName) {
-    this.attr[attributeName] = undefined
+    this._attributes[attributeName] = undefined
   }
 
   get attributes() {
-    return this.attr
+    return this._attributes
   }
 
   get tagName() {
-    /* eslint-disable-next-line no-underscore-dangle */
     return this._tagName
   }
 
   // https://dom.spec.whatwg.org/#dom-element-tagname
   set tagName(value) {
-    /* eslint-disable-next-line no-underscore-dangle */
     this._tagName = value.toUpperCase()
   }
 
@@ -167,15 +165,13 @@ class Element {
     // https://html.spec.whatwg.org/multipage/syntax.html#start-tags
     html += `<${tagName}`
 
-    if (this.attr != null) {
-      const attrList = Object.keys(this.attr)
+    const attrList = Object.keys(this._attributes)
 
-      for (const attrName of attrList) {
-        const attrValue = this.attr[attrName]
-        const attrValueHtml = replaceHtmlCharsInAttrValue(attrValue)
+    for (const attrName of attrList) {
+      const attrValue = this._attributes[attrName]
+      const attrValueHtml = replaceHtmlCharsInAttrValue(attrValue)
 
-        html += ` ${attrName}="${attrValueHtml}"`
-      }
+      html += ` ${attrName}="${attrValueHtml}"`
     }
 
     html += '>'
