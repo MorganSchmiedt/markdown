@@ -75,9 +75,6 @@ const VOID_TAGS = new Set([
   'wbr'
 ])
 
-const isVoidTag = tagName =>
-  VOID_TAGS.has(tagName)
-
 class Element {
   constructor(tagName) {
     if (tagName) {
@@ -146,7 +143,7 @@ class Element {
   }
 
   get innerHTML() {
-    const isVoidElement = isVoidTag(this.tagName)
+    const isVoidElement = VOID_TAGS.has(this.tagName)
 
     let html = ''
 
