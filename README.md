@@ -133,7 +133,7 @@ Its properties are:
 - `children`: List of children. *Array*
 - `firstChild`: First child. Can be null. *Element*
 - `lastChild`: Last child. Can be null. *Element*
-- `textContent`: Element text. *String*
+- `textContent`: Text of the Element and its descendants. *String*
 - `hasAttribute(attributeName)`: Returns whether the element has the specified attribute. *Boolean*
 - `setAttribute(attributeName, attributeValue)`: Adds an attribute to the element.
 - `getAttribute(attributeName)`: Returns an element attribute. *String*

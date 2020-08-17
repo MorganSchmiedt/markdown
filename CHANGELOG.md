@@ -14,6 +14,7 @@
 - `Element.attr` becomes `Element.attributes`
 - `Element.tagName` returns the tag name in uppercase.
 - `Element.toHtml()` becomes `Element.innerHTML`
+- `Element.textContent` returns the text of the Element and its descendants.
 
 **🔧 Changes**
 - Void HTML elements no longer have a trailing slash.

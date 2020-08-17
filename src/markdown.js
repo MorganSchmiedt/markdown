@@ -118,8 +118,20 @@ class Element {
     this._tagName = value.toUpperCase()
   }
 
+  // https://dom.spec.whatwg.org/#dom-node-textcontent
+  // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
   get textContent() {
-    return this.children[0]
+    let output = ''
+
+    for (const child of this.children) {
+      if (typeof child === 'string') {
+        output += child
+      } else {
+        output += child.textContent
+      }
+    }
+
+    return output
   }
 
   set textContent(value) {

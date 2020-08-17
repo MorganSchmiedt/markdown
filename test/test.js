@@ -62,6 +62,68 @@ test('Element Attributes', function (t) {
   t.end()
 })
 
+test('Element.textContent with one element', function (t) {
+  const input = 'Some text'
+  const output = 'Some text'
+  const element = parse(input)
+
+  t.equal(element.textContent, output, 'textContent is valid')
+  t.end()
+})
+
+test('Element.textContent with multiple element', function (t) {
+  const input = trimI`
+    - Item 1
+    - Item 2`
+  const textContent = 'Item 1Item 2'
+  const element = parse(input)
+
+  t.equal(element.textContent, textContent, 'textContent is valid')
+  t.end()
+})
+
+test('Element.textContent with embedded element', function (t) {
+  const input = 'Text with *italic* and **bold** texts'
+  const textContent = 'Text with italic and bold texts'
+  const element = parse(input)
+
+  t.equal(element.textContent, textContent, 'textContent is valid')
+  t.end()
+})
+
+test('Element.textContent with complex list', function (t) {
+  const input =
+`- Item 1
+  - Item 1.1
+- Item 2`
+  const textContent = 'Item 1Item 1.1Item 2'
+  const element = parse(input)
+
+  t.equal(element.textContent, textContent, 'textContent is valid')
+  t.end()
+})
+
+test('Element.textContent with image', function (t) {
+  const input = '![Caption](image_url)'
+  const textContent = 'Caption'
+  const element = parse(input)
+
+  t.equal(element.textContent, textContent, 'textContent is valid')
+  t.end()
+})
+
+test('Element.textContent with void element', function (t) {
+  const input = trimI`
+    Pre-bar
+    ---
+    Post bar`
+  const textContent = 'Pre-barPost bar'
+  const element = parse(input)
+
+  t.equal(element.textContent, textContent, 'textContent is valid')
+  t.end()
+})
+
 test('Text', function (t) {
   const input = 'My name is James Bond'
   const output = '<p>My name is James Bond</p>'

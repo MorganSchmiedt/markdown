@@ -133,7 +133,7 @@ Ses propriétés sont:
 - `children`: Liste of enfants. *Tableau*
 - `firstChild`: Premier enfant. Peut être null. *Element*
 - `lastChild`: Dernier enfant. Peut être null. *Element*
-- `textContent`: Texte de l'élément. *Chaîne de caractères*
+- `textContent`: Texte de l'élément et de ses descendants. *Chaîne de caractères*
 - `hasAttribute(attributeName)`: Retourne si l'élément à un élément spécifique. *Booléen*
 - `setAttribute(attributeName, attributeValue)`: Ajoute un attribut à l'élément.
 - `getAttribute(attributeName)`: Retourne un attribute de l'élément. *Chaîne de caractères*
