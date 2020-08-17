@@ -1,6 +1,5 @@
 'use strict'
 /* eslint-env node, es6 */
-/* eslint-disable no-underscore-dangle */
 
 const HTML_CHAR_MAP = {
   '&': '&amp;',
@@ -51,28 +50,25 @@ const TEXT_REGEX = new RegExp(`[${MARKDOWN_CHARS}]`)
 
 // https://html.spec.whatwg.org/multipage/syntax.html#void-elements
 const VOID_TAGS = new Set([
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr'
+  'AREA',
+  'BASE',
+  'BR',
+  'COL',
+  'EMBED',
+  'HR',
+  'IMG',
+  'INPUT',
+  'LINK',
+  'META',
+  'PARAM',
+  'SOURCE',
+  'TRACK',
+  'WBR'
 ])
 
 class Element {
   constructor(tagName) {
-    if (tagName) {
-      this.tagName = tagName
-    }
-
+    this.tagName = tagName
     this.attr = {}
     this.children = []
   }
@@ -124,11 +120,13 @@ class Element {
   }
 
   get tagName() {
+    /* eslint-disable-next-line no-underscore-dangle */
     return this._tagName
   }
 
   // https://dom.spec.whatwg.org/#dom-element-tagname
   set tagName(value) {
+    /* eslint-disable-next-line no-underscore-dangle */
     this._tagName = value.toUpperCase()
   }
 
@@ -160,45 +158,59 @@ class Element {
     return this.children[this.children.length - 1]
   }
 
-  get innerHTML() {
+  get outerHTML() {
     const isVoidElement = VOID_TAGS.has(this.tagName)
+    const tagName = this.tagName.toLowerCase()
 
     let html = ''
 
     // https://html.spec.whatwg.org/multipage/syntax.html#start-tags
-    if (this._tagName != null) {
-      html += `<${this.tagName.toLowerCase()}`
+    html += `<${tagName}`
 
-      if (this.attr != null) {
-        for (const attrName of Object.keys(this.attr)) {
-          const attrValue = this.attr[attrName]
-          const attrValueHtml = replaceHtmlCharsInAttrValue(attrValue)
+    if (this.attr != null) {
+      const attrList = Object.keys(this.attr)
 
-          html += ` ${attrName}="${attrValueHtml}"`
-        }
+      for (const attrName of attrList) {
+        const attrValue = this.attr[attrName]
+        const attrValueHtml = replaceHtmlCharsInAttrValue(attrValue)
+
+        html += ` ${attrName}="${attrValueHtml}"`
       }
-
-      if (isVoidElement
-      && this.children.length === 0) {
-        html += ' /'
-      }
-
-      html += '>'
     }
 
-    if (isVoidElement === false) {
-      for (const child of this.children) {
-        if (typeof child === 'string') {
-          html += replaceHtmlCharsInContent(child)
-        } else {
-          html += child.innerHTML
-        }
-      }
+    html += '>'
 
-      if (this.tagName != null) {
-        if (this.children.length) {
-          html += `</${this.tagName.toLowerCase()}>`
-        }
+    if (isVoidElement) {
+      return html
+    }
+
+    for (const child of this.children) {
+      if (typeof child === 'string') {
+        html += replaceHtmlCharsInContent(child)
+      } else {
+        html += child.outerHTML
+      }
+    }
+
+    html += `</${tagName}>`
+
+    return html
+  }
+
+  get innerHTML() {
+    const isVoidElement = VOID_TAGS.has(this.tagName)
+
+    if (isVoidElement) {
+      return ''
+    }
+
+    let html = ''
+
+    for (const child of this.children) {
+      if (typeof child === 'string') {
+        html += replaceHtmlCharsInContent(child)
+      } else {
+        html += child.outerHTML
       }
     }
 
@@ -270,7 +282,7 @@ const parse = (markdownText, opt = {}) => {
   const brOnBlankLine = parseBoolean(opt.brOnBlankLine, false)
   const maxHeader = parseMaxHeader(opt.maxHeader, 3)
 
-  const body = new Element()
+  const body = new Element('div')
 
   let cursor = 0
 

@@ -161,6 +161,17 @@ test('Element.textContent with void element', function (t) {
   t.end()
 })
 
+test('Element.innerHTML, Element.outerHTML', function (t) {
+  const input = trimI`This is a text`
+  const element = parse(input)
+  const innerHtmlOutput = '<p>This is a text</p>'
+  const outerHtmlOutput = '<div><p>This is a text</p></div>'
+
+  t.equal(element.innerHTML, innerHtmlOutput, 'innerHTML output is valid')
+  t.equal(element.outerHTML, outerHtmlOutput, 'outerHTML output is valid')
+  t.end()
+})
+
 test('Text', function (t) {
   const input = 'My name is James Bond'
   const output = '<p>My name is James Bond</p>'

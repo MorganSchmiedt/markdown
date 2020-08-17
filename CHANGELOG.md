@@ -7,6 +7,7 @@
 - `allowNestedList` option is added.
 - Space-only lines are considered empty.
 - `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute` are available.
+- `Element.innerHTML`, `Element.outerHTML` are available.
 
 **⚠ Breaking changes**
 - `allowFootnote` becomes `allowReference`

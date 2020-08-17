@@ -130,7 +130,7 @@ Le parseur retourne un objet de type `Element` qui est similaire à un objet DOM
 Ses propriétés sont:
 - `tagName`: Nom de la balise en majuscules. *Chaîne de caractères*
 - `attributes`: Attributes de la balise. *Objet en lecture-seule*
-- `children`: Liste of enfants. *Tableau*
+- `children`: Liste des enfants. *Tableau*
 - `firstChild`: Premier enfant. Peut être null. *Element*
 - `lastChild`: Dernier enfant. Peut être null. *Element*
 - `textContent`: Texte de l'élément et de ses descendants. *Chaîne de caractères*
@@ -138,7 +138,8 @@ Ses propriétés sont:
 - `setAttribute(attributeName, attributeValue)`: Ajoute un attribut à l'élément.
 - `getAttribute(attributeName)`: Retourne un attribute de l'élément. *Chaîne de caractères*
 - `removeAttribute(attributeName)`: Enlève un attribute de l'élément.
-- `innerHTML`: Retourne la représentation HTML. *Chaîne de caractères* 
+- `innerHTML`: Retourne la représentation HTML des éléments contenus dans l'élément, i.e. ses enfants. *Chaîne de caractères* 
+- `outerHTML`: Retourne la représentation HTML de l'élément et de ses descendants. *Chaîne de caractères* 
 
 De nouveaux éléments peuvent être créés en utilisant la classe `Element`:
 

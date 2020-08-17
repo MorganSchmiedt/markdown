@@ -138,7 +138,8 @@ Its properties are:
 - `setAttribute(attributeName, attributeValue)`: Adds an attribute to the element.
 - `getAttribute(attributeName)`: Returns an element attribute. *String*
 - `removeAttribute(attributeName)`: Removes an element attribute.
-- `innerHTML`: Returns the HTML markup. *String* 
+- `innerHTML`: Returns the HTML markup of the elements contained in the element. *String*
+- `outerHTML`: Returns the HTML markup of the element and its descendants. *String* 
 
 New elements can be created by using the `Element` class:
 
