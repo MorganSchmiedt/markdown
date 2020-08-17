@@ -128,20 +128,20 @@ function onXXX(element) {
 
 The parser returns a custom `Element` that is similar to a DOM Element in the browser.
 
-Its properties are:
-- `tagName`: Tag name in uppercase. *String*
-- `className`: Class attribute of the element. *String*
-- `attributes`: Element attributes. *Readonly Object*
-- `children`: List of children. *Array*
-- `firstChild`: First child. Can be null. *Element*
-- `lastChild`: Last child. Can be null. *Element*
-- `textContent`: Text of the Element and its descendants. *String*
-- `hasAttribute(attributeName)`: Returns whether the element has the specified attribute. *Boolean*
-- `setAttribute(attributeName, attributeValue)`: Adds an attribute to the element.
-- `getAttribute(attributeName)`: Returns an element attribute. *String*
-- `removeAttribute(attributeName)`: Removes an element attribute.
-- `innerHTML`: Returns the HTML markup of the elements contained in the element. *String*
-- `outerHTML`: Returns the HTML markup of the element and its descendants. *String* 
+Available properties are:
+- `tagName`: Tag name of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
+- `className`: Class attribute of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
+- `attributes`: Element attributes. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes)
+- `children`: List of children. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children)
+- `firstChild`: First child. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/firstChild)
+- `lastChild`: Last child. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/lastChild)
+- `textContent`: Text of the element and its descendants. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
+- `hasAttribute(attrName)`: Returns whether the element has the specified attribute. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/hasAttribute)
+- `setAttribute(attrName, attrValue)`: Adds an attribute to the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute)
+- `getAttribute(attrName)`: Returns an element attribute. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute)
+- `removeAttribute(attrName)`: Removes an element attribute. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/removeAttribute)
+- `innerHTML`: Returns the HTML markup of the elements contained in the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML)
+- `outerHTML`: Returns the HTML markup of the element and its descendants. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML)
 
 New elements can be created by using the `Element` class:
 
