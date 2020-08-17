@@ -18,6 +18,7 @@
 **🔧 Changes**
 - Void HTML elements no longer have a trailing slash.
 - Only special characters are converted to alphanumeric values.
+- Escape characters are removed in the parsed element.
 
 
 ## 1.0.0 - 2020-08-13

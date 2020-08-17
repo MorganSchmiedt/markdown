@@ -1073,6 +1073,21 @@ test('Fail when HTML special chars in attribute name', function (t) {
   t.end()
 })
 
+test('Escape characters are removed in parsed element', function (t) {
+  const input = '- Some \\*text*'
+  const opt = {
+    onUnorderedList: ulNode => {
+      const liNode = ulNode.firstChild
+
+      t.equal(liNode.textContent, 'Some *text*', 'textContent in callback is valid')
+    },
+  }
+
+  t.plan(1)
+  parse(input, opt)
+  t.end()
+})
+
 test('Escape "*"', function (t) {
   const input = 'Some \\*text*'
   const output = '<p>Some *text*</p>'

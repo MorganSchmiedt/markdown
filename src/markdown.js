@@ -18,7 +18,7 @@ const HTML_CONTENT_ESCAPE_REGEX =
 const HTML_ATTR_VALUE_ESCAPE_REGEX =
   new RegExp(`[${HTML_ATTR_VALUE_ESCAPE_CHARS}]`, 'g')
 
-const replaceHtmlCharsInValue = text =>
+const replaceHtmlCharsInContent = text =>
   text.replace(HTML_CONTENT_ESCAPE_REGEX, char => HTML_CHAR_MAP[char])
 
 const replaceHtmlCharsInAttrValue = text =>
@@ -44,16 +44,8 @@ const MARKDOWN_ESCAPE_CHAR = '\\'
 const ESCAPE_CHAR_REGEX =
   new RegExp(`\\${MARKDOWN_ESCAPE_CHAR}([${MARKDOWN_CHARS}])`, 'g')
 
-const removeEscapeChar = text =>
+const removeEscapeChars = text =>
   text.replace(ESCAPE_CHAR_REGEX, (match, char) => char)
-
-const pipe = (...funcs) => value =>
-  funcs.reduce((res, func) => func(res), value)
-
-const escapeContent = text => pipe(
-  replaceHtmlCharsInValue,
-  removeEscapeChar
-)(text)
 
 const TEXT_REGEX = new RegExp(`[${MARKDOWN_CHARS}]`)
 
@@ -171,7 +163,7 @@ class Element {
     if (isVoidElement === false) {
       for (const child of this.children) {
         if (typeof child === 'string') {
-          html += escapeContent(child)
+          html += replaceHtmlCharsInContent(child)
         } else {
           html += child.innerHTML
         }
@@ -286,7 +278,7 @@ const parse = (markdownText, opt = {}) => {
 
         if (lastFlushCursor < lineCursor) {
           const textNode = document.createTextNode(
-            lineText.substring(lastFlushCursor, lineCursor))
+            removeEscapeChars(lineText.substring(lastFlushCursor, lineCursor)))
 
           currentLine.appendChild(textNode)
 
