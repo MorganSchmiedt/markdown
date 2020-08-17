@@ -70,7 +70,7 @@ class Element {
   constructor(tagName) {
     this.tagName = tagName
     this._attributes = {}
-    this.children = []
+    this._children = []
   }
 
   appendChild(node) {
@@ -78,7 +78,7 @@ class Element {
       node.parentNode = this
     }
 
-    this.children.push(node)
+    this._children.push(node)
   }
 
   hasAttribute(attributeName) {
@@ -133,7 +133,7 @@ class Element {
   get textContent() {
     let output = ''
 
-    for (const child of this.children) {
+    for (const child of this._children) {
       if (typeof child === 'string') {
         output += child
       } else {
@@ -145,15 +145,19 @@ class Element {
   }
 
   set textContent(value) {
-    this.children = [value]
+    this._children = [value]
+  }
+
+  get children() {
+    return this._children
   }
 
   get firstChild() {
-    return this.children[0]
+    return this._children[0]
   }
 
   get lastChild() {
-    return this.children[this.children.length - 1]
+    return this._children[this._children.length - 1]
   }
 
   get outerHTML() {
@@ -180,7 +184,7 @@ class Element {
       return html
     }
 
-    for (const child of this.children) {
+    for (const child of this._children) {
       if (typeof child === 'string') {
         html += replaceHtmlCharsInContent(child)
       } else {
@@ -202,7 +206,7 @@ class Element {
 
     let html = ''
 
-    for (const child of this.children) {
+    for (const child of this._children) {
       if (typeof child === 'string') {
         html += replaceHtmlCharsInContent(child)
       } else {
@@ -211,6 +215,14 @@ class Element {
     }
 
     return html
+  }
+
+  set className(value) {
+    return this.setAttribute('class', value)
+  }
+
+  get className() {
+    return this.getAttribute('class')
   }
 }
 

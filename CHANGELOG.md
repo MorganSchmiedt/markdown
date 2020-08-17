@@ -8,6 +8,7 @@
 - `allowNestedList`, `allowReference`, `allowFootnote` options are added.
 - `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes` are added.
 - `Element.innerHTML`, `Element.outerHTML` are added.
+- `Element.className` is added.
 
 **⚠ Breaking changes**
 - `allowFootnote` becomes `allowReference`.

@@ -118,7 +118,7 @@ Le premier argument des Callbacks est toujours l'[élément](#l-objet-element) p
 ```javascript
 function onXXX(element) {
  // Votre code ici
- // e.g.: element.setAttribute('class', 'css-class')
+ // e.g.: element.className = 'css-class'
 }
 ```
 
@@ -129,6 +129,7 @@ Le parseur retourne un objet de type `Element` qui est similaire à un objet DOM
 
 Ses propriétés sont:
 - `tagName`: Nom de la balise en majuscules. *Chaîne de caractères*
+- `className`: Attribute Class de l'élément. *String*
 - `attributes`: Attributes de la balise. *Objet en lecture-seule*
 - `children`: Liste des enfants. *Tableau*
 - `firstChild`: Premier enfant. Peut être null. *Element*
@@ -665,7 +666,7 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
 ```javascript
 parseMarkdown('This is body html tag: `<body>`', {
   onCode: element => {
-    element.setAttribute('class', 'some-class')
+    element.className = 'some-class'
   }
 }).innerHTML
 ```

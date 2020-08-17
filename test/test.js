@@ -172,6 +172,22 @@ test('Element.innerHTML, Element.outerHTML', function (t) {
   t.end()
 })
 
+test('Element.className get/set', function (t) {
+  const input = '# Title'
+  const output = '<h1 class="some-class">Title</h1>'
+  const opt = {
+    onHeader: headerNode => {
+      headerNode.className = 'some-class'
+
+      t.equal(headerNode.className, 'some-class', 'Element.className output is valid')
+      t.equal(headerNode.getAttribute('class'), 'some-class', 'Element.hasAttribute("class") output is valid')
+    },
+  }
+
+  t.equal(parseToHtml(input, opt), output, 'output is valid output is valid')
+  t.end()
+})
+
 test('Text', function (t) {
   const input = 'My name is James Bond'
   const output = '<p>My name is James Bond</p>'

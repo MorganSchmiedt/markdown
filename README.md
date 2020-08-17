@@ -119,7 +119,7 @@ The first argument of the callbacks is always the parsed [element](#element-obje
 ```javascript
 function onXXX(element) {
  // Your logic here
- // e.g.: element.setAttribute('class', 'css-class')
+ // e.g.: element.className = 'css-class'
 }
 ```
 
@@ -130,6 +130,7 @@ The parser returns a custom `Element` that is similar to a DOM Element in the br
 
 Its properties are:
 - `tagName`: Tag name in uppercase. *String*
+- `className`: Class attribute of the element. *String*
 - `attributes`: Element attributes. *Readonly Object*
 - `children`: List of children. *Array*
 - `firstChild`: First child. Can be null. *Element*
@@ -663,7 +664,7 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
 ```javascript
 parseMarkdown('This is body html tag: `<body>`', {
   onCode: element => {
-    element.setAttribute('class', 'some-class')
+    element.className = 'some-class'
   }
 }).innerHTML
 ```
