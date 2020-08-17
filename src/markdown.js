@@ -90,15 +90,29 @@ class Element {
   }
 
   setAttribute(attributeName, attributeValue) {
+    if (arguments.length < 2) {
+      throw new TypeError(`Element.setAttribute: At least 2 arguments required, but only ${arguments.length} passed`)
+    }
+
     if (hasForbiddenCharInAttrName(attributeName)) {
       throw new Error('String contains an invalid character')
     }
 
-    this.attr[attributeName] = attributeValue
+    let attrValueText
+
+    if (attributeValue === undefined) {
+      attrValueText = 'undefined'
+    } else if (attributeValue === null) {
+      attrValueText = 'null'
+    } else {
+      attrValueText = attributeValue.toString()
+    }
+
+    this.attr[attributeName] = attrValueText
   }
 
   getAttribute(attributeName) {
-    return this.attr[attributeName]
+    return this.attr[attributeName] || null
   }
 
   removeAttribute(attributeName) {

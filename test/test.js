@@ -37,28 +37,65 @@ test('Element tagName', function (t) {
   t.end()
 })
 
-test('Element Attributes', function (t) {
+test('Element.hasAttribute', function (t) {
   const input = 'Some text'
-  const element = parse(input)
-  const pNode = element.firstChild
+  const container = parse(input)
+  const element = container.firstChild
 
-  t.equal(typeof pNode.hasAttribute, 'function', 'hasAttribute is a function')
-  t.equal(pNode.hasAttribute('style'), false, 'hasAttribute returns the right value when false')
-  t.equal(typeof pNode.setAttribute, 'function', 'setAttribute is a function')
+  t.equal(typeof element.hasAttribute, 'function', 'hasAttribute is a function')
+  t.equal(element.hasAttribute('test'), false, 'hasAttribute is valid when false')
 
-  pNode.setAttribute('style', 'some style')
+  element.setAttribute('test', 'value')
 
-  t.equal(pNode.hasAttribute('style'), true, 'hasAttribute returns the right value when true')
-  t.equal(typeof pNode.getAttribute, 'function', 'getAttribute is a function')
-  t.equal(pNode.getAttribute('style'), 'some style', 'getAttribute returns the right value')
+  t.equal(element.hasAttribute('test'), true, 'hasAttribute is valid when true')
 
-  t.equal(typeof pNode.removeAttribute, 'function', 'removeAttribute is a function')
+  t.end()
+})
 
-  const removeAttrReturnValue = pNode.removeAttribute('style')
+test('Element.setAttribute/getAttribute', function (t) {
+  const input = 'Some text'
+  const container = parse(input)
+  const element = container.firstChild
 
-  t.equal(removeAttrReturnValue, undefined, 'removeAttribute returns valus is valid')
-  t.equal(pNode.hasAttribute('style'), false, 'removeAttribute works')
+  t.equal(typeof element.getAttribute, 'function', 'getAttribute is a function')
+  t.equal(typeof element.setAttribute, 'function', 'setAttribute is a function')
 
+  t.throws(() => {
+    element.setAttribute()
+  }, TypeError, 'setAttribute throws when 0 argument')
+
+  t.throws(() => {
+    element.setAttribute('test')
+  }, TypeError, 'setAttribute throws when 1 argument')
+
+  element.setAttribute('test', undefined)
+  t.equal(element.getAttribute('test'), 'undefined', 'setAttribute works with undefined')
+
+  element.setAttribute('test', null)
+  t.equal(element.getAttribute('test'), 'null', 'setAttribute works with null')
+
+  element.setAttribute('test', 1)
+  t.equal(element.getAttribute('test'), '1', 'setAttribute works with a number')
+
+  element.setAttribute('test', true)
+  t.equal(element.getAttribute('test'), 'true', 'setAttribute works with a boolean')
+
+  t.end()
+})
+
+test('Element.removeAttribute', function (t) {
+  const input = 'Some text'
+  const container = parse(input)
+  const element = container.firstChild
+
+  t.equal(typeof element.removeAttribute, 'function', 'removeAttribute is a function')
+
+  element.setAttribute('test', 'value')
+
+  const output = element.removeAttribute('test')
+
+  t.equal(output, undefined, 'removeAttribute returns the right value')
+  t.equal(element.hasAttribute('test'), false, 'removeAttribute works')
   t.end()
 })
 
