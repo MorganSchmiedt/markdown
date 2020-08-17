@@ -68,7 +68,7 @@ const VOID_TAGS = new Set([
 
 class Element {
   constructor(tagName) {
-    this.tagName = tagName
+    this._tagName = tagName.toUpperCase()
     this._attributes = {}
     this._children = []
   }
@@ -119,13 +119,9 @@ class Element {
     return this._attributes
   }
 
+  // https://dom.spec.whatwg.org/#dom-element-tagname
   get tagName() {
     return this._tagName
-  }
-
-  // https://dom.spec.whatwg.org/#dom-element-tagname
-  set tagName(value) {
-    this._tagName = value.toUpperCase()
   }
 
   // https://dom.spec.whatwg.org/#dom-node-textcontent

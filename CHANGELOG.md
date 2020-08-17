@@ -15,6 +15,7 @@
 - `onFootnote` becomes `onReference`.
 - `Element.attr` becomes `Element.attributes`.
 - `Element.toHtml()` becomes `Element.innerHTML`.
+- `Element.tagName` property is now read-only.
 - `Element.tagName` now returns the tag name in uppercase.
 - `Element.textContent` returns non-only the text of the Element, but also the text of its descendants.
 
