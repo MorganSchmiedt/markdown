@@ -723,17 +723,17 @@ const parse = (markdownText, opt = {}) => {
               const refMatch = /\^(\d+)]/.exec(restLineText)
 
               if (refMatch) {
-                const noteNb = refMatch[1]
+                const ref = refMatch[1]
 
                 const supNode = document.createElement('SUP')
-                supNode.textContent = noteNb
+                supNode.textContent = ref
 
                 const linkNode = document.createElement('A')
-                linkNode.setAttribute('href', `#reference${noteNb}`)
+                linkNode.setAttribute('href', `#reference${ref}`)
                 linkNode.appendChild(supNode)
 
                 if (opt.onReference) {
-                  opt.onReference(linkNode)
+                  opt.onReference(linkNode, ref)
                 }
 
                 flush(linkNode)

@@ -111,7 +111,7 @@ Les Callbacks disponibles sont:
 - `onOrderedList`: Fonction appelée lorsqu'une liste numérotée est parsée. Le deuxième argument le niveau de la liste. `1` pour les listes de premier niveau, `2` pour les listes imbriquées.
 - `onHorizontalLine`: Fonction appelée lorsqu'une ligne horizontale est parsée.
 - `onQuote`: Fonction appelée lorsqu'une citation est parsée.
-- `onReference`: Fonction appelée lorsqu'une référence est parsée.
+- `onReference`: Fonction appelée lorsqu'une référence est parsée. Le deuxième argument contient la référence.
 
 Le premier argument des Callbacks est toujours l'[élément](#l-objet-element) parsé.
 

@@ -107,12 +107,12 @@ Available callbacks are:
 - `onImage`: Function called when an image is parsed.
 - `onVideo`: Function called when a video is parsed.
 - `onCode`: Function called when an inline code is parsed.
-- `onMultilineCode`: Function called when a multiline code is parsed. Second argument is the (optional) language name.
-- `onUnorderedList`: Function called when a unordered list is parsed. Second argument is the list level. `1` for top level lists and `2` for nested lists.
-- `onOrderedList`: Function called when an ordered list is parsed. Second argument is the list level. `1` for top level lists and `2` for nested lists.
+- `onMultilineCode`: Function called when a multiline code is parsed. The second argument is the (optional) language name.
+- `onUnorderedList`: Function called when a unordered list is parsed. The second argument is the list level. `1` for top level lists and `2` for nested lists.
+- `onOrderedList`: Function called when an ordered list is parsed. The second argument is the list level. `1` for top level lists and `2` for nested lists.
 - `onHorizontalLine`: Function called when a horizontal line is parsed.
 - `onQuote`: Function called when a quote is parsed.
-- `onReference`: Function called when a reference is parsed.
+- `onReference`: Function called when a reference is parsed. The second argument contains the reference.
 
 The first argument of the callbacks is always the parsed [element](#element-object):
 
