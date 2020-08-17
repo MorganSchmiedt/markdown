@@ -514,7 +514,7 @@ test('Video', function (t) {
   const input = '![alt text](https://example.com/video.mp4)'
   const output = trimO`
     <figure>
-      <video>
+      <video controls="">
         <source src="https://example.com/video.mp4" type="video/mp4">
       </video>
       <figcaption>alt text</figcaption>

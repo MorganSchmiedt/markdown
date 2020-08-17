@@ -338,7 +338,7 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
 
 ```html
 <figure>
-  <video>
+  <video controls="">
     <source src="https://exemple.com/une_video.mp4" type="video/mp4">
   </video>
   <figcaption>ma légende</figcaption>

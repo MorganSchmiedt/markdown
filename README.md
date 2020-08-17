@@ -339,7 +339,7 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
 
 ```html
 <figure>
-  <video>
+  <video controls="">
     <source src="https://example.com/some_video.mp4" type="video/mp4">
   </video>
   <figcaption>my caption</figcaption>

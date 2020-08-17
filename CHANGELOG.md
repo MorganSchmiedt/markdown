@@ -16,11 +16,13 @@
 - `Element.tagName` property is now read-only.
 - `Element.tagName` now returns the tag name in uppercase.
 - `Element.textContent` returns non-only the text of the Element, but also the text of its descendants.
+- `<video>` HTML tags have now a `controls` attribute by default.
 
 **🔧 Changes**
 - Void HTML elements no longer have a trailing slash.
 - Only special characters are now converted to alphanumeric values.
 - Escape characters are now removed in the parsed element.
+
 
 
 ## 1.0.0 - 2020-08-13

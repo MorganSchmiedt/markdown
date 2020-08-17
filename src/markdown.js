@@ -392,8 +392,8 @@ const parse = (markdownText, opt = {}) => {
               sourceNode.setAttribute('type', 'video/mp4')
 
               const videoNode = document.createElement('VIDEO')
-
               videoNode.appendChild(sourceNode)
+              videoNode.setAttribute('controls', '')
 
               if (opt.onVideo) {
                 opt.onVideo(videoNode)
