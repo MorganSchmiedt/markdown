@@ -172,6 +172,22 @@ test('Element.innerHTML, Element.outerHTML', function (t) {
   t.end()
 })
 
+test('Element.id get/set', function (t) {
+  const input = '# Title'
+  const output = '<h1 id="some-id">Title</h1>'
+  const opt = {
+    onHeader: headerNode => {
+      headerNode.id = 'some-id'
+
+      t.equal(headerNode.id, 'some-id', 'Element.id output is valid')
+      t.equal(headerNode.getAttribute('id'), 'some-id', 'Element.getAttribute("id") output is valid')
+    },
+  }
+
+  t.equal(parseToHtml(input, opt), output, 'output is valid output is valid')
+  t.end()
+})
+
 test('Element.className get/set', function (t) {
   const input = '# Title'
   const output = '<h1 class="some-class">Title</h1>'

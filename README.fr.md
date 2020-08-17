@@ -129,6 +129,7 @@ Le parseur retourne un objet de type `Element` qui est similaire à un objet DOM
 
 Les propriétés disponibles sont:
 - `tagName`: Nom de la balise. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/tagName)
+- `id`: Attribut id de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/id)
 - `className`: Attribut Class de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/tagName)
 - `attributes`: Attributs de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/attributes)
 - `children`: Liste des enfants. [MDN](https://developer.mozilla.org/fr/docs/Web/API/ParentNode/children)
@@ -604,10 +605,9 @@ Encore du texte.
 ```javascript
 parseMarkdown('# Title 1', {
   onHeader: element => {
-    // node.firstChild === 'Title 1'
-    const id = element.firstChild.replace(/ /g, '-').toLowerCase()
+    // node.textContent === 'Title 1'
 
-    element.setAttribute('id', id)
+    element.id = element.textContent.replace(/ /g, '-').toLowerCase()
   }
 }).innerHTML
 ```

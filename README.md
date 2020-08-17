@@ -130,6 +130,7 @@ The parser returns a custom `Element` that is similar to a DOM Element in the br
 
 Available properties are:
 - `tagName`: Tag name of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
+- `id`: id attribute of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/id)
 - `className`: Class attribute of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
 - `attributes`: Element attributes. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes)
 - `children`: List of children. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children)
@@ -602,10 +603,9 @@ Some more text.
 ```javascript
 parseMarkdown('# Title 1', {
   onHeader: element => {
-    // node.firstChild === 'Title 1'
-    const id = element.firstChild.replace(/ /g, '-').toLowerCase()
+    // node.textContent === 'Title 1'
 
-    element.setAttribute('id', id)
+    element.id = element.textContent.replace(/ /g, '-').toLowerCase()
   }
 }).innerHTML
 ```

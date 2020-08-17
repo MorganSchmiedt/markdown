@@ -6,9 +6,7 @@
 - Unordered and ordered nested lists are supported.
 - Space-only lines are considered empty.
 - `allowNestedList`, `allowReference`, `allowFootnote` options are added.
-- `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes` are added.
-- `Element.innerHTML`, `Element.outerHTML` are added.
-- `Element.className` is added.
+- `Element.id`, `Element.className`,  `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes`, `Element.innerHTML`, `Element.outerHTML` are added.
 
 **⚠ Breaking changes**
 - `allowFootnote` becomes `allowReference`.

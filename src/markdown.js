@@ -220,6 +220,14 @@ class Element {
   get className() {
     return this.getAttribute('class')
   }
+
+  get id() {
+    return this.getAttribute('id')
+  }
+
+  set id(value) {
+    return this.setAttribute('id', value)
+  }
 }
 
 const document = {
