@@ -11,7 +11,7 @@ It allows to create: italic, bold, strikethrough and superscript texts, headers,
 
 ```javascript
 const parser = require('@deskeen/markdown')
-const html = parser.parse('some markdown text').toHtml()
+const html = parser.parse('some markdown text').innerHTML
 
 // html === '<p>some markdown text</p>'
 ```
@@ -70,7 +70,7 @@ const parser = require('@deskeen/markdown')
 To parse a text and transform it into HTML code, use:
 
 ```javascript
-const htmlCode = parser.parse('some markdown text').toHtml()
+const htmlCode = parser.parse('some markdown text').innerHTML
 ```
 
 The parser has been tested on Node.js v10+ but it may be working on previous Node.js versions too.
@@ -78,7 +78,7 @@ The parser has been tested on Node.js v10+ but it may be working on previous Nod
 
 ## Parser options
 
-`parse(markdownText[, options]).toHtml()`
+`parse(markdownText[, options])`
 
 An option object can be passed to the parser.
 
@@ -138,7 +138,7 @@ Its properties are:
 - `setAttribute(attributeName, attributeValue)`: Adds an attribute to the element.
 - `getAttribute(attributeName)`: Returns an element attribute. *String*
 - `removeAttribute(attributeName)`: Removes an element attribute.
-- `toHtml()`: Returns HTML output. *String* 
+- `innerHTML`: Returns the HTML markup. *String* 
 
 New elements can be created by using the `Element` class:
 
@@ -604,7 +604,7 @@ parseMarkdown('# Title 1', {
 
     element.setAttribute('id', id)
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -624,7 +624,7 @@ parseMarkdown('See [this page](https:/example.com)!', {
       element.setAttribute('target', '_blank')
     }
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -646,7 +646,7 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
       }
     }
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -663,7 +663,7 @@ parseMarkdown('This is body html tag: `<body>`', {
   onCode: element => {
     element.setAttribute('class', 'some-class')
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -687,7 +687,7 @@ parseMarkdown(markdownText, {
       codeElement.textContent = JSON.stringify(jsonObject, null, 2)
     }
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html

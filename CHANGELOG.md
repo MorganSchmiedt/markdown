@@ -13,6 +13,7 @@
 - `onFootnote` becomes `onReference`
 - `Element.attr` becomes `Element.attributes`
 - `Element.tagName` returns the tag name in uppercase.
+- `Element.toHtml()` becomes `Element.innerHTML`
 
 **🔧 Changes**
 - Void HTML elements no longer have a trailing slash.

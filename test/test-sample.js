@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 
 const parser = require('../src/markdown.js')
-const parse = (input, opt) => parser.parse(input, opt).toHtml()
+const parse = (input, opt) => parser.parse(input, opt)
 
 const trimI = text =>
   text[0]
@@ -16,8 +16,8 @@ const input = trimI`
   // Some markdown
   // ...`
 
-const html = parse(input, {
+const element = parse(input, {
   // Some options
 })
 
-console.log(html)
+console.log(element.innerHTML)

@@ -11,7 +11,7 @@ Il permet de créer: des textes en italique, textes en gras et textes barrés, d
 
 ```javascript
 const parser = require('@deskeen/markdown')
-const html = parser.parse('mon texte markdown').toHtml()
+const html = parser.parse('mon texte markdown').innerHTML
 
 // html === '<p>mon texte markdown</p>'
 ```
@@ -70,7 +70,7 @@ const parseur = require('@deskeen/markdown')
 Pour parser du texte et le transformer en code HTML, utilisez:
 
 ```javascript
-const codeHtml = parseur.parse('du texte markdown').toHtml()
+const codeHtml = parseur.parse('du texte markdown').innerHTML
 ```
 
 Le parseur a été testé avec les versions 10+ de Node.js mais il se peut qu'il fonctionne aussi sur des versions précédentes.
@@ -78,7 +78,7 @@ Le parseur a été testé avec les versions 10+ de Node.js mais il se peut qu'il
 
 ## Options du parseur
 
-`parse(markdownText[, options]).toHtml()`
+`parse(markdownText[, options])`
 
 Un objet avec les options peut être passé au parseur.
 
@@ -138,7 +138,7 @@ Ses propriétés sont:
 - `setAttribute(attributeName, attributeValue)`: Ajoute un attribut à l'élément.
 - `getAttribute(attributeName)`: Retourne un attribute de l'élément. *Chaîne de caractères*
 - `removeAttribute(attributeName)`: Enlève un attribute de l'élément.
-- `toHtml()`: Retourne le code HTML de sortie. *Chaîne de caractères* 
+- `innerHTML`: Retourne la représentation HTML. *Chaîne de caractères* 
 
 De nouveaux éléments peuvent être créés en utilisant la classe `Element`:
 
@@ -607,7 +607,7 @@ parseMarkdown('# Title 1', {
 
     element.setAttribute('id', id)
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -627,7 +627,7 @@ parseMarkdown('See [this page](https:/example.com)!', {
       element.setAttribute('target', '_blank')
     }
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -649,7 +649,7 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
       }
     }
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -666,7 +666,7 @@ parseMarkdown('This is body html tag: `<body>`', {
   onCode: element => {
     element.setAttribute('class', 'some-class')
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html
@@ -690,7 +690,7 @@ parseMarkdown(markdownText, {
       codeElement.textContent = JSON.stringify(jsonObject, null, 2)
     }
   }
-}).toHtml()
+}).innerHTML
 ```
 
 ```html

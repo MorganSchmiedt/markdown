@@ -5,7 +5,7 @@
 const test = require('tape')
 const parser = require('../src/markdown.js')
 const parse = (input, opt) => parser.parse(input, opt)
-const parseToHtml = (input, opt) => parse(input, opt).toHtml()
+const parseToHtml = (input, opt) => parse(input, opt).innerHTML
 
 const trimI = text =>
   text[0]

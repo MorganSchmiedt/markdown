@@ -145,7 +145,7 @@ class Element {
     return this.children[this.children.length - 1]
   }
 
-  toHtml() {
+  get innerHTML() {
     const isVoidElement = isVoidTag(this.tagName)
 
     let html = ''
@@ -176,7 +176,7 @@ class Element {
         if (typeof child === 'string') {
           html += escapeContent(child)
         } else {
-          html += child.toHtml()
+          html += child.innerHTML
         }
       }
 
