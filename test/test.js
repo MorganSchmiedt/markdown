@@ -1100,22 +1100,27 @@ test('Multiline code', function (t) {
 
 test('Multiline code with language name', function (t) {
   const input = `
+    Some text before
     \`\`\`javascript
     Multiline code 1
     Multiline code 2
-    \`\`\``
-  const output = '<pre><code>Multiline code 1\nMultiline code 2</code></pre>'
+    \`\`\`
+    Some more text`
+  const output = '<p>Some text before</p><pre><code>Multiline code 1\nMultiline code 2</code></pre><p>Some more text</p>'
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.equal(parse(input).innerHTML, output, 'Output is valid')
   t.end()
 })
 
 test('Multiline code with callback', function (t) {
   const input = `
+    This is some multicode with language
+    name:
     \`\`\`javascript
     Multiline code 1
     Multiline code 2
-    \`\`\``
+    \`\`\`
+    Some more text`
 
   const opt = {
     onMultilineCode: (node, language) => {

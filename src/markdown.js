@@ -306,6 +306,7 @@ const parse = (markdownText, opt = {}) => {
     const EOLIndex = restText.indexOf('\n')
     const lineText = restText.substring(0, EOLIndex)
     const nextRestText = restText.substring(EOLIndex + 1)
+    let ffCursor = EOLIndex + 1
 
     if (lineText.trim().length === 0) {
       // Do nothing
@@ -560,24 +561,25 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (allowMultilineCode
       && lineText.startsWith('```')) {
-        const remainingText = text.substring(cursor + lineText.length + 1)
-        const endTagIndex = remainingText.indexOf('```')
+        const match = /^```(\w*)\n((.|\n)+)\n```/.exec(text.substr(cursor))
 
-        if (endTagIndex > 0) {
-          const content = remainingText.substring(0, endTagIndex - 1)
+        if (match) {
+          const matchSize = match[0].length
+          const languageName = match[1]
+          const codeContent = match[2]
+
           const codeNode = document.createElement('CODE')
-          codeNode.textContent = content
+          codeNode.textContent = codeContent
 
           const preNode = document.createElement('PRE')
           preNode.appendChild(codeNode)
 
           if (opt.onMultilineCode) {
-            const language = text.substring(3, lineText.length)
-            opt.onMultilineCode(preNode, language)
+            opt.onMultilineCode(preNode, languageName)
           }
 
           currentLine = preNode
-          cursor += (lineText.length + 1 + endTagIndex)
+          ffCursor = matchSize
           parseLine = false
         }
       }
@@ -868,7 +870,7 @@ const parse = (markdownText, opt = {}) => {
       }
     }
 
-    cursor += (EOLIndex + 1)
+    cursor += ffCursor
   }
 
   return body
