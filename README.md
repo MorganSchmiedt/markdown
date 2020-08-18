@@ -41,7 +41,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Quote](#quote)
   - [Reference](#reference)
   - [Escape character](#escape-character)
-- [Differences with standard Markdown syntax](#differences-with-standard-Markdown-syntax)
+- [Differences with other Markdown syntaxes](#differences-with-other-markdown-syntaxes)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
   - [Open external links in a new tab](#open-external-links-in-a-new-tab)
@@ -583,13 +583,13 @@ This backslash \ is not removed because it is not followed by a special characte
 ```
 
 
-## Differences with standard Markdown syntax
+## Differences with other Markdown syntaxes
 
 - Italic, bold and italic-bold texts with one, two and three underscore characters are not supported.
 - Headers with underneath dashes/equal signs are not supported.
 - Unordered Lists start with a dash, not a plus sign or a star.
-- Ordered Lists start with a plus sign, not a number.
-- New lines are not supported in lists.
+- Newlines are not supported in lists.
+- Lists can only have one nested list.
 - Escaping code with two backticks is not supported.
 - Horizontal lines with stars or underscores are not supported.
 - Image titles and Link titles are not supported.

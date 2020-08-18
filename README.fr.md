@@ -41,7 +41,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Citation](#citation)
   - [Référence](#reference)
   - [Caractère d'échappement](#escape-character)
-- [Différences avec la syntaxe Markdown standard](#différences-avec-la-syntaxe-markdown-standard)
+- [Différences avec d'autres implémentations Markdown](#différences-avec-d'autres-implémentations-markdown)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
   - [Ouvrir les liens externes dans un nouvel onglet](#ouvrir-les-liens-externes-dans-un-nouvel-onglet)
@@ -585,12 +585,12 @@ Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécia
 ```
 
 
-## Différences avec la syntaxe Markdown standard
+## Différences avec d'autres implémentations Markdown
 
 - Les textes en italic, grand, italic-et-gras avec un, deux et trois caractères underscore ne sont pas supportés.
 - Les titres avec des tirets ou des signes égal en dessous ne sont pas supportés.
 - Les listes non-numérotées commencent avec un tiret, pas un signe plus ou une étoile.
-- Les listes numérotées commencent avec un signe plus, pas un nombre.
+- Les listes peuvent avoir seulement une seule liste imbriquée.
 - Les sauts de lignes ne sont pas supportés dans les listes.
 - Échapper du code avec deux accents aigus n'est pas supporté.
 - Les lignes horizontales avec des étoiles ou des caractères underscore ne sont pas supportés.
