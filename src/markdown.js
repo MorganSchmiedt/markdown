@@ -423,7 +423,11 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (firstChar === '-') {
         if (allowHorizontalLine
-        && lineText === '---') {
+        && lineText === '---'
+        && text[cursor - 2] === '\n'
+        && text[cursor - 1] === '\n'
+        && text[cursor + 3] === '\n'
+        && text[cursor + 4] === '\n') {
           const hrNode = document.createElement('HR')
 
           if (opt.onHorizontalLine) {

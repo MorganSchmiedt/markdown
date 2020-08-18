@@ -17,6 +17,7 @@
 - `Element.tagName` now returns the tag name in uppercase.
 - `Element.textContent` returns non-only the text of the Element, but also the text of its descendants.
 - `<video>` HTML tags have now a `controls` attribute by default.
+- Hoziontal lines must now have a blank line before and after the dashes.
 
 **🔧 Changes**
 - Void HTML elements no longer have a trailing slash.

@@ -169,7 +169,7 @@ const myDivElement = new Element('div')
 | [Unoredered nested list](#unordered-list) | <code>&nbsp;&nbsp;- Nested list item</code> |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
 | [Ordered nested list](#ordered-list)      | <code>&nbsp;&nbsp;+ Nested list item</code> |
-| [Horizontal Line](#horizontal-line)       | `---`                        |
+| [Horizontal Line](#horizontal-line)       | `\n\n---\n\n`                |
 | [Code](#code)                             | `` `Code text` ``            |
 | [Quote](#quote)                           | `> Quote`                    |
 | [Reference](#reference)                   | `Reference[^1]`               |
@@ -434,12 +434,14 @@ Nested list items start with at least one space, followed by a plus sign and a s
 
 ## Horizontal Line
 
-A Horizontal line is shown with three dashes (`---`).
+A Horizontal line starts with an empty line, followed by three dashes (`---`), followed by another empty line.
 
 *Example*
 ```
 Above horizontal line
+
 ---
+
 Below horizontal line
 ```
 

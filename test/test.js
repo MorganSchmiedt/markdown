@@ -150,11 +150,8 @@ test('Element.textContent with image', function (t) {
 })
 
 test('Element.textContent with void element', function (t) {
-  const input = trimI`
-    Pre-bar
-    ---
-    Post bar`
-  const textContent = 'Pre-barPost bar'
+  const input = 'Pre-img![caption](link)Post img'
+  const textContent = 'Pre-imgPost img'
   const element = parse(input)
 
   t.equal(element.textContent, textContent, 'textContent is valid')
@@ -893,10 +890,13 @@ test('Ordered Nested List with allowNestedList to false', function (t) {
 })
 
 test('Horizontal line', function (t) {
-  const input = trimI`
-    Pre line text
-    ---
-    Post line text`
+  const input =
+`Pre line text
+
+---
+
+Post line text`
+
   const output = trimO`
     <p>Pre line text</p>
     <hr>
@@ -906,11 +906,46 @@ test('Horizontal line', function (t) {
   t.end()
 })
 
+test('Horizontal line without leading space', function (t) {
+  const input =
+`Pre line text
+---
+
+Post line text`
+
+  const output = trimO`
+    <p>Pre line text</p>
+    <p>---</p>
+    <p>Post line text</p>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Horizontal line without trailing space', function (t) {
+  const input =
+`Pre line text
+
+---
+Post line text`
+
+  const output = trimO`
+    <p>Pre line text</p>
+    <p>---</p>
+    <p>Post line text</p>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Horizontal line with callback', function (t) {
-  const input = trimI`
-    Pre line text
-    ---
-    Post line text`
+  const input =
+`Pre line text
+
+---
+
+Post line text`
+
   const opt = {
     onHorizontalLine: node => {
       t.notEqual(node, null, 'Parameter is populated')
@@ -923,10 +958,12 @@ test('Horizontal line with callback', function (t) {
 })
 
 test('Horizontal line with allowHorizontalLine flag to false', function (t) {
-  const input = trimI`
-    Pre line text
-    ---
-    Post line text`
+  const input =
+`Pre line text
+
+---
+
+Post line text`
   const output = trimO`
     <p>Pre line text</p>
     <p>---</p>

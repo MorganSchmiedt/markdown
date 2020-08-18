@@ -434,12 +434,14 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
 
 ## Ligne horizontale
 
-Une ligne horizontale est affiché avec trois tirets (`---`).
+Une ligne horizontale débute avec une ligne vide, suivi de trois tirets (`---`), suivi d'une autre ligne vide.
 
 *Exemple*
 ```
 Au dessus de la ligne horizontale
+
 ---
+
 En dessous de la ligne horizontale
 ```
 
