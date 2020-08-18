@@ -28,6 +28,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Bold-italic text](#bold-italic-text)
   - [Strikethrough text](#strikethrough-text)
   - [Superscript text](#superscript-text)
+  - [Paragraph](#paragraph)
   - [Header](#header)
   - [Link](#link)
   - [Image](#image)
@@ -40,7 +41,6 @@ const html = parser.parse('some markdown text').innerHTML
   - [Quote](#quote)
   - [Reference](#reference)
   - [Escape character](#escape-character)
-  - [Newline](#newline)
 - [Differences with standard Markdown syntax](#differences-with-standard-Markdown-syntax)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
@@ -96,7 +96,6 @@ Available options are:
 - `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowReference`: Whether references are allowed. Defaults to `true`.
-- `brOnBlankLine`: Whether to add a `<br>` tag on empty line. Defaults to `false`.
 - `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
 
 Callback functions can be passed to the options as well. They allow to edit the output [element](#element-object) (e.g. add custom attributes).
@@ -244,6 +243,33 @@ This is a ^superscript text^
 
 ```html
 <p>This is a <sup>superscript text</sup></p>
+```
+
+
+## Paragraph
+
+A single newline adds the text to the last paragraph. Two newlines create a new paragraph.
+
+*Example with a single newline*
+```
+First line of text.
+Second line of text.
+```
+
+```html
+<p>First line of text.<br>Second line of text.</p>
+```
+
+*Example with two newlines*
+```
+First line of text.
+
+Second line of text.
+```
+
+```html
+<p>First line of text.</p>
+<p>Second line of text.</p>
 ```
 
 
@@ -553,32 +579,6 @@ This backslash \ is not removed because it is not followed by a special characte
 
 ```html
 <p>This backslash \ is not removed because it is not followed by a special character.</p>
-```
-
-
-## Newline
-
-Newlines are ignored unless `brOnBlankLine` is true.
-
-*Example*
-```
-Some text followed by two newlines.
-
-
-Some more text.
-```
-
-```html
-<p>Some text followed by two newlines.</p>
-<p>Some more text.</p>
-```
-
-*Same Example with brOnBlankLine to true*
-
-```html
-<p>Some text followed by two newlines.</p>
-<br>
-<p>Some more text.</p>
 ```
 
 

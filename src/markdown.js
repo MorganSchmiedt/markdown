@@ -253,7 +253,6 @@ const parseMaxHeader = (value, defaultValue) => {
 /**
  * @param {string} markdownText Markdown text
  * @param {object} opt Parser options
- * @param {boolean} [opt.brOnBlankLine=false]
  * @param {boolean} [opt.allowHeader=true]
  * @param {boolean} [opt.allowLink=true]
  * @param {boolean} [opt.allowImage=true]
@@ -291,7 +290,6 @@ const parse = (markdownText, opt = {}) => {
   const allowHorizontalLine = parseBoolean(opt.allowHorizontalLine, true)
   const allowQuote = parseBoolean(opt.allowQuote, true)
   const allowReference = parseBoolean(opt.allowReference, true)
-  const brOnBlankLine = parseBoolean(opt.brOnBlankLine, false)
   const maxHeader = parseMaxHeader(opt.maxHeader, 3)
 
   const body = new Element('div')
@@ -308,9 +306,7 @@ const parse = (markdownText, opt = {}) => {
     const nextRestText = restText.substring(EOLIndex + 1)
 
     if (lineText.trim().length === 0) {
-      if (brOnBlankLine) {
-        body.appendChild(document.createElement('BR'))
-      }
+      // Do nothing
     } else {
       let lineCursor = 0
       let lastFlushCursor = 0
@@ -320,25 +316,6 @@ const parse = (markdownText, opt = {}) => {
       let parseLine = true
       let onLineEnd
       let targetNode = body
-
-      const flush = node => {
-        if (currentLine == null) {
-          currentLine = document.createElement('P')
-        }
-
-        if (lastFlushCursor < lineCursor) {
-          const textNode = document.createTextNode(
-            removeEscapeChars(lineText.substring(lastFlushCursor, lineCursor)))
-
-          currentLine.appendChild(textNode)
-
-          lastFlushCursor = lineCursor
-        }
-
-        if (node != null) {
-          currentLine.appendChild(node)
-        }
-      }
 
       const firstChar = lineText[0]
 
@@ -581,250 +558,286 @@ const parse = (markdownText, opt = {}) => {
         }
       }
 
-      let lineCursorMax
+      if (parseLine) {
+        if (currentLine == null) {
+          const lastChild = body.lastChild
 
-      while (parseLine === true
-      && lineCursor <= EOLIndex) {
-        let ff = 0
-
-        const match = TEXT_REGEX.exec(
-          lineText.substring(lineCursor, lineCursorMax))
-
-        if (match == null) {
-          if (lineCursorMax == null) {
-            lineCursor = lineText.length
-            flush()
-            break
+          if (lastChild != null
+          && lastChild.tagName === 'P'
+          && /\n( )*\n$/.exec(text.substr(0, cursor)) == null) {
+            currentLine = lastChild
+            currentLine.appendChild(document.createElement('BR'))
+            targetNode = null
           } else {
-            lineCursor = lineCursorMax
-            flush()
-            lineCursor += currentLine.ffOnTextEnd
-            lastFlushCursor += currentLine.ffOnTextEnd
-
-            while (currentLine.upOnTextEnd) {
-              currentLine = currentLine.parentNode
-            }
-
-            currentLine = currentLine.parentNode
-            lineCursorMax = undefined
-          }
-        } else {
-          const char = match[0]
-
-          ff = 1
-          lineCursor += match.index
-
-          if (next(-1) === MARKDOWN_ESCAPE_CHAR) {
-            // Do nothing
-          } else if (char === '*') {
-            if (next(1) === '*'
-            && next(2) === '*') {
-              const syntax = '***'
-              const syntaxSize = syntax.length
-              const fromIndex = lineCursor + syntaxSize
-              const endTagIndex = lineText.substring(fromIndex).indexOf(syntax)
-
-              if (endTagIndex > 0) {
-                flush()
-                lineCursorMax = fromIndex + endTagIndex
-
-                const emNode = document.createElement('EM')
-                emNode.ffOnTextEnd = syntaxSize
-                emNode.upOnTextEnd = true
-
-                const strongNode = document.createElement('STRONG')
-                strongNode.appendChild(emNode)
-
-                currentLine.appendChild(strongNode)
-                currentLine = emNode
-
-
-                ff = syntaxSize
-                lastFlushCursor += syntaxSize
-              }
-            } else if (next(1) === '*') {
-              const syntax = '**'
-              const syntaxSize = 2
-              const fromIndex = lineCursor + syntaxSize
-              const endTagIndex = lineText.substring(fromIndex).indexOf(syntax)
-
-              if (endTagIndex > 0) {
-                flush()
-                lineCursorMax = fromIndex + endTagIndex
-
-                const strongNode = document.createElement('STRONG')
-                strongNode.ffOnTextEnd = syntaxSize
-
-                currentLine.appendChild(strongNode)
-                currentLine = strongNode
-
-                ff = syntaxSize
-                lastFlushCursor += syntaxSize
-              }
-            } else {
-              const syntaxSize = 1
-              const fromIndex = lineCursor + syntaxSize
-              const endTagIndex = lineText.substring(fromIndex).indexOf('*')
-
-              if (endTagIndex > 0) {
-                flush()
-                lineCursorMax = fromIndex + endTagIndex
-
-                const emNode = document.createElement('EM')
-                emNode.ffOnTextEnd = syntaxSize
-
-                currentLine.appendChild(emNode)
-                currentLine = emNode
-
-                ff = syntaxSize
-                lastFlushCursor += syntaxSize
-              }
-            }
-          } else if (char === '~') {
-            if (next(1) === '~') {
-              const syntax = '~~'
-              const syntaxSize = syntax.length
-              const fromIndex = lineCursor + syntaxSize
-              const endTagIndex = lineText.substring(fromIndex).indexOf(syntax)
-
-              if (endTagIndex > 0) {
-                flush()
-                lineCursorMax = fromIndex + endTagIndex
-
-                const sNode = document.createElement('S')
-                sNode.ffOnTextEnd = syntaxSize
-
-                currentLine.appendChild(sNode)
-                currentLine = sNode
-
-                ff = syntaxSize
-                lastFlushCursor += syntaxSize
-              }
-            }
-          } else if (char === '^') {
-            const syntax = '^'
-            const syntaxSize = syntax.length
-            const fromIndex = lineCursor + syntaxSize
-            const endTagIndex = lineText.substring(fromIndex).indexOf(syntax)
-
-            if (endTagIndex > 0) {
-              flush()
-              lineCursorMax = fromIndex + endTagIndex
-
-              const supNode = document.createElement('SUP')
-              supNode.ffOnTextEnd = syntaxSize
-
-              currentLine.appendChild(supNode)
-              currentLine = supNode
-
-              ff = syntaxSize
-              lastFlushCursor += syntaxSize
-            }
-          } else if (char === '[') {
-            const restLineText = lineText.substring(lineCursor + 1)
-
-            if (allowReference
-            && next(1) === '^') {
-              const refMatch = /\^(\d+)]/.exec(restLineText)
-
-              if (refMatch) {
-                const ref = refMatch[1]
-
-                const supNode = document.createElement('SUP')
-                supNode.textContent = ref
-
-                const linkNode = document.createElement('A')
-                linkNode.setAttribute('href', `#reference${ref}`)
-                linkNode.appendChild(supNode)
-
-                if (opt.onReference) {
-                  opt.onReference(linkNode, ref)
-                }
-
-                flush(linkNode)
-
-                ff = (1 + refMatch[0].length)
-                lastFlushCursor += ff
-              }
-            } else if (allowLink) {
-              const endMatch = /([^\]]+)]\(([^)]+)\)/.exec(restLineText)
-
-              if (endMatch) {
-                const title = endMatch[1]
-                const url = endMatch[2]
-
-                const linkNode = document.createElement('A')
-                linkNode.setAttribute('href', url)
-                linkNode.textContent = title
-
-                if (opt.onLink) {
-                  opt.onLink(linkNode)
-                }
-
-                flush(linkNode)
-
-                ff = (1 + endMatch[0].length)
-                lastFlushCursor += ff
-              }
-            }
-          } else if (char === '!'
-          && next(1) === '[') {
-            if (allowImage) {
-              const restLineText = lineText.substring(lineCursor + 1)
-              const endMatch = /^\[([^\]]+)]\(([^;)]+)\)({([^}]+)})?/
-                .exec(restLineText)
-
-              if (endMatch) {
-                const syntaxSize = 1 + endMatch[0].length
-                const title = endMatch[1]
-                const url = endMatch[2]
-                const style = endMatch[4]
-
-                const imageNode = document.createElement('IMG')
-                imageNode.setAttribute('src', url)
-                imageNode.setAttribute('alt', title)
-
-                if (allowImageStyle
-                && style != null) {
-                  imageNode.setAttribute('style', style)
-                }
-
-                if (opt.onImage) {
-                  opt.onImage(imageNode, title, url)
-                }
-
-                flush(imageNode)
-
-                ff = syntaxSize
-                lastFlushCursor += ff
-              }
-            }
-          } else if (allowCode
-          && char === '`') {
-            const restLineText = lineText.substring(lineCursor + 1)
-            const endTagIndex = restLineText.indexOf('`')
-
-            if (endTagIndex > 0) {
-              const content = restLineText.substring(0, endTagIndex)
-              const codeNode = document.createElement('CODE')
-              codeNode.textContent = content
-
-              if (opt.onCode) {
-                opt.onCode(codeNode)
-              }
-
-              flush(codeNode)
-
-              ff = (1 + endTagIndex + 1)
-              lastFlushCursor += ff
-            }
+            currentLine = document.createElement('P')
           }
         }
 
-        lineCursor += ff
+        const flush = node => {
+          if (lastFlushCursor < lineCursor) {
+            const text =
+              removeEscapeChars(lineText.substring(lastFlushCursor, lineCursor))
+
+            currentLine.appendChild(document.createTextNode(text))
+
+            lastFlushCursor = lineCursor
+          }
+
+          if (node != null) {
+            currentLine.appendChild(node)
+          }
+        }
+
+        let lineCursorMax
+
+        while (lineCursor <= EOLIndex) {
+          let ff = 0
+
+          const match = TEXT_REGEX.exec(
+            lineText.substring(lineCursor, lineCursorMax))
+
+          if (match == null) {
+            if (lineCursorMax == null) {
+              lineCursor = lineText.length
+              flush()
+              break
+            } else {
+              lineCursor = lineCursorMax
+              flush()
+              lineCursor += currentLine.ffOnTextEnd
+              lastFlushCursor += currentLine.ffOnTextEnd
+
+              while (currentLine.upOnTextEnd) {
+                currentLine = currentLine.parentNode
+              }
+
+              currentLine = currentLine.parentNode
+              lineCursorMax = undefined
+            }
+          } else {
+            const char = match[0]
+
+            ff = 1
+            lineCursor += match.index
+
+            if (next(-1) === MARKDOWN_ESCAPE_CHAR) {
+              // Do nothing
+            } else if (char === '*') {
+              if (next(1) === '*'
+              && next(2) === '*') {
+                const syntax = '***'
+                const syntaxSize = syntax.length
+                const fromIndex = lineCursor + syntaxSize
+                const endTagIndex =
+                  lineText.substring(fromIndex).indexOf(syntax)
+
+                if (endTagIndex > 0) {
+                  flush()
+                  lineCursorMax = fromIndex + endTagIndex
+
+                  const emNode = document.createElement('EM')
+                  emNode.ffOnTextEnd = syntaxSize
+                  emNode.upOnTextEnd = true
+
+                  const strongNode = document.createElement('STRONG')
+                  strongNode.appendChild(emNode)
+
+                  currentLine.appendChild(strongNode)
+                  currentLine = emNode
+
+
+                  ff = syntaxSize
+                  lastFlushCursor += syntaxSize
+                }
+              } else if (next(1) === '*') {
+                const syntax = '**'
+                const syntaxSize = 2
+                const fromIndex = lineCursor + syntaxSize
+                const endTagIndex =
+                  lineText.substring(fromIndex).indexOf(syntax)
+
+                if (endTagIndex > 0) {
+                  flush()
+                  lineCursorMax = fromIndex + endTagIndex
+
+                  const strongNode = document.createElement('STRONG')
+                  strongNode.ffOnTextEnd = syntaxSize
+
+                  currentLine.appendChild(strongNode)
+                  currentLine = strongNode
+
+                  ff = syntaxSize
+                  lastFlushCursor += syntaxSize
+                }
+              } else {
+                const syntaxSize = 1
+                const fromIndex = lineCursor + syntaxSize
+                const endTagIndex = lineText.substring(fromIndex).indexOf('*')
+
+                if (endTagIndex > 0) {
+                  flush()
+                  lineCursorMax = fromIndex + endTagIndex
+
+                  const emNode = document.createElement('EM')
+                  emNode.ffOnTextEnd = syntaxSize
+
+                  currentLine.appendChild(emNode)
+                  currentLine = emNode
+
+                  ff = syntaxSize
+                  lastFlushCursor += syntaxSize
+                }
+              }
+            } else if (char === '~') {
+              if (next(1) === '~') {
+                const syntax = '~~'
+                const syntaxSize = syntax.length
+                const fromIndex = lineCursor + syntaxSize
+                const endTagIndex =
+                  lineText.substring(fromIndex).indexOf(syntax)
+
+                if (endTagIndex > 0) {
+                  flush()
+                  lineCursorMax = fromIndex + endTagIndex
+
+                  const sNode = document.createElement('S')
+                  sNode.ffOnTextEnd = syntaxSize
+
+                  currentLine.appendChild(sNode)
+                  currentLine = sNode
+
+                  ff = syntaxSize
+                  lastFlushCursor += syntaxSize
+                }
+              }
+            } else if (char === '^') {
+              const syntax = '^'
+              const syntaxSize = syntax.length
+              const fromIndex = lineCursor + syntaxSize
+              const endTagIndex =
+                lineText.substring(fromIndex).indexOf(syntax)
+
+              if (endTagIndex > 0) {
+                flush()
+                lineCursorMax = fromIndex + endTagIndex
+
+                const supNode = document.createElement('SUP')
+                supNode.ffOnTextEnd = syntaxSize
+
+                currentLine.appendChild(supNode)
+                currentLine = supNode
+
+                ff = syntaxSize
+                lastFlushCursor += syntaxSize
+              }
+            } else if (char === '[') {
+              const restLineText = lineText.substring(lineCursor + 1)
+
+              if (allowReference
+              && next(1) === '^') {
+                const refMatch = /\^(\d+)]/.exec(restLineText)
+
+                if (refMatch) {
+                  const ref = refMatch[1]
+
+                  const supNode = document.createElement('SUP')
+                  supNode.textContent = ref
+
+                  const linkNode = document.createElement('A')
+                  linkNode.setAttribute('href', `#reference${ref}`)
+                  linkNode.appendChild(supNode)
+
+                  if (opt.onReference) {
+                    opt.onReference(linkNode, ref)
+                  }
+
+                  flush(linkNode)
+
+                  ff = (1 + refMatch[0].length)
+                  lastFlushCursor += ff
+                }
+              } else if (allowLink) {
+                const endMatch = /([^\]]+)]\(([^)]+)\)/.exec(restLineText)
+
+                if (endMatch) {
+                  const title = endMatch[1]
+                  const url = endMatch[2]
+
+                  const linkNode = document.createElement('A')
+                  linkNode.setAttribute('href', url)
+                  linkNode.textContent = title
+
+                  if (opt.onLink) {
+                    opt.onLink(linkNode)
+                  }
+
+                  flush(linkNode)
+
+                  ff = (1 + endMatch[0].length)
+                  lastFlushCursor += ff
+                }
+              }
+            } else if (char === '!'
+            && next(1) === '[') {
+              if (allowImage) {
+                const restLineText = lineText.substring(lineCursor + 1)
+                const endMatch = /^\[([^\]]+)]\(([^;)]+)\)({([^}]+)})?/
+                  .exec(restLineText)
+
+                if (endMatch) {
+                  const syntaxSize = 1 + endMatch[0].length
+                  const title = endMatch[1]
+                  const url = endMatch[2]
+                  const style = endMatch[4]
+
+                  const imageNode = document.createElement('IMG')
+                  imageNode.setAttribute('src', url)
+                  imageNode.setAttribute('alt', title)
+
+                  if (allowImageStyle
+                  && style != null) {
+                    imageNode.setAttribute('style', style)
+                  }
+
+                  if (opt.onImage) {
+                    opt.onImage(imageNode, title, url)
+                  }
+
+                  flush(imageNode)
+
+                  ff = syntaxSize
+                  lastFlushCursor += ff
+                }
+              }
+            } else if (allowCode
+            && char === '`') {
+              const restLineText = lineText.substring(lineCursor + 1)
+              const endTagIndex = restLineText.indexOf('`')
+
+              if (endTagIndex > 0) {
+                const content = restLineText.substring(0, endTagIndex)
+                const codeNode = document.createElement('CODE')
+                codeNode.textContent = content
+
+                if (opt.onCode) {
+                  opt.onCode(codeNode)
+                }
+
+                flush(codeNode)
+
+                ff = (1 + endTagIndex + 1)
+                lastFlushCursor += ff
+              }
+            }
+          }
+
+          lineCursor += ff
+        }
       }
 
-      targetNode.appendChild(currentLine)
+      if (targetNode) {
+        targetNode.appendChild(currentLine)
+      }
 
       if (onLineEnd) {
         onLineEnd(body)

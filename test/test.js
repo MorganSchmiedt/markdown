@@ -313,9 +313,7 @@ test('Header with allowHeader flag to false', function (t) {
     ## Sub-title
     ### Sub-sub-title`
   const output = inlineHtml`
-    <p># Title</p>
-    <p>## Sub-title</p>
-    <p>### Sub-sub-title</p>`
+    <p># Title<br>## Sub-title<br>### Sub-sub-title</p>`
   const opt = {
     allowHeader: false,
   }
@@ -621,9 +619,7 @@ test('Unordered list with allowUnorderedList flag to false', function (t) {
     - Second list item
     - Third list item`
   const output = inlineHtml`
-    <p>- First list item</p>
-    <p>- Second list item</p>
-    <p>- Third list item</p>`
+    <p>- First list item<br>- Second list item<br>- Third list item</p>`
   const opt = {
     allowUnorderedList: false,
   }
@@ -690,9 +686,7 @@ test('Ordered list with allowOrderedList flag to false', function (t) {
     + Second list item
     + Third list item`
   const output = inlineHtml`
-    <p>+ First list item</p>
-    <p>+ Second list item</p>
-    <p>+ Third list item</p>`
+    <p>+ First list item<br>+ Second list item<br>+ Third list item</p>`
   const opt = {
     allowOrderedList: false,
   }
@@ -944,7 +938,7 @@ test('Horizontal line', function (t) {
   t.end()
 })
 
-test('Horizontal line without leading space', function (t) {
+test('Horizontal line without pre-newline', function (t) {
   const input = `
     Pre line text
     ---
@@ -952,15 +946,14 @@ test('Horizontal line without leading space', function (t) {
     Post line text`
 
   const output = inlineHtml`
-    <p>Pre line text</p>
-    <p>---</p>
+    <p>Pre line text<br>---</p>
     <p>Post line text</p>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
 })
 
-test('Horizontal line without trailing space', function (t) {
+test('Horizontal line without pre-newline', function (t) {
   const input = `
     Pre line text
 
@@ -969,8 +962,7 @@ test('Horizontal line without trailing space', function (t) {
 
   const output = inlineHtml`
     <p>Pre line text</p>
-    <p>---</p>
-    <p>Post line text</p>`
+    <p>---<br>Post line text</p>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -1051,8 +1043,7 @@ test('Quote with allowQuote flag to false', function (t) {
     > Blockquote line 1
     > Blockquote line 2`
   const output = inlineHtml`
-    <p>&gt; Blockquote line 1</p>
-    <p>&gt; Blockquote line 2</p>`
+    <p>&gt; Blockquote line 1<br>&gt; Blockquote line 2</p>`
   const opt = {
     allowQuote: false,
   }
@@ -1145,10 +1136,7 @@ test('Multiline Code with allowMultilineCode flag to false', function (t) {
     Multiline code 2
     \`\`\``
   const output = inlineHtml`
-    <p>\`\`\`javascript</p>
-    <p>Multiline code 1</p>
-    <p>Multiline code 2</p>
-    <p>\`\`\`</p>`
+    <p>\`\`\`javascript<br>Multiline code 1<br>Multiline code 2<br>\`\`\`</p>`
   const opt = {
     allowMultilineCode: false,
   }
@@ -1157,7 +1145,7 @@ test('Multiline Code with allowMultilineCode flag to false', function (t) {
   t.end()
 })
 
-test('br are NOT added on blank lines by default', function (t) {
+test('Paragraph', function (t) {
   const input = 'Line 1\n\nLine 2'
   const output = '<p>Line 1</p><p>Line 2</p>'
 
@@ -1165,14 +1153,11 @@ test('br are NOT added on blank lines by default', function (t) {
   t.end()
 })
 
-test('br ARE added on blank lines if brOnBlankLine is true', function (t) {
-  const input = 'Line 1\n\nLine 2'
-  const output = '<p>Line 1</p><br><p>Line 2</p>'
-  const opt = {
-    brOnBlankLine: true,
-  }
+test('Paragraph with extra newlines', function (t) {
+  const input = 'Line 1\n\n\n\nLine 2'
+  const output = '<p>Line 1</p><p>Line 2</p>'
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
+  t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
 })
 
@@ -1181,17 +1166,6 @@ test('Line of spaces are considered empty', function (t) {
   const output = '<p>Line 1</p><p>Line 2</p>'
 
   t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
-})
-
-test('Space-only lines are considered empty', function (t) {
-  const input = 'Line 1\n  \nLine 2'
-  const output = '<p>Line 1</p><br><p>Line 2</p>'
-  const opt = {
-    brOnBlankLine: true,
-  }
-
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
   t.end()
 })
 

@@ -3,9 +3,12 @@
 /* eslint-disable no-console */
 
 const parser = require('../src/markdown.js')
-const parse = (input, opt) => parser.parse(input, opt)
 
-const trimInput = text => {
+const trimInput = param => {
+  const text = typeof param === 'string'
+    ? param
+    : param[0]
+
   if (text[0] !== '\n') {
     return text
   }
@@ -19,7 +22,9 @@ const trimInput = text => {
     .join('\n')
 }
 
-const input = trimInput`
+const parse = (input, opt) => parser.parse(trimInput(input), opt)
+
+const input = `
   // Some markdown
   // ...`
 

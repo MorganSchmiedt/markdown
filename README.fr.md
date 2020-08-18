@@ -28,6 +28,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Texte en gras-italique](#bold-italic-text)
   - [Texte barré](#texte-barre)
   - [Exposant](#exposant)
+  - [Paragraphe](#paragraphe)
   - [Titre](#titre)
   - [Lien](#lien)
   - [Image](#image)
@@ -40,7 +41,6 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Citation](#citation)
   - [Référence](#reference)
   - [Caractère d'échappement](#escape-character)
-  - [Saut de ligne](#saut-de-ligne)
 - [Différences avec la syntaxe Markdown standard](#différences-avec-la-syntaxe-markdown-standard)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
@@ -95,7 +95,6 @@ Les options disponibles sont:
 - `allowHorizontalLine`: Si les lignes horizontales sont autorisées. `true` par défaut.
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
 - `allowReference`: Si les références sont autorisées. `true` par défaut.
-- `brOnBlankLine`: Si une balise `<br>` est ajouté lorsqu'il y a une ligne vide. `false` par défaut.
 - `maxHeader`: Niveau maximal des titres. Nombre de 1 à 6 inclus. e.g. 2 signifie que les balises autorisées sont `<h1>` et `<h2>`. 6 par défaut.
 
 Des fonctions Callback peuvent aussi être ajoutées aux options du parseur. Ces fonctions permettent de modifier l'[élément](#l-objet-element) de sortie (e.g. ajouter des attributs personnalisés)
@@ -243,6 +242,33 @@ Ceci est un ^texte en exposant^
 
 ```html
 <p>Ceci est un <sup>texte en exposant</sup></p>
+```
+
+
+## Paragraphe
+
+Un seul saut de ligne ajoute le text au dernier paragraphe. Deux sauts de ligne à la suite créé un nouveau paragraphe.
+
+*Exemple avec un seul saut de ligne*
+```
+Première ligne de texte
+Seconde ligne de texte
+```
+
+```html
+<p>Première ligne de texte<br>Seconde ligne de texte</p>
+```
+
+*Example with two newlines*
+```
+Première ligne de texte
+
+Seconde ligne de texte
+```
+
+```html
+<p>Première ligne de texte</p>
+<p>Seconde ligne de texte</p>
 ```
 
 
@@ -555,32 +581,6 @@ Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécia
 
 ```html
 <p>Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécial.</p>
-```
-
-
-## Saut de ligne
-
-Les sauts de lignes sont ignorés, sauf si la paramètre `brOnBlankLine` est activé.
-
-*Exemple*
-```
-Du texte suivi de deux sauts de ligne.
-
-
-Encore du texte.
-```
-
-```html
-<p>Du texte suivi de deux sauts de ligne.</p>
-<p>Encore du texte.</p>
-```
-
-*Même Exemple avec brOnBlankLine activé*
-
-```html
-<p>Du texte suivi de deux sauts de ligne.</p>
-<br>
-<p>Encore du texte.</p>
 ```
 
 
