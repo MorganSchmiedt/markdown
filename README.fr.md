@@ -90,8 +90,9 @@ Les options disponibles sont:
 - `allowCode`: Si du code est autorisé. `true` par défaut.
 - `allowMultilineCode`: Si du code multi lignes est autorisé. `true` par défaut.
 - `allowUnorderedList`: Si les listes non-numérotées sont autorisées. `true` par défaut.
+- `allowOrderedNestedList`: Si les listes numérotées imbriquées sont autorisées. `true` par défaut.
 - `allowOrderedList`: Si les listes numérotées sont autorisées. `true` par défaut.
-- `allowNestedList`: Si les listes imbriquées sont autorisées. Defaults to `true`.
+- `allowOrderedList`: Si les listes numérotées imbriquées sont autorisées. `true` par défaut.
 - `allowHorizontalLine`: Si les lignes horizontales sont autorisées. `true` par défaut.
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
 - `allowReference`: Si les références sont autorisées. `true` par défaut.
@@ -376,7 +377,7 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
 
 Les éléments d'une liste non numérotée commencent avec un tiret (`-`) suivi par un espace.
 
-Une liste peut être imbriquée dans une autre liste en commençant avec au moins deux espaces, suivi d'un tiret, et d'un autre espace. 
+Une liste peut être imbriquée dans une autre liste en commençant avec au moins deux espaces, suivi d'un tiret, et d'un autre espace. Seulement une liste de même type peut être imbriquée.
 
 *Exemple*
 ```
@@ -417,15 +418,15 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
 
 ## Liste numérotée
 
-Les éléments d'une liste numérotée commencent avec un signe plus (`+`) suivi par un espace.
+Les éléments d'une liste numérotée commencent avec un nombre suivi par un point (`.`) et un espace.
 
-Une liste peut être imbriquée dans une autre liste en commençant avec au moins un espace, suivi d'un signe plus, et d'un espace. 
+Une liste peut être imbriquée dans une autre liste en commençant avec au moins trois espaces, suivi d'un nombre, et d'un espace. Seulement une liste de même type peut être imbriquée.
 
 *Exemple*
 ```
-+ Item 1
-+ Item 2
-+ Item 3
+1. Item 1
+2. Item 2
+3. Item 3
 ```
 
 ```html
@@ -438,10 +439,10 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
 
 *Exemple avec une liste imbriquée*
 ```
-+ Item 1
-  + Item 1.1
-  + Item 1.2
-+ Item 2
+1. Item 1
+   1. Item 1.1
+   2. Item 1.2
+2. Item 2
 ```
 
 ```html
@@ -454,7 +455,7 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
     </ol>
   </li>
   <li>Item 2</li>
-  </ol>
+</ol>
 ```
 
 

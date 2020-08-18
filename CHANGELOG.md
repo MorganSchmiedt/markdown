@@ -5,7 +5,7 @@
 **🌟 New**
 - Unordered and ordered nested lists are supported.
 - Space-only lines are considered empty.
-- `allowNestedList`, `allowReference`, `allowFootnote` options are added.
+- `allowUnorderedNestedList`, `allowOrderedNestedList`, `allowReference`, `allowFootnote` options are added.
 - `Element.id`, `Element.className`,  `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes`, `Element.innerHTML`, `Element.outerHTML` are added.
 
 **⚠ Breaking changes**
@@ -21,6 +21,7 @@
 - A single newline adds a `<br>` tag to the last paragraph.
 - Two newlines creates a paragraph.
 - `brOnBlankLine` option is removed.
+- Ordered Lists now starts with a number and a period.
 
 **🔧 Changes**
 - Void HTML elements no longer have a trailing slash.

@@ -260,8 +260,9 @@ const parseMaxHeader = (value, defaultValue) => {
  * @param {boolean} [opt.allowCode=true]
  * @param {boolean} [opt.allowMultilineCode=true]
  * @param {boolean} [opt.allowUnorderedList=true]
+ * @param {boolean} [opt.allowNestedUnorderedList=true]
  * @param {boolean} [opt.allowOrderedList=true]
- * @param {boolean} [opt.allowNestedList=true]
+ * @param {boolean} [opt.allowNestedOrderedList=true]
  * @param {boolean} [opt.allowHorizontalLine=true]
  * @param {boolean} [opt.allowQuote=true]
  * @param {boolean} [opt.allowReference=true]
@@ -285,8 +286,9 @@ const parse = (markdownText, opt = {}) => {
   const allowCode = parseBoolean(opt.allowCode, true)
   const allowMultilineCode = parseBoolean(opt.allowMultilineCode, true)
   const allowUnorderedList = parseBoolean(opt.allowUnorderedList, true)
+  const allowUnordNestedList = parseBoolean(opt.allowUnorderedNestedList, true)
   const allowOrderedList = parseBoolean(opt.allowOrderedList, true)
-  const allowNestedList = parseBoolean(opt.allowNestedList, true)
+  const allowOrdNestedList = parseBoolean(opt.allowOrderedNestedList, true)
   const allowHorizontalLine = parseBoolean(opt.allowHorizontalLine, true)
   const allowQuote = parseBoolean(opt.allowQuote, true)
   const allowReference = parseBoolean(opt.allowReference, true)
@@ -426,7 +428,7 @@ const parse = (markdownText, opt = {}) => {
           lastFlushCursor = lineCursor
 
           if (opt.onUnorderedList) {
-            if (allowNestedList) {
+            if (allowUnordNestedList) {
               if (nextRestText.trimStart().startsWith('- ') === false) {
                 onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
               }
@@ -438,8 +440,12 @@ const parse = (markdownText, opt = {}) => {
           }
         }
       } else if (allowOrderedList
-      && firstChar === '+') {
-        if (next(1) === ' ') {
+      && Number.isInteger(parseInt(firstChar, 10))) {
+        const match = /^([0-9]+)\. /.exec(lineText)
+
+        if (match) {
+          const syntaxSize = match[0].length
+
           if (body.lastChild == null
           || body.lastChild.tagName !== 'OL') {
             body.appendChild(document.createElement('OL'))
@@ -447,68 +453,86 @@ const parse = (markdownText, opt = {}) => {
 
           targetNode = body.lastChild
           currentLine = document.createElement('LI')
-          lineCursor = 2
+          lineCursor = syntaxSize
           lastFlushCursor = lineCursor
 
           if (opt.onOrderedList) {
-            if (allowNestedList) {
-              if (nextRestText.trimStart().startsWith('+ ') === false) {
+            if (allowOrdNestedList) {
+              if (/^( )*([0-9]+)\. /.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
               }
             } else {
-              if (nextRestText.startsWith('+ ') === false) {
+              if (/^([0-9]+)\. /.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
               }
             }
           }
         }
-      } else if (allowNestedList
-      && firstChar === ' '
-      && next(1) === ' '
-      && body.lastChild != null) {
-        const lastListTag = body.lastChild.tagName
-
-        if (lastListTag === 'UL'
-        || lastListTag === 'OL') {
-          const lastListSign = lastListTag === 'UL'
-            ? '-'
-            : '+'
-          const listRegex = new RegExp(`( ){2,}(\\${lastListSign}) `)
+      } else if (firstChar === ' '
+      && next(1) === ' ') {
+        if (allowUnordNestedList
+        && body.lastChild != null
+        && body.lastChild.tagName === 'UL') {
+          const listRegex = new RegExp('^( ){2,}- ')
           const listMatch = listRegex.exec(lineText)
 
           if (listMatch) {
-            const matchSize = listMatch[0].length
-            const listSign = listMatch[2]
-            const listTag = listSign === '-'
-              ? 'UL'
-              : 'OL'
+            const syntaxSize = listMatch[0].length
 
             const parentNode = body.lastChild
             const lastItemNode = parentNode.lastChild
             const itemContentNode = lastItemNode.lastChild
 
-            if (itemContentNode.tagName === listTag) {
+            if (itemContentNode.tagName === 'UL') {
               targetNode = itemContentNode
             } else {
-              lastItemNode.appendChild(document.createElement(listTag))
+              lastItemNode.appendChild(document.createElement('UL'))
               targetNode = lastItemNode.lastChild
             }
 
             currentLine = document.createElement('LI')
-            lineCursor = matchSize
+            lineCursor = syntaxSize
             lastFlushCursor = lineCursor
 
-            const nextLineMatch = listRegex.exec(nextRestText)
+            if (opt.onUnorderedList) {
+              const isLastItem = listRegex.exec(nextRestText) == null
 
-            if (nextLineMatch == null) {
-              if (opt.onUnorderedList
-              && listTag === 'UL') {
+              if (isLastItem) {
                 onLineEnd = body => {
                   opt.onUnorderedList(body.lastChild.lastChild.lastChild, 2)
                   opt.onUnorderedList(body.lastChild, 1)
                 }
-              } else if (opt.onOrderedList
-              && listTag === 'OL') {
+              }
+            }
+          }
+        } else if (allowOrdNestedList
+        && body.lastChild != null
+        && body.lastChild.tagName === 'OL') {
+          const listRegex = new RegExp('^( ){3,}([0-9]+)\\. ')
+          const listMatch = listRegex.exec(lineText)
+
+          if (listMatch) {
+            const syntaxSize = listMatch[0].length
+
+            const parentNode = body.lastChild
+            const lastItemNode = parentNode.lastChild
+            const itemContentNode = lastItemNode.lastChild
+
+            if (itemContentNode.tagName === 'OL') {
+              targetNode = itemContentNode
+            } else {
+              lastItemNode.appendChild(document.createElement('OL'))
+              targetNode = lastItemNode.lastChild
+            }
+
+            currentLine = document.createElement('LI')
+            lineCursor = syntaxSize
+            lastFlushCursor = lineCursor
+
+            if (opt.onOrderedList) {
+              const isLastItem = listRegex.exec(nextRestText) == null
+
+              if (isLastItem) {
                 onLineEnd = body => {
                   opt.onOrderedList(body.lastChild.lastChild.lastChild, 2)
                   opt.onOrderedList(body.lastChild, 1)

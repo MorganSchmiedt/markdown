@@ -91,8 +91,9 @@ Available options are:
 - `allowCode`: Whether inline codes are allowed. Defaults to `true`.
 - `allowMultilineCode`: Whether multiline codes are allowed. Defaults to `true`.
 - `allowUnorderedList`: Whether unordered lists are allowed. Defaults to `true`.
+- `allowUnorderedNestedList`: Whether unordered nested lists are allowed. Defaults to `true`.
 - `allowOrderedList`: Whether ordered lists are allowed. Defaults to `true`.
-- `allowNestedList`: Whether nested lists are allowed. Defaults to `true`.
+- `allowOrderedNestedList`: Whether ordered nested lists are allowed. Defaults to `true`.
 - `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowReference`: Whether references are allowed. Defaults to `true`.
@@ -377,7 +378,7 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
 
 Unordered list items start with a dash (`-`) followed by a space.
 
-Nested list items start with at least two spaces, followed by a dash and an another space.
+Nested list items start with at least two spaces, followed by a dash and  another space. Only one unordered nested list is allowed.
 
 *Example*
 ```
@@ -418,15 +419,15 @@ Nested list items start with at least two spaces, followed by a dash and an anot
 
 ## Ordered list
 
-Ordered list items start with a plus sign (`+`) followed by a space.
+Ordered list items start with a number, followed by a period (`.`) and a space.
 
-Nested list items start with at least one space, followed by a plus sign and a space.
+Nested list items start with at least three spaces, followed by a number and a space. Only one ordered nested list is allowed.
 
 *Example*
 ```
-+ Item 1
-+ Item 2
-+ Item 3
+1. Item 1
+2. Item 2
+3. Item 3
 ```
 
 ```html
@@ -439,10 +440,10 @@ Nested list items start with at least one space, followed by a plus sign and a s
 
 *Example with nested list*
 ```
-+ Item 1
-  + Item 1.1
-  + Item 1.2
-+ Item 2
+1. Item 1
+   1. Item 1.1
+   2. Item 1.2
+2. Item 2
 ```
 
 ```html
@@ -455,7 +456,7 @@ Nested list items start with at least one space, followed by a plus sign and a s
     </ol>
   </li>
   <li>Item 2</li>
-  </ol>
+</ol>
 ```
 
 ## Horizontal Line

@@ -630,9 +630,9 @@ test('Unordered list with allowUnorderedList flag to false', function (t) {
 
 test('Ordered List', function (t) {
   const input = `
-    + First list number
-    + Second list number
-    + Third list number`
+    1. First list number
+    2. Second list number
+    3. Third list number`
   const output = inlineHtml`
     <ol>
       <li>First list number</li>
@@ -647,8 +647,8 @@ test('Ordered List', function (t) {
 test('Ordered List with callback', function (t) {
   const input = `
     Some text
-    + List 1, Item 1
-    + List 1, Item 2
+    1. List 1, Item 1
+    2. List 1, Item 2
     Not at the end of the file`
 
   const opt = {
@@ -664,8 +664,8 @@ test('Ordered List with callback', function (t) {
 
   const input2 = `
     Some text
-    + List 1, Item 1
-    + List 1, Item 2 at the end of the file`
+    1. List 1, Item 1
+    2. List 1, Item 2 at the end of the file`
 
   const opt2 = {
     onOrderedList: (node, level) => {
@@ -682,11 +682,11 @@ test('Ordered List with callback', function (t) {
 
 test('Ordered list with allowOrderedList flag to false', function (t) {
   const input = `
-    + First list item
-    + Second list item
-    + Third list item`
+    1. First list item
+    2. Second list item
+    3. Third list item`
   const output = inlineHtml`
-    <p>+ First list item<br>+ Second list item<br>+ Third list item</p>`
+    <p>1. First list item<br>2. Second list item<br>3. Third list item</p>`
   const opt = {
     allowOrderedList: false,
   }
@@ -724,9 +724,9 @@ test('Unordered Nested List', function (t) {
     </ul>
     <p>Some text</p>
     <ul>
-    <li>Item 3</li>
-    <li>Item 4</li>
-  </ul>`
+      <li>Item 3</li>
+      <li>Item 4</li>
+    </ul>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -749,14 +749,14 @@ test('Nested List with only 1 space', function (t) {
 
 test('Ordered Nested List', function (t) {
   const input = `
-    + Item 1
-      + Item 1.1
-    + Item 2
-      + Item 2.1
-      + Item 2.2
+    1. Item 1
+       1. Item 1.1
+    2. Item 2
+       1. Item 2.1
+       2. Item 2.2
     Some text
-    + Item 3
-    + Item 4`
+    3. Item 3
+    4. Item 4`
 
   const output = inlineHtml`
     <ol>
@@ -784,16 +784,16 @@ test('Ordered Nested List', function (t) {
   t.end()
 })
 
-test('Nested Ord. List with only 1 space', function (t) {
+test('Nested Ord. List with only 2 spaces', function (t) {
   const input = `
-    + Item 1
-     + Item 1.1`
+    1. Item 1
+      1. Item 1.1`
 
   const output = inlineHtml`
     <ol>
       <li>Item 1</li>
     </ol>
-    <p> + Item 1.1</p>`
+    <p>  1. Item 1.1</p>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -802,13 +802,13 @@ test('Nested Ord. List with only 1 space', function (t) {
 test('Nested List with unordered in ordered', function (t) {
   const input = `
     - Item 1
-      + Item 1.1`
+      1. Item 1.1`
 
   const output = inlineHtml`
     <ul>
       <li>Item 1</li>
     </ul>
-    <p>  + Item 1.1</p>`
+    <p>  1. Item 1.1</p>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -816,7 +816,7 @@ test('Nested List with unordered in ordered', function (t) {
 
 test('Nested List with ordered in unordered', function (t) {
   const input = `
-    + Item 1
+    1. Item 1
       - Item 1.1`
 
   const output = inlineHtml`
@@ -858,8 +858,8 @@ test('Nested unordered List with callback', function (t) {
 
 test('Nested ordered List with callback', function (t) {
   const input = `
-    + Item 1
-      + Item 1.1`
+    1. Item 1
+       1. Item 1.1`
 
   const opt = {
     onOrderedList: (node, level) => {
@@ -883,7 +883,7 @@ test('Nested ordered List with callback', function (t) {
   parse(input, opt)
 })
 
-test('Unordered Nested List with allowNestedList to false', function (t) {
+test('Unordered Nested List with allowUnorderedNestedList to false', function (t) {
   const input = `
     - Item 1
       - Item 1.1`
@@ -895,26 +895,26 @@ test('Unordered Nested List with allowNestedList to false', function (t) {
     <p>  - Item 1.1</p>`
 
   const opt = {
-    allowNestedList: false,
+    allowUnorderedNestedList: false,
   }
 
   t.equal(parseToHtml(input, opt), output, 'Output is valid')
   t.end()
 })
 
-test('Ordered Nested List with allowNestedList to false', function (t) {
+test('Ordered Nested List with allowOrderedNestedList to false', function (t) {
   const input = `
-    + Item 1
-      + Item 1.1`
+    1. Item 1
+       1. Item 1.1`
 
   const output = inlineHtml`
     <ol>
       <li>Item 1</li>
     </ol>
-    <p>  + Item 1.1</p>`
+    <p>   1. Item 1.1</p>`
 
   const opt = {
-    allowNestedList: false,
+    allowOrderedNestedList: false,
   }
 
   t.equal(parseToHtml(input, opt), output, 'Output is valid')
