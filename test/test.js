@@ -4,22 +4,30 @@
 
 const test = require('tape')
 const parser = require('../src/markdown.js')
-const parse = (input, opt) => parser.parse(input, opt)
-const parseToHtml = (input, opt) => parse(input, opt).innerHTML
 
-const trimI = text =>
-  text[0]
+const trimInput = text => {
+  if (text[0] !== '\n') {
+    return text
+  }
+
+  const md = text.substr(1)
+  const trimLeftCount = md.length - md.trimStart().length
+
+  return md
     .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
+    .map(line => line.substr(trimLeftCount).trimEnd())
     .join('\n')
+}
 
-const trimO = text =>
+const inlineHtml = text =>
   text[0]
     .split('\n')
     .map(line => line.trim())
     .filter(line => line.length > 0)
     .join('')
+
+const parse = (input, opt) => parser.parse(trimInput(input), opt)
+const parseToHtml = (input, opt) => parse(input, opt).innerHTML
 
 test('Module Exports', function (t) {
   t.equal(typeof parser.Element, 'function', 'Element is there')
@@ -109,7 +117,7 @@ test('Element.textContent with one element', function (t) {
 })
 
 test('Element.textContent with multiple element', function (t) {
-  const input = trimI`
+  const input = `
     - Item 1
     - Item 2`
   const textContent = 'Item 1Item 2'
@@ -129,10 +137,10 @@ test('Element.textContent with embedded element', function (t) {
 })
 
 test('Element.textContent with complex list', function (t) {
-  const input =
-`- Item 1
-  - Item 1.1
-- Item 2`
+  const input = `
+    - Item 1
+      - Item 1.1
+    - Item 2`
   const textContent = 'Item 1Item 1.1Item 2'
   const element = parse(input)
 
@@ -159,7 +167,7 @@ test('Element.textContent with void element', function (t) {
 })
 
 test('Element.innerHTML, Element.outerHTML', function (t) {
-  const input = trimI`This is a text`
+  const input = 'This is a text'
   const element = parse(input)
   const innerHtmlOutput = '<p>This is a text</p>'
   const outerHtmlOutput = '<div><p>This is a text</p></div>'
@@ -300,11 +308,11 @@ test('Header lvl 3 with callback', function (t) {
 })
 
 test('Header with allowHeader flag to false', function (t) {
-  const input = trimI`
+  const input = `
     # Title
     ## Sub-title
     ### Sub-sub-title`
-  const output = trimO`
+  const output = inlineHtml`
     <p># Title</p>
     <p>## Sub-title</p>
     <p>### Sub-sub-title</p>`
@@ -317,11 +325,11 @@ test('Header with allowHeader flag to false', function (t) {
 })
 
 test('Header with maxHeaderLevel to 2', function (t) {
-  const input = trimI`
+  const input = `
     # Title
     ## Sub-title
     ### Sub-sub-title`
-  const output = trimO`
+  const output = inlineHtml`
     <h1>Title</h1>
     <h2>Sub-title</h2>
     <p>### Sub-sub-title</p>`
@@ -417,7 +425,7 @@ test('Link with allowLink flag to false', function (t) {
 
 test('Image as a figure', function (t) {
   const input = '![alt text](https://example.com/image)'
-  const output = trimO`
+  const output = inlineHtml`
     <figure>
       <img src="https://example.com/image" alt="">
       <figcaption>alt text</figcaption>
@@ -429,7 +437,7 @@ test('Image as a figure', function (t) {
 
 test('Image as a figure can NOT be styled by default', function (t) {
   const input = '![alt text](https://example.com/image;height:100px)'
-  const output = trimO`
+  const output = inlineHtml`
     <figure>
       <img src="https://example.com/image" alt="">
       <figcaption>alt text</figcaption>
@@ -441,7 +449,7 @@ test('Image as a figure can NOT be styled by default', function (t) {
 
 test('Image as a figure CAN be styled if allowImageStyle is true', function (t) {
   const input = '![alt text](https://example.com/image;height:100px)'
-  const output = trimO`
+  const output = inlineHtml`
     <figure style="height:100px">
       <img src="https://example.com/image" alt="">
       <figcaption>alt text</figcaption>
@@ -509,7 +517,7 @@ test('Image inline with callback', function (t) {
 
 test('Video', function (t) {
   const input = '![alt text](https://example.com/video.mp4)'
-  const output = trimO`
+  const output = inlineHtml`
     <figure>
       <video controls="">
         <source src="https://example.com/video.mp4" type="video/mp4">
@@ -535,11 +543,11 @@ test('Video with callback', function (t) {
 })
 
 test('Unordered List', function (t) {
-  const input = trimI`
+  const input = `
     - First list item
     - Second list item
     - Third list item`
-  const output = trimO`
+  const output = inlineHtml`
     <ul>
       <li>First list item</li>
       <li>Second list item</li>
@@ -551,14 +559,14 @@ test('Unordered List', function (t) {
 })
 
 test('Unordered List with complex texts', function (t) {
-  const input = trimI`
+  const input = `
     - *Italic* item
     - Item **bold**
     - Item ~~strikethrough~~
     - ^superscript^
     - [Link](url)`
 
-  const output = trimO`
+  const output = inlineHtml`
     <ul>
       <li><em>Italic</em> item</li>
       <li>Item <strong>bold</strong></li>
@@ -572,7 +580,7 @@ test('Unordered List with complex texts', function (t) {
 })
 
 test('Unordered List with callback', function (t) {
-  const input = trimI`
+  const input = `
     Some text
     - List 1, Item 1
     - List 1, Item 2
@@ -589,7 +597,7 @@ test('Unordered List with callback', function (t) {
 
   parse(input, opt)
 
-  const input2 = trimI`
+  const input2 = `
     Some text
     - List 1, Item 1
     - List 1, Item 2 at the end of the file`
@@ -608,11 +616,11 @@ test('Unordered List with callback', function (t) {
 })
 
 test('Unordered list with allowUnorderedList flag to false', function (t) {
-  const input = trimI`
+  const input = `
     - First list item
     - Second list item
     - Third list item`
-  const output = trimO`
+  const output = inlineHtml`
     <p>- First list item</p>
     <p>- Second list item</p>
     <p>- Third list item</p>`
@@ -625,11 +633,11 @@ test('Unordered list with allowUnorderedList flag to false', function (t) {
 })
 
 test('Ordered List', function (t) {
-  const input = trimI`
+  const input = `
     + First list number
     + Second list number
     + Third list number`
-  const output = trimO`
+  const output = inlineHtml`
     <ol>
       <li>First list number</li>
       <li>Second list number</li>
@@ -641,7 +649,7 @@ test('Ordered List', function (t) {
 })
 
 test('Ordered List with callback', function (t) {
-  const input = trimI`
+  const input = `
     Some text
     + List 1, Item 1
     + List 1, Item 2
@@ -658,7 +666,7 @@ test('Ordered List with callback', function (t) {
 
   parse(input, opt)
 
-  const input2 = trimI`
+  const input2 = `
     Some text
     + List 1, Item 1
     + List 1, Item 2 at the end of the file`
@@ -677,11 +685,11 @@ test('Ordered List with callback', function (t) {
 })
 
 test('Ordered list with allowOrderedList flag to false', function (t) {
-  const input = trimI`
+  const input = `
     + First list item
     + Second list item
     + Third list item`
-  const output = trimO`
+  const output = inlineHtml`
     <p>+ First list item</p>
     <p>+ Second list item</p>
     <p>+ Third list item</p>`
@@ -694,17 +702,17 @@ test('Ordered list with allowOrderedList flag to false', function (t) {
 })
 
 test('Unordered Nested List', function (t) {
-  const input =
-`- Item 1
-  - Item 1.1
-- Item 2
-  - Item 2.1
-  - Item 2.2
-Some text
-- Item 3
-- Item 4`
+  const input = `
+    - Item 1
+      - Item 1.1
+    - Item 2
+      - Item 2.1
+      - Item 2.2
+    Some text
+    - Item 3
+    - Item 4`
 
-  const output = trimO`
+  const output = inlineHtml`
     <ul>
       <li>
         Item 1
@@ -731,17 +739,17 @@ Some text
 })
 
 test('Ordered Nested List', function (t) {
-  const input =
-`+ Item 1
-  + Item 1.1
-+ Item 2
-  + Item 2.1
-  + Item 2.2
-Some text
-+ Item 3
-+ Item 4`
+  const input = `
+    + Item 1
+      + Item 1.1
+    + Item 2
+      + Item 2.1
+      + Item 2.2
+    Some text
+    + Item 3
+    + Item 4`
 
-  const output = trimO`
+  const output = inlineHtml`
     <ol>
       <li>
         Item 1
@@ -768,11 +776,11 @@ Some text
 })
 
 test('Nested List with unordered in ordered', function (t) {
-  const input =
-`- Item 1
-  + Item 1.1`
+  const input = `
+    - Item 1
+      + Item 1.1`
 
-  const output = trimO`
+  const output = inlineHtml`
     <ul>
       <li>Item 1</li>
     </ul>
@@ -783,11 +791,11 @@ test('Nested List with unordered in ordered', function (t) {
 })
 
 test('Nested List with ordered in unordered', function (t) {
-  const input =
-`+ Item 1
-  - Item 1.1`
+  const input = `
+    + Item 1
+      - Item 1.1`
 
-  const output = trimO`
+  const output = inlineHtml`
     <ol>
       <li>Item 1</li>
     </ol>
@@ -798,9 +806,9 @@ test('Nested List with ordered in unordered', function (t) {
 })
 
 test('Nested unordered List with callback', function (t) {
-  const input =
-`- Item 1
-  - Item 1.1`
+  const input = `
+    - Item 1
+      - Item 1.1`
 
   const opt = {
     onUnorderedList: (node, level) => {
@@ -825,9 +833,9 @@ test('Nested unordered List with callback', function (t) {
 })
 
 test('Nested ordered List with callback', function (t) {
-  const input =
-`+ Item 1
-  + Item 1.1`
+  const input = `
+    + Item 1
+      + Item 1.1`
 
   const opt = {
     onOrderedList: (node, level) => {
@@ -852,11 +860,11 @@ test('Nested ordered List with callback', function (t) {
 })
 
 test('Unordered Nested List with allowNestedList to false', function (t) {
-  const input =
-`- Item 1
-  - Item 1.1`
+  const input = `
+    - Item 1
+      - Item 1.1`
 
-  const output = trimO`
+  const output = inlineHtml`
     <ul>
       <li>Item 1</li>
     </ul>
@@ -871,11 +879,11 @@ test('Unordered Nested List with allowNestedList to false', function (t) {
 })
 
 test('Ordered Nested List with allowNestedList to false', function (t) {
-  const input =
-`+ Item 1
-  + Item 1.1`
+  const input = `
+    + Item 1
+      + Item 1.1`
 
-  const output = trimO`
+  const output = inlineHtml`
     <ol>
       <li>Item 1</li>
     </ol>
@@ -890,14 +898,14 @@ test('Ordered Nested List with allowNestedList to false', function (t) {
 })
 
 test('Horizontal line', function (t) {
-  const input =
-`Pre line text
+  const input = `
+    Pre line text
 
----
+    ---
 
-Post line text`
+    Post line text`
 
-  const output = trimO`
+  const output = inlineHtml`
     <p>Pre line text</p>
     <hr>
     <p>Post line text</p>`
@@ -907,13 +915,13 @@ Post line text`
 })
 
 test('Horizontal line without leading space', function (t) {
-  const input =
-`Pre line text
----
+  const input = `
+    Pre line text
+    ---
 
-Post line text`
+    Post line text`
 
-  const output = trimO`
+  const output = inlineHtml`
     <p>Pre line text</p>
     <p>---</p>
     <p>Post line text</p>`
@@ -923,13 +931,13 @@ Post line text`
 })
 
 test('Horizontal line without trailing space', function (t) {
-  const input =
-`Pre line text
+  const input = `
+    Pre line text
 
----
-Post line text`
+    ---
+    Post line text`
 
-  const output = trimO`
+  const output = inlineHtml`
     <p>Pre line text</p>
     <p>---</p>
     <p>Post line text</p>`
@@ -939,12 +947,12 @@ Post line text`
 })
 
 test('Horizontal line with callback', function (t) {
-  const input =
-`Pre line text
+  const input = `
+    Pre line text
 
----
+    ---
 
-Post line text`
+    Post line text`
 
   const opt = {
     onHorizontalLine: node => {
@@ -958,13 +966,14 @@ Post line text`
 })
 
 test('Horizontal line with allowHorizontalLine flag to false', function (t) {
-  const input =
-`Pre line text
+  const input = `
+    Pre line text
 
----
+    ---
 
-Post line text`
-  const output = trimO`
+    Post line text`
+
+  const output = inlineHtml`
     <p>Pre line text</p>
     <p>---</p>
     <p>Post line text</p>`
@@ -977,10 +986,10 @@ Post line text`
 })
 
 test('Quote', function (t) {
-  const input = trimI`
+  const input = `
     > Blockquote line 1
     > Blockquote line2`
-  const output = trimO`
+  const output = inlineHtml`
     <blockquote>
       <p>Blockquote line 1</p>
       <p>Blockquote line2</p>
@@ -991,7 +1000,7 @@ test('Quote', function (t) {
 })
 
 test('Quote with callback', function (t) {
-  const input = trimI`
+  const input = `
     > Blockquote line 1
     > Blockquote line2`
   const opt = {
@@ -1008,10 +1017,10 @@ test('Quote with callback', function (t) {
 })
 
 test('Quote with allowQuote flag to false', function (t) {
-  const input = trimI`
+  const input = `
     > Blockquote line 1
     > Blockquote line 2`
-  const output = trimO`
+  const output = inlineHtml`
     <p>&gt; Blockquote line 1</p>
     <p>&gt; Blockquote line 2</p>`
   const opt = {
@@ -1057,7 +1066,7 @@ test('Code with allowCode flag to false', function (t) {
 })
 
 test('Multiline code', function (t) {
-  const input = trimI`
+  const input = `
     \`\`\`
     Multiline code 1
     Multiline code 2
@@ -1069,7 +1078,7 @@ test('Multiline code', function (t) {
 })
 
 test('Multiline code with language name', function (t) {
-  const input = trimI`
+  const input = `
     \`\`\`javascript
     Multiline code 1
     Multiline code 2
@@ -1081,7 +1090,7 @@ test('Multiline code with language name', function (t) {
 })
 
 test('Multiline code with callback', function (t) {
-  const input = trimI`
+  const input = `
     \`\`\`javascript
     Multiline code 1
     Multiline code 2
@@ -1100,12 +1109,12 @@ test('Multiline code with callback', function (t) {
 })
 
 test('Multiline Code with allowMultilineCode flag to false', function (t) {
-  const input = trimI`
+  const input = `
     \`\`\`javascript
     Multiline code 1
     Multiline code 2
     \`\`\``
-  const output = trimO`
+  const output = inlineHtml`
     <p>\`\`\`javascript</p>
     <p>Multiline code 1</p>
     <p>Multiline code 2</p>
