@@ -487,6 +487,7 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (allowNestedList
       && firstChar === ' '
+      && next(1) === ' '
       && body.lastChild != null) {
         const lastListTag = body.lastChild.tagName
 
@@ -495,7 +496,7 @@ const parse = (markdownText, opt = {}) => {
           const lastListSign = lastListTag === 'UL'
             ? '-'
             : '+'
-          const listRegex = new RegExp(`( )+(\\${lastListSign}) `)
+          const listRegex = new RegExp(`( ){2,}(\\${lastListSign}) `)
           const listMatch = listRegex.exec(lineText)
 
           if (listMatch) {

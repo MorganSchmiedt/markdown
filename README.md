@@ -351,7 +351,7 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
 
 Unordered list items start with a dash (`-`) followed by a space.
 
-Nested list items start with at least one space, followed by a dash and a space.
+Nested list items start with at least two spaces, followed by a dash and an another space.
 
 *Example*
 ```

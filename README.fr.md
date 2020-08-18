@@ -350,7 +350,7 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
 
 Les éléments d'une liste non numérotée commencent avec un tiret (`-`) suivi par un espace.
 
-Une liste peut être imbriquée dans une autre liste en commençant avec au moins un espace, suivi d'un tiret, et d'un espace. 
+Une liste peut être imbriquée dans une autre liste en commençant avec au moins deux espaces, suivi d'un tiret, et d'un autre espace. 
 
 *Exemple*
 ```
