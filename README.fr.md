@@ -165,9 +165,9 @@ const myDivElement = new Element('div')
 | [Lien](#lien)                             | `[Texte affiche](lien)`      |
 | [Image](#image) and [Vidéo](#video)       | `![Légende](lien)`           |
 | [Liste non-numérotée](#liste-non-numérotée)| `- Item de la liste`        |
-| [Liste non-numérotée imbriqué](#liste-non-numérotée)| <code>&nbsp;&nbsp;- Item imbriqué</code> |
+| [Liste non-numérotée imbriquée](#liste-non-numérotée)| 2 espaces         |
 | [Liste numérotée](#liste-numérotée)       | `+ Item de liste numérotée`  |
-| [Liste numérotée imbriquée](#liste-numérotée)| <code>&nbsp;&nbsp;+ Item imbriqué</code> |
+| [Liste numérotée imbriquée](#liste-numérotée)| 3 espaces                 |
 | [Ligne horizontale](#ligne-horizontale)   | `---`                        |
 | [Code](#code)                             | `` `Code` ``                 |
 | [Citation](#citation)                     | `> Citation`                 |

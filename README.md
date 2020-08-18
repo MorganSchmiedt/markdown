@@ -166,13 +166,13 @@ const myDivElement = new Element('div')
 | [Link](#link)                             | `[Link text](link_url)`      |
 | [Image](#image) and [Video](#video)       | `![Caption](image_url)`      |
 | [Unordered list](#unordered-list)         | `- List item`                |
-| [Unoredered nested list](#unordered-list) | <code>&nbsp;&nbsp;- Nested list item</code> |
+| [Unoredered nested list](#unordered-list) | 2 spaces                     |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
-| [Ordered nested list](#ordered-list)      | <code>&nbsp;&nbsp;+ Nested list item</code> |
+| [Ordered nested list](#ordered-list)      | 3 spaces                     |
 | [Horizontal Line](#horizontal-line)       | `\n\n---\n\n`                |
 | [Code](#code)                             | `` `Code text` ``            |
 | [Quote](#quote)                           | `> Quote`                    |
-| [Reference](#reference)                   | `Reference[^1]`               |
+| [Reference](#reference)                   | `Reference[^1]`              |
 | [Escape character](#escape-character)     | `\# Header not parsed`       |
 
 
