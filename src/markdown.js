@@ -386,7 +386,7 @@ const parse = (markdownText, opt = {}) => {
               imageNode.setAttribute('alt', '')
 
               if (opt.onImage) {
-                opt.onImage(imageNode, title, url)
+                opt.onImage(imageNode)
               }
 
               figureNode.appendChild(imageNode)
@@ -812,13 +812,13 @@ const parse = (markdownText, opt = {}) => {
 
                 if (endMatch) {
                   const syntaxSize = 1 + endMatch[0].length
-                  const title = endMatch[1]
+                  const altText = endMatch[1]
                   const url = endMatch[2]
                   const style = endMatch[4]
 
                   const imageNode = document.createElement('IMG')
                   imageNode.setAttribute('src', url)
-                  imageNode.setAttribute('alt', title)
+                  imageNode.setAttribute('alt', altText)
 
                   if (allowImageStyle
                   && style != null) {
@@ -826,7 +826,7 @@ const parse = (markdownText, opt = {}) => {
                   }
 
                   if (opt.onImage) {
-                    opt.onImage(imageNode, title, url)
+                    opt.onImage(imageNode)
                   }
 
                   flush(imageNode)
