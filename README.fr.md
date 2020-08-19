@@ -4,7 +4,7 @@
 
 Ce parseur Markdown-vers-HTML utilise une syntaxe personnalisée et allégée du language Markdown.
 
-Il permet de créer: des textes en italique, textes en gras et textes barrés, des exposants, des liens, des titres et sous-titres, des images, des vidéos, du code mono ou multi lignes, des listes numérotées et non-numérotées, des listes imbriquées, des lignes horizontales, des citations et des références.
+Il permet de créer: des textes en italique, textes en gras et textes barrés, des exposants, des liens, des titres et sous-titres, des images, des vidéos, du code mono et multi lignes, des listes numérotées et non-numérotées, des listes imbriquées, des lignes horizontales, des citations et des références.
 
 
 ## Utilisation
