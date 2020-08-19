@@ -597,8 +597,8 @@ This backslash \ is not removed because it is not followed by a special characte
 
 A tick (☑) means that the syntax should work on the platform.
 
-| Type         |           |   GitHub  |   Reddit   |  GitLab  |
-| ------------ |:---------:|:---------:|:----------:|:---------|
+| Type         |  Syntax   |   GitHub  |   Reddit   |  GitLab  |
+| ------------ |:----------|:----------|:-----------|:---------|
 | Italic       | `*`       | ☑         | ☑         | ☑       |
 | Bold         | `**`      | ☑         | ☑         | ☑       |
 | Bold-italic  | `***`     | ☑         | ☑         | ☑       |   

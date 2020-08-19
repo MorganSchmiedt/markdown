@@ -599,29 +599,29 @@ Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécia
 
 Une marque (☑) signifie que la syntaxe devrait fonctionner sur la plateforme.
 
-| Type         |           |   GitHub  |   Reddit   |  GitLab  |
-| ------------ |:---------:|:---------:|:----------:|:---------|
-| Italic       | `*`       | ☑         | ☑         | ☑       |
-| Bold         | `**`      | ☑         | ☑         | ☑       |
-| Bold-italic  | `***`     | ☑         | ☑         | ☑       |   
-| Strikethrough| `~~`      | ☑         | ☑         | ☑       |
-| Newline      | `\n`      | ☑         | ☑         | ☑       |
-| Paragraph    | `\n\n`    | ☑         | ☑         | ☑       |
-| Header       | `#`       | ☑         | ☑         | ☑       |
-| Link         | `[]()`    | ☑         | ☑         | ☑       |
+| Type         | Syntaxe   |   GitHub  |   Reddit   |  GitLab  |
+| ------------ |:----------|:----------|:-----------|:---------|
+| Italique     | `*`       | ☑         | ☑         | ☑       |
+| Gras         | `**`      | ☑         | ☑         | ☑       |
+| Gras-italique| `***`     | ☑         | ☑         | ☑       |   
+| Barré        | `~~`      | ☑         | ☑         | ☑       |
+| Saut de ligne| `\n`      | ☑         | ☑         | ☑       |
+| Paragraphe   | `\n\n`    | ☑         | ☑         | ☑       |
+| Titre        | `#`       | ☑         | ☑         | ☑       |
+| Lien         | `[]()`    | ☑         | ☑         | ☑       |
 | Image        | `![]()`   | ☑         | ☑         | ☑       |
-| Unord. list  | `-`       | ☑         | ☑         | ☑       |
-| Unord. nested| 2 spaces  | ☑         | ☑         | ☑       |
-| Ord. list    | `1.`      | ☑         | ☑         | ☑       |
-| Ord. nested  | 3 spaces  | ☑         | ☑         | ☑       |
-| Horiz. Line  | `\n---\n` | ☑         | ☑         | ☑       |
+| Liste        | `-`       | ☑         | ☑         | ☑       |
+| Liste imb.   | 2 espaces | ☑         | ☑         | ☑       |
+| Liste num.   | `1.`      | ☑         | ☑         | ☑       |
+| Liste num. imb.|3 espaces| ☑         | ☑         | ☑       |
+| Ligne Horiz. | `\n---\n` | ☑         | ☑         | ☑       |
 | Code         | `` ` ``   | ☑         | ☑         | ☑       |
-| MultiCode  |```` ``` ````| ☑         | ☑         | ☑       |
-| Quote        | `>`       | ☑         | ☑         | ☑       |
-| Escape char  | `\`       | ☑         | ☑         | ☑       |
-| Superscript  | `^`       | ⚠ `<sup>` | ☑        | ⚠ `<sup>`|
-| Subscript    | N/A       | ⚠ `<sub>` | N/A      | ⚠ `<sub>`|
-| Reference    | `[^1]`    | ⚠ N/A     | ⚠ N/A    | ⚠ Diff.  |
+| Multi. Code|```` ``` ````| ☑         | ☑         | ☑       |
+| Citation     | `>`       | ☑         | ☑         | ☑       |
+| Echappement  | `\`       | ☑         | ☑         | ☑       |
+| Exposant     | `^`       | ⚠ `<sup>` | ☑        | ⚠ `<sup>`|
+| Indice       | N/A       | ⚠ `<sub>` | N/A      | ⚠ `<sub>`|
+| Référence    | `[^1]`    | ⚠ N/A     | ⚠ N/A    | ⚠ Diff.  |
 | HTML         | N/A       | ⚠ Avail.  | N/A      | ⚠ Avail. |
 
 Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html)
