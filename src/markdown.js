@@ -1,34 +1,17 @@
 'use strict'
 /* eslint-env node, es6 */
 
-const HTML_CHAR_MAP = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-}
+const Element = require('./HTML/Element.js')
+const document = require('./HTML/document.js')
 
-const HTML_CONTENT_ESCAPE_CHARS = '&<>'
-const HTML_ATTR_VALUE_ESCAPE_CHARS = '&"'
+const {
+  parseBoolean,
+  parseMaxHeader,
+} = require('./lib.js')
 
-const HTML_CONTENT_ESCAPE_REGEX =
-  new RegExp(`[${HTML_CONTENT_ESCAPE_CHARS}]`, 'g')
+const MD_ESCAPE_CHAR = '\\'
 
-const HTML_ATTR_VALUE_ESCAPE_REGEX =
-  new RegExp(`[${HTML_ATTR_VALUE_ESCAPE_CHARS}]`, 'g')
-
-const replaceHtmlCharsInContent = text =>
-  text.replace(HTML_CONTENT_ESCAPE_REGEX, char => HTML_CHAR_MAP[char])
-
-const replaceHtmlCharsInAttrValue = text =>
-  text.replace(HTML_ATTR_VALUE_ESCAPE_REGEX, char => HTML_CHAR_MAP[char])
-
-const HTML_FORBIDDEN_CHARS_ATTR_NAME = '<>&"\''
-
-const hasForbiddenCharInAttrName = text =>
-  new RegExp(`[${HTML_FORBIDDEN_CHARS_ATTR_NAME}]`, 'g').exec(text) != null
-
-const MARKDOWN_CHARS = [
+const MD_CHARS = [
   '*',
   '[',
   '`',
@@ -38,217 +21,14 @@ const MARKDOWN_CHARS = [
   '^',
 ].join('')
 
-const MARKDOWN_ESCAPE_CHAR = '\\'
-
-const ESCAPE_CHAR_REGEX =
-  new RegExp(`\\${MARKDOWN_ESCAPE_CHAR}([${MARKDOWN_CHARS}])`, 'g')
+const REGEX_ESCAPE_CHAR =
+  new RegExp(`\\${MD_ESCAPE_CHAR}([${MD_CHARS}])`, 'g')
 
 const removeEscapeChars = text =>
-  text.replace(ESCAPE_CHAR_REGEX, (match, char) => char)
+  text.replace(REGEX_ESCAPE_CHAR, (match, char) => char)
 
-const TEXT_REGEX = new RegExp(`[${MARKDOWN_CHARS}]`)
-
-// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
-const VOID_TAGS = new Set([
-  'AREA',
-  'BASE',
-  'BR',
-  'COL',
-  'EMBED',
-  'HR',
-  'IMG',
-  'INPUT',
-  'LINK',
-  'META',
-  'PARAM',
-  'SOURCE',
-  'TRACK',
-  'WBR'
-])
-
-class Element {
-  constructor(tagName) {
-    this._tagName = tagName.toUpperCase()
-    this._attributes = {}
-    this._children = []
-  }
-
-  appendChild(node) {
-    if (typeof node !== 'string') {
-      node.parentNode = this
-    }
-
-    this._children.push(node)
-  }
-
-  hasAttribute(attributeName) {
-    return this._attributes[attributeName] !== undefined
-  }
-
-  setAttribute(attributeName, attributeValue) {
-    if (arguments.length < 2) {
-      throw new TypeError(`Element.setAttribute: At least 2 arguments required, but only ${arguments.length} passed`)
-    }
-
-    if (hasForbiddenCharInAttrName(attributeName)) {
-      throw new Error('String contains an invalid character')
-    }
-
-    let attrValueText
-
-    if (attributeValue === undefined) {
-      attrValueText = 'undefined'
-    } else if (attributeValue === null) {
-      attrValueText = 'null'
-    } else {
-      attrValueText = attributeValue.toString()
-    }
-
-    this._attributes[attributeName] = attrValueText
-  }
-
-  getAttribute(attributeName) {
-    return this._attributes[attributeName] || null
-  }
-
-  removeAttribute(attributeName) {
-    this._attributes[attributeName] = undefined
-  }
-
-  get attributes() {
-    return this._attributes
-  }
-
-  // https://dom.spec.whatwg.org/#dom-element-tagname
-  get tagName() {
-    return this._tagName
-  }
-
-  // https://dom.spec.whatwg.org/#dom-node-textcontent
-  // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
-  get textContent() {
-    let output = ''
-
-    for (const child of this._children) {
-      if (typeof child === 'string') {
-        output += child
-      } else {
-        output += child.textContent
-      }
-    }
-
-    return output
-  }
-
-  set textContent(value) {
-    this._children = [value]
-  }
-
-  get children() {
-    return this._children
-  }
-
-  get firstChild() {
-    return this._children[0]
-  }
-
-  get lastChild() {
-    return this._children[this._children.length - 1]
-  }
-
-  get outerHTML() {
-    const isVoidElement = VOID_TAGS.has(this.tagName)
-    const tagName = this.tagName.toLowerCase()
-
-    let html = ''
-
-    // https://html.spec.whatwg.org/multipage/syntax.html#start-tags
-    html += `<${tagName}`
-
-    const attrList = Object.keys(this._attributes)
-
-    for (const attrName of attrList) {
-      const attrValue = this._attributes[attrName]
-      const attrValueHtml = replaceHtmlCharsInAttrValue(attrValue)
-
-      html += ` ${attrName}="${attrValueHtml}"`
-    }
-
-    html += '>'
-
-    if (isVoidElement) {
-      return html
-    }
-
-    for (const child of this._children) {
-      if (typeof child === 'string') {
-        html += replaceHtmlCharsInContent(child)
-      } else {
-        html += child.outerHTML
-      }
-    }
-
-    html += `</${tagName}>`
-
-    return html
-  }
-
-  get innerHTML() {
-    const isVoidElement = VOID_TAGS.has(this.tagName)
-
-    if (isVoidElement) {
-      return ''
-    }
-
-    let html = ''
-
-    for (const child of this._children) {
-      if (typeof child === 'string') {
-        html += replaceHtmlCharsInContent(child)
-      } else {
-        html += child.outerHTML
-      }
-    }
-
-    return html
-  }
-
-  set className(value) {
-    return this.setAttribute('class', value)
-  }
-
-  get className() {
-    return this.getAttribute('class')
-  }
-
-  get id() {
-    return this.getAttribute('id')
-  }
-
-  set id(value) {
-    return this.setAttribute('id', value)
-  }
-}
-
-const document = {
-  createElement: tagName => new Element(tagName),
-  createTextNode: text => text,
-}
-
-const parseBoolean = (value, defaultValue) =>
-  typeof value === 'boolean'
-    ? value
-    : defaultValue
-
-const parseMaxHeader = (value, defaultValue) => {
-  if (Number.isInteger(value)
-  && value >= 1
-  && value <= 6) {
-    return value
-  }
-
-  return defaultValue
-}
+const REGEX_MD_TEXT =
+  new RegExp(`[${MD_CHARS}]`)
 
 /**
  * @param {string} markdownText Markdown text
@@ -322,7 +102,7 @@ const parse = (markdownText, opt = {}) => {
 
       const firstChar = lineText[0]
 
-      if (firstChar === MARKDOWN_ESCAPE_CHAR) {
+      if (firstChar === MD_ESCAPE_CHAR) {
         lineCursor = 1
       } else if (allowHeader
       && firstChar === '#') {
@@ -619,7 +399,7 @@ const parse = (markdownText, opt = {}) => {
         while (lineCursor <= EOLIndex) {
           let ff = 0
 
-          const match = TEXT_REGEX.exec(
+          const match = REGEX_MD_TEXT.exec(
             lineText.substring(lineCursor, lineCursorMax))
 
           if (match == null) {
@@ -646,7 +426,7 @@ const parse = (markdownText, opt = {}) => {
             ff = 1
             lineCursor += match.index
 
-            if (next(-1) === MARKDOWN_ESCAPE_CHAR) {
+            if (next(-1) === MD_ESCAPE_CHAR) {
               // Do nothing
             } else if (char === '*') {
               if (next(1) === '*'
