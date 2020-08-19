@@ -25,7 +25,7 @@ const html = parser.parse('mon texte markdown').innerHTML
 - [Syntaxes Markdown](#syntaxes-markdown)
   - [Texte en italique](#texte-en-italique)  
   - [Texte en gras](#texte-en-gras)
-  - [Texte en gras-italique](#bold-italic-text)
+  - [Texte en gras-italique](#texte-en-gras-italique)
   - [Texte barré](#texte-barre)
   - [Exposant](#exposant)
   - [Paragraphe](#paragraphe)
@@ -42,7 +42,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Référence](#reference)
   - [Caractère d'échappement](#escape-character)
 - [Compatibilité avec d'autres Markdown populaires](#compatibilité-avec-d-autres-Markdown-populaires)
-- [Différences avec d'autres implémentations Markdown](#différences-avec-d'autres-implémentations-markdown)
+- [Syntaxes incompatibles](#syntaxes-incompatibles)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
   - [Ouvrir les liens externes dans un nouvel onglet](#ouvrir-les-liens-externes-dans-un-nouvel-onglet)
@@ -627,18 +627,18 @@ Une marque (☑) signifie que la syntaxe devrait fonctionner sur la plateforme.
 Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html)
 
 
-## Différences avec d'autres implémentations Markdown
+## Syntaxes incompatibles
 
-- Les textes en italic, grand, italic-et-gras avec un, deux et trois caractères underscore ne sont pas supportés.
-- Les titres avec des tirets ou des signes égal en dessous ne sont pas supportés.
-- Les listes non-numérotées commencent avec un tiret, pas un signe plus ou une étoile.
-- Les listes peuvent avoir seulement une seule liste imbriquée.
-- Les sauts de lignes ne sont pas supportés dans les listes.
-- Les lignes horizontales avec des étoiles ou des caractères underscore ne sont pas supportés.
-- Les titres d'images et les titres de liens ne sont pas supportés.
-- Les liens entre caractères inférieur et supérieur ne sont pas supportés.
-- Les balises HTML ne sont pas acceptées.
-- Les images qui sont seules sur une ligne sont intégrées à une balise HTML `figure`.
+Les syntaxes suivantes ne sont **PAS** supportées:
+
+- Les textes en italiques et en gras avec un, deux et trois underscores.
+- Les titres avec des tirets ou des signes égal en dessous.
+- Les listes non-numérotées avec un signe plus ou une étoile.
+- Plus d'une liste imbriquée.
+- Les lignes horizontales avec des étoiles ou des underscores.
+- Les titres d'images et les titres de liens.
+- Les liens entre inférieur et supérieur.
+- Le code HTML.
 
 
 ## Exemples

@@ -42,7 +42,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Reference](#reference)
   - [Escape character](#escape-character)
 - [Differences with other Markdown syntaxes](#differences-with-other-markdown-syntaxes)
-- [Compatibility with other popular Markdown](#compatibility-with-other-popular-markdown)
+- [Unsupported syntaxes](#unsupported-syntaxes)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
   - [Open external links in a new tab](#open-external-links-in-a-new-tab)
@@ -625,18 +625,19 @@ A tick (☑) means that the syntax should work on the platform.
 Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html)
 
 
-## Differences with other Markdown syntaxes
+## Unsupported syntaxes
 
-- Italic, bold and italic-bold texts with one, two and three underscore characters are not supported.
-- Headers with underneath dashes/equal signs are not supported.
-- Unordered Lists start with a dash, not a plus sign or a star.
-- Newlines are not supported in lists.
-- Lists can only have one nested list.
-- Horizontal lines with stars or underscores are not supported.
-- Image titles and Link titles are not supported.
-- Links in between less-than and greater-than characters are not supported.
-- HTML tags are not allowed.
-- Images on a single line are embedded in a `figure` HTML tag.
+The following syntaxes are **NOT** supported:
+
+- Italic, bold and italic-bold texts with one, two and three underscores.
+- Headers with dashes/equal signs underneath.
+- Unordered Lists with a plus sign or a star.
+- Newlines in lists.
+- More than one nested list.
+- Horizontal lines with with stars or underscores.
+- Image titles and Link titles.
+- Links with less-than and greater-than signs.
+- HTML code.
 
 
 ## Examples
