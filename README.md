@@ -42,6 +42,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Reference](#reference)
   - [Escape character](#escape-character)
 - [Differences with other Markdown syntaxes](#differences-with-other-markdown-syntaxes)
+- [Compatibility with other popular Markdown](#compatibility-with-other-popular-markdown)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)
   - [Open external links in a new tab](#open-external-links-in-a-new-tab)
@@ -592,6 +593,38 @@ This backslash \ is not removed because it is not followed by a special characte
 ```
 
 
+### Compatibility with other popular Markdown
+
+A tick (☑) means that the syntax should work on the platform.
+
+| Type         |           |   GitHub  |   Reddit   |  GitLab  |
+| ------------ |:---------:|:---------:|:----------:|:---------|
+| Italic       | `*`       | ☑         | ☑         | ☑       |
+| Bold         | `**`      | ☑         | ☑         | ☑       |
+| Bold-italic  | `***`     | ☑         | ☑         | ☑       |   
+| Strikethrough| `~~`      | ☑         | ☑         | ☑       |
+| Newline      | `\n`      | ☑         | ☑         | ☑       |
+| Paragraph    | `\n\n`    | ☑         | ☑         | ☑       |
+| Header       | `#`       | ☑         | ☑         | ☑       |
+| Link         | `[]()`    | ☑         | ☑         | ☑       |
+| Image        | `![]()`   | ☑         | ☑         | ☑       |
+| Unord. list  | `-`       | ☑         | ☑         | ☑       |
+| Unord. nested| 2 spaces  | ☑         | ☑         | ☑       |
+| Ord. list    | `1.`      | ☑         | ☑         | ☑       |
+| Ord. nested  | 3 spaces  | ☑         | ☑         | ☑       |
+| Horiz. Line  | `\n---\n` | ☑         | ☑         | ☑       |
+| Code         | `` ` ``   | ☑         | ☑         | ☑       |
+| MultiCode  |```` ``` ````| ☑         | ☑         | ☑       |
+| Quote        | `>`       | ☑         | ☑         | ☑       |
+| Escape char  | `\`       | ☑         | ☑         | ☑       |
+| Superscript  | `^`       | ⚠ `<sup>` | ☑        | ⚠ `<sup>`|
+| Subscript    | N/A       | ⚠ `<sub>` | N/A      | ⚠ `<sub>`|
+| Reference    | `[^1]`    | ⚠ N/A     | ⚠ N/A    | ⚠ Diff.  |
+| HTML         | N/A       | ⚠ Avail.  | N/A      | ⚠ Avail. |
+
+Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html)
+
+
 ## Differences with other Markdown syntaxes
 
 - Italic, bold and italic-bold texts with one, two and three underscore characters are not supported.
@@ -599,12 +632,10 @@ This backslash \ is not removed because it is not followed by a special characte
 - Unordered Lists start with a dash, not a plus sign or a star.
 - Newlines are not supported in lists.
 - Lists can only have one nested list.
-- Escaping code with two backticks is not supported.
 - Horizontal lines with stars or underscores are not supported.
 - Image titles and Link titles are not supported.
 - Links in between less-than and greater-than characters are not supported.
 - HTML tags are not allowed.
-- Strikethrough, superscript texts, videos, and references are supported.
 - Images on a single line are embedded in a `figure` HTML tag.
 
 
@@ -715,10 +746,8 @@ parseMarkdown(markdownText, {
 
 ## Other ressources
 
-- Markdown Guide: https://www.markdownguide.org/
+- Original Markdown: https://daringfireball.net/projects/markdown/
 - CommonMark: https://commonmark.org/
-- GitHub Markdown: https://guides.github.com/features/mastering-markdown/
-- Reddit Markdown: https://www.reddit.com/wiki/markdown
 
 
 ## FAQ

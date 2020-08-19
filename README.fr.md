@@ -41,6 +41,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Citation](#citation)
   - [Référence](#reference)
   - [Caractère d'échappement](#escape-character)
+- [Compatibilité avec d'autres Markdown populaires](#compatibilité-avec-d-autres-Markdown-populaires)
 - [Différences avec d'autres implémentations Markdown](#différences-avec-d'autres-implémentations-markdown)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
@@ -594,6 +595,38 @@ Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécia
 ```
 
 
+### Compatibilité avec d'autres Markdown populaires
+
+Une marque (☑) signifie que la syntaxe devrait fonctionner sur la plateforme.
+
+| Type         |           |   GitHub  |   Reddit   |  GitLab  |
+| ------------ |:---------:|:---------:|:----------:|:---------|
+| Italic       | `*`       | ☑         | ☑         | ☑       |
+| Bold         | `**`      | ☑         | ☑         | ☑       |
+| Bold-italic  | `***`     | ☑         | ☑         | ☑       |   
+| Strikethrough| `~~`      | ☑         | ☑         | ☑       |
+| Newline      | `\n`      | ☑         | ☑         | ☑       |
+| Paragraph    | `\n\n`    | ☑         | ☑         | ☑       |
+| Header       | `#`       | ☑         | ☑         | ☑       |
+| Link         | `[]()`    | ☑         | ☑         | ☑       |
+| Image        | `![]()`   | ☑         | ☑         | ☑       |
+| Unord. list  | `-`       | ☑         | ☑         | ☑       |
+| Unord. nested| 2 spaces  | ☑         | ☑         | ☑       |
+| Ord. list    | `1.`      | ☑         | ☑         | ☑       |
+| Ord. nested  | 3 spaces  | ☑         | ☑         | ☑       |
+| Horiz. Line  | `\n---\n` | ☑         | ☑         | ☑       |
+| Code         | `` ` ``   | ☑         | ☑         | ☑       |
+| MultiCode  |```` ``` ````| ☑         | ☑         | ☑       |
+| Quote        | `>`       | ☑         | ☑         | ☑       |
+| Escape char  | `\`       | ☑         | ☑         | ☑       |
+| Superscript  | `^`       | ⚠ `<sup>` | ☑        | ⚠ `<sup>`|
+| Subscript    | N/A       | ⚠ `<sub>` | N/A      | ⚠ `<sub>`|
+| Reference    | `[^1]`    | ⚠ N/A     | ⚠ N/A    | ⚠ Diff.  |
+| HTML         | N/A       | ⚠ Avail.  | N/A      | ⚠ Avail. |
+
+Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html)
+
+
 ## Différences avec d'autres implémentations Markdown
 
 - Les textes en italic, grand, italic-et-gras avec un, deux et trois caractères underscore ne sont pas supportés.
@@ -601,12 +634,10 @@ Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécia
 - Les listes non-numérotées commencent avec un tiret, pas un signe plus ou une étoile.
 - Les listes peuvent avoir seulement une seule liste imbriquée.
 - Les sauts de lignes ne sont pas supportés dans les listes.
-- Échapper du code avec deux accents aigus n'est pas supporté.
 - Les lignes horizontales avec des étoiles ou des caractères underscore ne sont pas supportés.
-- Les titres d'image et les titres de liens ne sont pas supportés.
+- Les titres d'images et les titres de liens ne sont pas supportés.
 - Les liens entre caractères inférieur et supérieur ne sont pas supportés.
 - Les balises HTML ne sont pas acceptées.
-- Les textes barrés, les exposants, les video et les références sont supportés.
 - Les images qui sont seules sur une ligne sont intégrées à une balise HTML `figure`.
 
 
@@ -717,10 +748,8 @@ parseMarkdown(markdownText, {
 
 ## Autres ressources
 
-- Guide Markdown: https://www.markdownguide.org/
+- Original Markdown: https://daringfireball.net/projects/markdown/
 - CommonMark: https://commonmark.org/
-- GitHub Markdown: https://guides.github.com/features/mastering-markdown/
-- Reddit Markdown: https://www.reddit.com/wiki/markdown
 
 
 ## FAQ
