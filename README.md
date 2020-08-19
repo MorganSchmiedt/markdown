@@ -161,7 +161,7 @@ const myDivElement = new Element('div')
 | [Bold text](#bold-text)                   | `**Bold text**`              |
 | [Bold-italic text](#bold-italic-text)     | `***Bold-italic text***`     |
 | [Strikethrough text](#strikethrough-text) | `~~Strikethrough text~~`     |
-| [Superscript text](#superscript-text)     | `^Superscript text^`         |
+| [Superscript text](#superscript-text)     | `^Superscript`               |
 | [Header](#header)                         | `# Header`                   |
 | [Link](#link)                             | `[Link text](link_url)`      |
 | [Image](#image) and [Video](#video)       | `![Caption](image_url)`      |
@@ -235,11 +235,20 @@ This is a ~~strikethrough text~~
 
 ### Superscript text
 
-A superscript text is surrounded by a circumflex (`^`).
+A superscript text starts with a circumflex (`^`) and ends with a space or a newline. A superscript text with spaces can be surrounded by parenthesis (`( )`)
 
 *Example*
 ```
-This is a ^superscript text^
+This is a ^superscript text
+```
+
+```html
+<p>This is a <sup>superscript</sup> text</p>
+```
+
+*Example with parenthesis*
+```
+This is a ^(superscript text) 
 ```
 
 ```html

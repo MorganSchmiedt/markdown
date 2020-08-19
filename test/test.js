@@ -371,9 +371,17 @@ test('Strikethrough', function (t) {
   t.end()
 })
 
-test('Superscript', function (t) {
-  const input = 'A ^superscript^ text'
-  const output = '<p>A <sup>superscript</sup> text</p>'
+test('Superscript without parenthesis', function (t) {
+  const input = 'A formula x^2 + y^3 + z^10'
+  const output = '<p>A formula x<sup>2</sup> + y<sup>3</sup> + z<sup>10</sup></p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Superscript with parenthesis', function (t) {
+  const input = 'A formula x^(2) + y^(a - b)'
+  const output = '<p>A formula x<sup>2</sup> + y<sup>a - b</sup></p>'
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -561,7 +569,7 @@ test('Unordered List with complex texts', function (t) {
     - *Italic* item
     - Item **bold**
     - Item ~~strikethrough~~
-    - ^superscript^
+    - ^superscript
     - [Link](url)`
 
   const output = inlineHtml`
@@ -1199,7 +1207,7 @@ test('Reference with callback', function (t) {
 
 test('Reference with allowReference to false', function (t) {
   const input = 'See reference[^1]'
-  const output = '<p>See reference[^1]</p>'
+  const output = '<p>See reference[<sup>1</sup>]</p>'
   const opt = {
     allowReference: false,
   }
@@ -1334,8 +1342,8 @@ test('Escape "~"', function (t) {
 })
 
 test('Escape "^"', function (t) {
-  const input = 'A \\^superscript^ text'
-  const output = '<p>A ^superscript^ text</p>'
+  const input = 'A \\^superscript text'
+  const output = '<p>A ^superscript text</p>'
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()

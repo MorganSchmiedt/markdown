@@ -517,24 +517,26 @@ const parse = (markdownText, opt = {}) => {
                 }
               }
             } else if (char === '^') {
-              const syntax = '^'
-              const syntaxSize = syntax.length
-              const fromIndex = lineCursor + syntaxSize
-              const endTagIndex =
-                lineText.substring(fromIndex).indexOf(syntax)
+              const syntaxSize = 1
+              const remainingText = lineText.substring(lineCursor + syntaxSize)
+              const regex = remainingText[0] === '('
+                ? /^\(([^)]+)\)/
+                : /^(\w+)/
+              const match = regex.exec(remainingText)
 
-              if (endTagIndex > 0) {
+              if (match) {
+                const matchSize = match[0].length
+                const content = match[1]
+
                 flush()
-                lineCursorMax = fromIndex + endTagIndex
 
                 const supNode = document.createElement('SUP')
-                supNode.ffOnTextEnd = syntaxSize
+                supNode.textContent = content
 
                 currentLine.appendChild(supNode)
-                currentLine = supNode
 
-                ff = syntaxSize
-                lastFlushCursor += syntaxSize
+                ff = syntaxSize + matchSize
+                lastFlushCursor += ff
               }
             } else if (char === '[') {
               const restLineText = lineText.substring(lineCursor + 1)

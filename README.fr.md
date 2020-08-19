@@ -160,7 +160,7 @@ const myDivElement = new Element('div')
 | [Texte en gras](#texte-en-gras)           | `**Texte en gras**`          |
 | [Texte en gras-italique](#texte-en-gras-italique)| `***Texte en gras-italique***`|
 | [Texte barré](#texte-barré)               | `~~Texte barré~~`            |
-| [Exposant](#exposant)                     | `^Exposant^`                 |
+| [Exposant](#exposant)                     | `^Exposant`                  |
 | [Titre](#titre)                           | `# Titre`                    |
 | [Lien](#lien)                             | `[Texte affiche](lien)`      |
 | [Image](#image) and [Vidéo](#video)       | `![Légende](lien)`           |
@@ -234,11 +234,20 @@ Ceci est un ~~texte barré~~
 
 ### Exposant
 
-Un texte en exposant est entouré par un caractère circonflexe (`^`).
+Un texte en exposant commence par un caractère circonflexe (`^`) et termine avec un espace ou un saut de ligne. Un texte en exposant qui contient des espaces peut être entouré de parenthèses.
 
 *Exemple*
 ```
-Ceci est un ^texte en exposant^
+Ceci est un ^texte en exposant
+```
+
+```html
+<p>Ceci est un <sup>texte</sup> en exposant</p>
+```
+
+*Exemple avec parenthèses*
+```
+Ceci est un ^(texte en exposant)
 ```
 
 ```html

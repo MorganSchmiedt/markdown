@@ -22,6 +22,7 @@
 - Two newlines creates a paragraph.
 - `brOnBlankLine` option is removed.
 - Ordered Lists now starts with a number and a period.
+- Superscript texts no longer ends with a circumflex.
 
 **🔧 Changes**
 - Void HTML elements no longer have a trailing slash.
