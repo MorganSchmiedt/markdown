@@ -341,7 +341,7 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (allowMultilineCode
       && lineText.startsWith('```')) {
-        const match = /^```(\w*)\n((.|\n)+)\n```/.exec(text.substr(cursor))
+        const match = /^```(\w*)\n((.|\n)+)\n```/.exec(text.substring(cursor))
 
         if (match) {
           const matchSize = match[0].length
@@ -370,7 +370,7 @@ const parse = (markdownText, opt = {}) => {
 
           if (lastChild != null
           && lastChild.tagName === 'P'
-          && /\n( )*\n$/.exec(text.substr(0, cursor)) == null) {
+          && /\n( )*\n$/.exec(text.substring(0, cursor)) == null) {
             currentLine = lastChild
             currentLine.appendChild(document.createElement('BR'))
             targetNode = null
