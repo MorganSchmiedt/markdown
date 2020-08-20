@@ -1,38 +1,15 @@
 'use strict'
-/* eslint-env node, es6 */
 /* eslint-disable no-console */
 
-const parser = require('../src/markdown.js')
-
-const trimInput = param => {
-  const text = typeof param === 'string'
-    ? param
-    : param[0]
-
-  if (text[0] !== '\n') {
-    return text
-  }
-
-  const md = text.substr(1)
-  const trimLeftCount = md.length - md.trimStart().length
-
-  return md
-    .split('\n')
-    .map(line => line.substr(trimLeftCount).trimEnd())
-    .join('\n')
-}
-
-const parse = (input, opt) => parser.parse(trimInput(input), opt)
+const {
+  parse,
+} = require('./test-lib.js')
 
 const input = `
-  - Item 1
-  
-  - Item 2`
+  Markdown text here`
 
 const element = parse(input, {
-  onUnorderedList: node => {
-    console.log(node.children.length)
-  },
+  // Parser options here
 })
 
 console.log(element.innerHTML)
