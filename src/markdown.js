@@ -209,11 +209,11 @@ const parse = (markdownText, opt = {}) => {
 
           if (opt.onUnorderedList) {
             if (allowUnordNestedList) {
-              if (/^((|([ ]{2,}))- )|([ ]{2,})/.exec(nextRestText) == null) {
+              if (/^\n*((|([ ]{2,}))- )|([ ]{2,})/.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
               }
             } else {
-              if (/^(- )|([ ]{2,})/.exec(nextRestText) == null) {
+              if (/^\n*(- )|([ ]{2,})/.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
               }
             }
@@ -238,12 +238,12 @@ const parse = (markdownText, opt = {}) => {
 
           if (opt.onOrderedList) {
             if (allowOrdNestedList) {
-              if (/^((|([ ]{3,}))\d+\. )|([ ]{3,})/
+              if (/^\n*((|([ ]{3,}))\d+\. )|([ ]{3,})/
                 .exec(nextRestText) == null) {
                 onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
               }
             } else {
-              if (/^(\d+\. )|([ ]{3,})/.exec(nextRestText) == null) {
+              if (/^\n*(\d+\. )|([ ]{3,})/.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
               }
             }
@@ -268,7 +268,7 @@ const parse = (markdownText, opt = {}) => {
           lastFlushCursor += syntaxSize
 
           if (opt.onUnorderedList) {
-            if (/^((- )|([ ]{2,}))/.exec(nextRestText) == null) {
+            if (/^\n*((- )|([ ]{2,}))/.exec(nextRestText) == null) {
               onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
             }
           }
@@ -283,7 +283,7 @@ const parse = (markdownText, opt = {}) => {
           lastFlushCursor += syntaxSize
 
           if (opt.onOrderedList) {
-            if (/^((\d+\. )|([ ]{3,}))/.exec(nextRestText) == null) {
+            if (/^\n*((\d+\. )|([ ]{3,}))/.exec(nextRestText) == null) {
               onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
             }
           }
@@ -293,8 +293,7 @@ const parse = (markdownText, opt = {}) => {
         && allowUnordNestedList
         && body.lastChild != null
         && body.lastChild.tagName === 'UL') {
-          const listRegex = new RegExp('^( ){2,}- ')
-          const listMatch = listRegex.exec(lineText)
+          const listMatch = /^( ){2,}- /.exec(lineText)
 
           if (listMatch) {
             const syntaxSize = listMatch[0].length
@@ -315,7 +314,7 @@ const parse = (markdownText, opt = {}) => {
             lastFlushCursor = lineCursor
 
             if (opt.onUnorderedList) {
-              const isLastItem = listRegex.exec(nextRestText) == null
+              const isLastItem = /^\n*( ){2,}- /.exec(nextRestText) == null
 
               if (isLastItem) {
                 onLineEnd = body => {
@@ -329,8 +328,7 @@ const parse = (markdownText, opt = {}) => {
         && allowOrdNestedList
         && body.lastChild != null
         && body.lastChild.tagName === 'OL') {
-          const listRegex = new RegExp('^( ){3,}([0-9]+)\\. ')
-          const listMatch = listRegex.exec(lineText)
+          const listMatch = /^( ){3,}([0-9]+)\. /.exec(lineText)
 
           if (listMatch) {
             const syntaxSize = listMatch[0].length
@@ -351,7 +349,8 @@ const parse = (markdownText, opt = {}) => {
             lastFlushCursor = lineCursor
 
             if (opt.onOrderedList) {
-              const isLastItem = listRegex.exec(nextRestText) == null
+              const isLastItem = /^\n*( ){3,}([0-9]+)\. /
+                .exec(nextRestText) == null
 
               if (isLastItem) {
                 onLineEnd = body => {

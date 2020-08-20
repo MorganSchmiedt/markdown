@@ -24,6 +24,24 @@ test('Unordered List', function (t) {
   t.end()
 })
 
+test('Unordered List with extra LF between items', function (t) {
+  const input = `
+    - First list item
+
+    - Second list item
+
+    - Third list item`
+  const output = inlineHtml`
+    <ul>
+      <li>First list item</li>
+      <li>Second list item</li>
+      <li>Third list item</li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Unordered List with complex texts', function (t) {
   const input = `
     - *Italic* item
@@ -45,7 +63,7 @@ test('Unordered List with complex texts', function (t) {
   t.end()
 })
 
-test('Unordered List with LF (2 spaces)', function (t) {
+test('Unordered List with 2-space-LF', function (t) {
   const input = `
     - Item 1
       Following Item 1
@@ -57,6 +75,30 @@ test('Unordered List with LF (2 spaces)', function (t) {
         Item 1
         <br>
         Following Item 1
+      </li>
+      <li>Item 2</li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Unordered List with LF between item contents', function (t) {
+  const input = `
+    - Item 1
+      Item 1.1
+
+      Item 1.2
+    - Item 2`
+
+  const output = inlineHtml`
+    <ul>
+      <li>
+        Item 1
+        <br>
+        Item 1.1
+        <br>
+        Item 1.2
       </li>
       <li>Item 2</li>
     </ul>`
@@ -126,7 +168,7 @@ test('Unordered List with 2 LF', function (t) {
   t.end()
 })
 
-test('Unordered List Cb: Not at EOF with', function (t) {
+test('Unordered List not at EOF with callback', function (t) {
   const input = `
     Some text
     - List 1, Item 1
@@ -165,7 +207,44 @@ test('Unordered List at EOF with callback', function (t) {
   parse(input, opt)
 })
 
-test('Unordered List with newlines and callback', function (t) {
+test('Unordered List with extra LF between items and callback', function (t) {
+  const input = `
+    - First list item
+
+    - Second list item
+
+    - Third list item`
+
+  const opt = {
+    onUnorderedList: node => {
+      t.equal(node.children.length, 3, 'Number of children is valid')
+    },
+  }
+
+  t.plan(1)
+  parse(input, opt)
+})
+
+test('Unordered List with extra LF between items, callback, and allowUnorderedNestedList to false', function (t) {
+  const input = `
+    - First list item
+
+    - Second list item
+
+    - Third list item`
+
+  const opt = {
+    allowUnorderedNestedList: false,
+    onUnorderedList: node => {
+      t.equal(node.children.length, 3, 'Number of children is valid')
+    },
+  }
+
+  t.plan(1)
+  parse(input, opt)
+})
+
+test('Unordered List with LF and callback', function (t) {
   const input = `
     Some text
     - List 1, Item 1
@@ -186,6 +265,39 @@ test('Unordered List with newlines and callback', function (t) {
   parse(input, opt)
 })
 
+test('Unordered List with 1-space-LF and callback', function (t) {
+  const input = `
+    - Item 1
+     Not Line 2`
+
+  const opt = {
+    onUnorderedList: node => {
+      t.equal(node.firstChild.textContent, 'Item 1', 'Content is valid')
+    },
+  }
+
+  t.plan(1)
+  parse(input, opt)
+  t.end()
+})
+
+test('Unordered List with 3-space-LF and callback', function (t) {
+  const input = `
+    - Item 1
+       Line 2
+        Line 3`
+
+  const opt = {
+    onUnorderedList: node => {
+      t.equal(node.firstChild.textContent, 'Item 1Line 2Line 3', 'Content is valid')
+    },
+  }
+
+  t.plan(1)
+  parse(input, opt)
+  t.end()
+})
+
 test('Unordered List with newlines in the last item and callback', function (t) {
   const input = `
     Some text
@@ -204,6 +316,24 @@ test('Unordered List with newlines in the last item and callback', function (t) 
   }
 
   t.plan(5)
+  parse(input, opt)
+})
+
+test('Unordered List with extra LF between item content and callback', function (t) {
+  const input = `
+    - First list item
+      Line 2
+
+      Line 3
+    - Second list item`
+
+  const opt = {
+    onUnorderedList: node => {
+      t.equal(node.children.length, 2, 'Number of children is valid')
+    },
+  }
+
+  t.plan(1)
   parse(input, opt)
 })
 
