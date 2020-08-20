@@ -7,6 +7,7 @@
 - Space-only lines are considered empty.
 - `allowUnorderedNestedList`, `allowOrderedNestedList`, `allowReference`, `allowFootnote` options are added.
 - `Element.id`, `Element.className`,  `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes`, `Element.innerHTML`, `Element.outerHTML` are added.
+- Line breaks in (un)ordered lists are supported.
 
 **⚠ Breaking changes**
 - `allowFootnote` becomes `allowReference`.

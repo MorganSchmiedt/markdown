@@ -388,6 +388,8 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
 
 Unordered list items start with a dash (`-`) followed by a space.
 
+Newlines can be inserted within a list item by starting the line with two spaces.
+
 Nested list items start with at least two spaces, followed by a dash and  another space. Only one unordered nested list is allowed.
 
 *Example*
@@ -402,6 +404,20 @@ Nested list items start with at least two spaces, followed by a dash and  anothe
   <li>Item 1</li>
   <li>Item 2</li>
   <li>Item 3</li>
+</ul>
+```
+
+*Example with a newline within an item*
+```
+- Item 1
+  Following Item 1
+- Item 2
+```
+
+```html
+<ul>
+  <li>Item 1<br>Following Item 1</li>
+  <li>Item 2</li>
 </ul>
 ```
 
@@ -431,6 +447,8 @@ Nested list items start with at least two spaces, followed by a dash and  anothe
 
 Ordered list items start with a number, followed by a period (`.`) and a space.
 
+Newlines can be inserted within a list item by starting the line with three spaces.
+
 Nested list items start with at least three spaces, followed by a number and a space. Only one ordered nested list is allowed.
 
 *Example*
@@ -445,6 +463,20 @@ Nested list items start with at least three spaces, followed by a number and a s
   <li>Item 1</li>
   <li>Item 2</li>
   <li>Item 3</li>
+</ol>
+```
+
+*Example with a newline within an item*
+```
+1. Item 1
+   Following Item 1
+2. Item 2
+```
+
+```html
+<ol>
+  <li>Item 1<br>Following Item 1</li>
+  <li>Item 2</li>
 </ol>
 ```
 
@@ -608,9 +640,11 @@ A tick (☑) means that the syntax should work on the platform.
 | Header       | `#`       | ☑         | ☑         | ☑       |
 | Link         | `[]()`    | ☑         | ☑         | ☑       |
 | Image        | `![]()`   | ☑         | ☑         | ☑       |
-| Unord. list  | `-`       | ☑         | ☑         | ☑       |
-| Unord. nested| 2 spaces  | ☑         | ☑         | ☑       |
+| Un. list     | `-`       | ☑         | ☑         | ☑       |
+| Un. list \\n | 2 spaces  | ☑         | ☑         | ☑       |
+| Un. nested   | 2 spaces  | ☑         | ☑         | ☑       |
 | Ord. list    | `1.`      | ☑         | ☑         | ☑       |
+| Ord. list \\n| 3 spaces  | ☑         | ☑         | ☑       |
 | Ord. nested  | 3 spaces  | ☑         | ☑         | ☑       |
 | Horiz. Line  | `\n---\n` | ☑         | ☑         | ☑       |
 | Code         | `` ` ``   | ☑         | ☑         | ☑       |
@@ -632,7 +666,7 @@ The following syntaxes are **NOT** supported:
 - Italic, bold and italic-bold texts with one, two and three underscores.
 - Headers with dashes/equal signs underneath.
 - Unordered Lists with a plus sign or a star.
-- Newlines in lists.
+- Newlines in nested lists.
 - More than one nested list.
 - Horizontal lines with with stars or underscores.
 - Image titles and Link titles.

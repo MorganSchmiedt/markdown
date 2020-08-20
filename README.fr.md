@@ -387,6 +387,8 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
 
 Les éléments d'une liste non numérotée commencent avec un tiret (`-`) suivi par un espace.
 
+Des sauts de lignes peuvent être insérées à l'intérieur d'un élément de la liste en commençant la ligne avec deux espaces.
+
 Une liste peut être imbriquée dans une autre liste en commençant avec au moins deux espaces, suivi d'un tiret, et d'un autre espace. Seulement une liste de même type peut être imbriquée.
 
 *Exemple*
@@ -402,6 +404,20 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
   <li>Item 2</li>
   <li>Item 3</li>
 </ul>
+```
+
+*Exemple avec un saut de ligne à l'intérieur d'un élément*
+```
+1. Item 1
+   Suite Item 1
+2. Item 2
+```
+
+```html
+<ol>
+  <li>Item 1<br>Suite Item 1</li>
+  <li>Item 2</li>
+</ol>
 ```
 
 *Exemple avec une liste imbriquée*
@@ -430,6 +446,8 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
 
 Les éléments d'une liste numérotée commencent avec un nombre suivi par un point (`.`) et un espace.
 
+Des sauts de lignes peuvent être insérées à l'intérieur d'un élément de la liste en commençant la ligne avec trois espaces.
+
 Une liste peut être imbriquée dans une autre liste en commençant avec au moins trois espaces, suivi d'un nombre, et d'un espace. Seulement une liste de même type peut être imbriquée.
 
 *Exemple*
@@ -444,6 +462,20 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
   <li>Item 1</li>
   <li>Item 2</li>
   <li>Item 3</li>
+</ol>
+```
+
+*Exemple avec un saut de ligne à l'intérieur d'un élément*
+```
+1. Item 1
+   Suite Item 1
+2. Item 2
+```
+
+```html
+<ol>
+  <li>Item 1<br>Suite Item 1</li>
+  <li>Item 2</li>
 </ol>
 ```
 
@@ -612,8 +644,10 @@ Une marque (☑) signifie que la syntaxe devrait fonctionner sur la plateforme.
 | Image        | `![]()`   | ☑         | ☑         | ☑       |
 | Liste        | `-`       | ☑         | ☑         | ☑       |
 | Liste imb.   | 2 espaces | ☑         | ☑         | ☑       |
+| List \\n     | 2 spaces  | ☑         | ☑         | ☑       |
 | Liste num.   | `1.`      | ☑         | ☑         | ☑       |
 | Liste num. imb.|3 espaces| ☑         | ☑         | ☑       |
+| List num. \\n| 3 spaces  | ☑         | ☑         | ☑       |
 | Ligne Horiz. | `\n---\n` | ☑         | ☑         | ☑       |
 | Code         | `` ` ``   | ☑         | ☑         | ☑       |
 | Multi. Code|```` ``` ````| ☑         | ☑         | ☑       |
@@ -634,6 +668,7 @@ Les syntaxes suivantes ne sont **PAS** supportées:
 - Les textes en italiques et en gras avec un, deux et trois underscores.
 - Les titres avec des tirets ou des signes égal en dessous.
 - Les listes non-numérotées avec un signe plus ou une étoile.
+- Les sauts de ligne dans les listes imbriquées.
 - Plus d'une liste imbriquée.
 - Les lignes horizontales avec des étoiles ou des underscores.
 - Les titres d'images et les titres de liens.

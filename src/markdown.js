@@ -210,11 +210,11 @@ const parse = (markdownText, opt = {}) => {
 
           if (opt.onUnorderedList) {
             if (allowUnordNestedList) {
-              if (nextRestText.trimStart().startsWith('- ') === false) {
+              if (/^((|([ ]{2,}))- )|([ ]{2,})/.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
               }
             } else {
-              if (nextRestText.startsWith('- ') === false) {
+              if (/^(- )|([ ]{2,})/.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
               }
             }
@@ -239,11 +239,12 @@ const parse = (markdownText, opt = {}) => {
 
           if (opt.onOrderedList) {
             if (allowOrdNestedList) {
-              if (/^( )*([0-9]+)\. /.exec(nextRestText) == null) {
+              if (/^((|([ ]{3,}))\d+\. )|([ ]{3,})/
+                .exec(nextRestText) == null) {
                 onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
               }
             } else {
-              if (/^([0-9]+)\. /.exec(nextRestText) == null) {
+              if (/^(\d+\. )|([ ]{3,})/.exec(nextRestText) == null) {
                 onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
               }
             }
@@ -251,7 +252,46 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (firstChar === ' '
       && next(1) === ' ') {
-        if (allowUnordNestedList
+        const itemRegex = new RegExp('^([ ]{2,})((- )|(\\d*\\. ))?')
+        const itemMatch = itemRegex.exec(lineText)
+        const syntaxSize = itemMatch[0].length
+        const spaceCount = itemMatch[1].length
+        const isNewItem = itemMatch[2] != null
+
+        if (isNewItem === false
+        && body.lastChild != null
+        && body.lastChild.tagName === 'UL'
+        && spaceCount >= 2) {
+          currentLine = body.lastChild.lastChild
+          currentLine.appendChild(document.createElement('br'))
+          targetNode = null
+          lineCursor += syntaxSize
+          lastFlushCursor += syntaxSize
+
+          if (opt.onUnorderedList) {
+            if (/^((- )|([ ]{2,}))/.exec(nextRestText) == null) {
+              onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
+            }
+          }
+        } else if (isNewItem === false
+        && body.lastChild != null
+        && body.lastChild.tagName === 'OL'
+        && spaceCount >= 3) {
+          currentLine = body.lastChild.lastChild
+          currentLine.appendChild(document.createElement('br'))
+          targetNode = null
+          lineCursor += syntaxSize
+          lastFlushCursor += syntaxSize
+
+          if (opt.onOrderedList) {
+            if (/^((\d+\. )|([ ]{3,}))/.exec(nextRestText) == null) {
+              onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
+            }
+          }
+        }
+
+        if (isNewItem
+        && allowUnordNestedList
         && body.lastChild != null
         && body.lastChild.tagName === 'UL') {
           const listRegex = new RegExp('^( ){2,}- ')
@@ -286,7 +326,8 @@ const parse = (markdownText, opt = {}) => {
               }
             }
           }
-        } else if (allowOrdNestedList
+        } else if (isNewItem
+        && allowOrdNestedList
         && body.lastChild != null
         && body.lastChild.tagName === 'OL') {
           const listRegex = new RegExp('^( ){3,}([0-9]+)\\. ')

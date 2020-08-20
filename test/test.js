@@ -585,7 +585,88 @@ test('Unordered List with complex texts', function (t) {
   t.end()
 })
 
-test('Unordered List with callback', function (t) {
+test('Unordered List with new lines (2 spaces)', function (t) {
+  const input = `
+    - Item 1
+      Following Item 1
+    - Item 2`
+
+  const output = inlineHtml`
+    <ul>
+      <li>
+        Item 1
+        <br>
+        Following Item 1
+      </li>
+      <li>Item 2</li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Unordered List with new lines (1 space only)', function (t) {
+  const input = `
+    - Item 1
+     Following Item 1`
+
+  const output = inlineHtml`
+    <ul>
+      <li>
+        Item 1
+      </li>
+    </ul>
+    <p> Following Item 1</p>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Unordered List with new lines (> 2 spaces)', function (t) {
+  const input = `
+    - Item 1
+       Following Item 1
+        Following again`
+
+  const output = inlineHtml`
+    <ul>
+      <li>
+        Item 1
+        <br>
+        Following Item 1
+        <br>
+        Following again
+      </li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Unordered List with new lines', function (t) {
+  const input = `
+    - Item 1
+      Following Item 1
+       Following again Item 1
+    - Item 2`
+
+  const output = inlineHtml`
+    <ul>
+      <li>
+        Item 1
+        <br>
+        Following Item 1
+        <br>
+        Following again Item 1
+      </li>
+      <li>Item 2</li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Unordered List at EOF with callback', function (t) {
   const input = `
     Some text
     - List 1, Item 1
@@ -601,14 +682,17 @@ test('Unordered List with callback', function (t) {
     },
   }
 
+  t.plan(4)
   parse(input, opt)
+})
 
-  const input2 = `
+test('Unordered List not at EOF with callback', function (t) {
+  const input = `
     Some text
     - List 1, Item 1
     - List 1, Item 2 at the end of the file`
 
-  const opt2 = {
+  const opt = {
     onUnorderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'UL', 'Tagname is valid')
@@ -617,8 +701,50 @@ test('Unordered List with callback', function (t) {
     },
   }
 
-  t.plan(8)
-  parse(input2, opt2)
+  t.plan(4)
+  parse(input, opt)
+})
+
+test('Unordered List with newlines and callback', function (t) {
+  const input = `
+    Some text
+    - List 1, Item 1
+      Following Item 1
+    - List 1, Item 2 at the end of the file`
+
+  const opt = {
+    onUnorderedList: (node, level) => {
+      t.notEqual(node, null, 'Parameter is populated')
+      t.equal(node.tagName, 'UL', 'Tagname is valid')
+      t.equal(node.children.length, 2, 'Number of children is valid')
+      t.equal(level, 1, 'Level is valid')
+      t.equal(node.firstChild.textContent, 'List 1, Item 1Following Item 1', 'Content is valid')
+    },
+  }
+
+  t.plan(5)
+  parse(input, opt)
+})
+
+test('Unordered List with newlines in the last item and callback', function (t) {
+  const input = `
+    Some text
+    - List 1, Item 1
+    - List 1, Item 2
+      Following Item 2`
+
+  const opt = {
+    onUnorderedList: (node, level) => {
+      t.notEqual(node, null, 'Parameter is populated')
+      t.equal(node.tagName, 'UL', 'Tagname is valid')
+      t.equal(node.children.length, 2, 'Number of children is valid')
+      t.equal(level, 1, 'Level is valid')
+      t.equal(node.lastChild.textContent, 'List 1, Item 2Following Item 2', 'Content is valid')
+    },
+  }
+
+  t.plan(5)
+  parse(input, opt)
 })
 
 test('Unordered list with allowUnorderedList flag to false', function (t) {
@@ -652,7 +778,53 @@ test('Ordered List', function (t) {
   t.end()
 })
 
-test('Ordered List with callback', function (t) {
+test('Ordered List with newlines', function (t) {
+  const input = `
+    1. First item
+       Following first item
+    2. Second item
+       Following second item`
+  const output = inlineHtml`
+    <ol>
+      <li>First item<br>Following first item</li>
+      <li>Second item<br>Following second item</li>
+    </ol>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Ordered List with newlines (> 3 spaces)', function (t) {
+  const input = `
+    1. First item
+        Following first item
+    2. Second item
+         Following second item`
+  const output = inlineHtml`
+    <ol>
+      <li>First item<br>Following first item</li>
+      <li>Second item<br>Following second item</li>
+    </ol>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Ordered List with newlines (2 spaces only)', function (t) {
+  const input = `
+    1. First item
+      Following first item`
+  const output = inlineHtml`
+    <ol>
+      <li>First item</li>
+    </ol>
+    <p>  Following first item</p>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Ordered List with callback not at EOF', function (t) {
   const input = `
     Some text
     1. List 1, Item 1
@@ -668,14 +840,17 @@ test('Ordered List with callback', function (t) {
     },
   }
 
+  t.plan(4)
   parse(input, opt)
+})
 
-  const input2 = `
+test('Ordered List with callback at EOF', function (t) {
+  const input = `
     Some text
     1. List 1, Item 1
     2. List 1, Item 2 at the end of the file`
 
-  const opt2 = {
+  const opt = {
     onOrderedList: (node, level) => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'OL', 'Tagname is valid')
@@ -684,8 +859,50 @@ test('Ordered List with callback', function (t) {
     },
   }
 
-  t.plan(8)
-  parse(input2, opt2)
+  t.plan(4)
+  parse(input, opt)
+})
+
+test('Ordered List with newline in first item and callback', function (t) {
+  const input = `
+    Some text
+    1. List 1, Item 1
+       Following Item 1
+    2. List 1, Item 2`
+
+  const opt = {
+    onOrderedList: (node, level) => {
+      t.notEqual(node, null, 'Parameter is populated')
+      t.equal(node.tagName, 'OL', 'Tagname is valid')
+      t.equal(node.children.length, 2, 'Number of children is valid')
+      t.equal(level, 1, 'Level is valid')
+      t.equal(node.firstChild.textContent, 'List 1, Item 1Following Item 1', 'TextContent is valid')
+    },
+  }
+
+  t.plan(5)
+  parse(input, opt)
+})
+
+test('Ordered List with newline in last item and callback', function (t) {
+  const input = `
+    Some text
+    1. List 1, Item 1
+    2. List 1, Item 2
+       Following Item 2`
+
+  const opt = {
+    onOrderedList: (node, level) => {
+      t.notEqual(node, null, 'Parameter is populated')
+      t.equal(node.tagName, 'OL', 'Tagname is valid')
+      t.equal(node.children.length, 2, 'Number of children is valid')
+      t.equal(level, 1, 'Level is valid')
+      t.equal(node.lastChild.textContent, 'List 1, Item 2Following Item 2', 'TextContent is valid')
+    },
+  }
+
+  t.plan(5)
+  parse(input, opt)
 })
 
 test('Ordered list with allowOrderedList flag to false', function (t) {
