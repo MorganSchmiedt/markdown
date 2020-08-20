@@ -251,8 +251,7 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (firstChar === ' '
       && next(1) === ' ') {
-        const itemRegex = new RegExp('^([ ]{2,})((- )|(\\d*\\. ))?')
-        const itemMatch = itemRegex.exec(lineText)
+        const itemMatch = /^([ ]{2,})((- )|(\d*\. ))?/.exec(lineText)
         const syntaxSize = itemMatch[0].length
         const spaceCount = itemMatch[1].length
         const isNewItem = itemMatch[2] != null
