@@ -13,7 +13,8 @@
   ],
   "main": "src/markdown.js",
   "scripts": {
-    "test": "node test/test.js"
+    "test": "npm run tests-only",
+    "tests-only": "tape test/unit/*"
   },
   "devDependencies": {
     "tape": "^5.0.1"

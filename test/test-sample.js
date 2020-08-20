@@ -25,11 +25,14 @@ const trimInput = param => {
 const parse = (input, opt) => parser.parse(trimInput(input), opt)
 
 const input = `
-  // Some markdown
-  // ...`
+  - Item 1
+  
+  - Item 2`
 
 const element = parse(input, {
-  // Some options
+  onUnorderedList: node => {
+    console.log(node.children.length)
+  },
 })
 
 console.log(element.innerHTML)
