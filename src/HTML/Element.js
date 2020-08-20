@@ -1,5 +1,4 @@
 'use strict'
-/* eslint-env node, es6 */
 
 // https://html.spec.whatwg.org/multipage/syntax.html#void-elements
 const VOID_TAGS = new Set([
@@ -194,7 +193,7 @@ class Element {
   }
 
   set className(value) {
-    return this.setAttribute('class', value)
+    this.setAttribute('class', value)
   }
 
   get className() {
@@ -206,7 +205,7 @@ class Element {
   }
 
   set id(value) {
-    return this.setAttribute('id', value)
+    this.setAttribute('id', value)
   }
 }
 

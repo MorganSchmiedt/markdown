@@ -1,5 +1,4 @@
 'use strict'
-/* eslint-env node, es6 */
 
 const Element = require('./HTML/Element.js')
 const document = require('./HTML/document.js')

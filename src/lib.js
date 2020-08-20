@@ -1,5 +1,4 @@
 'use strict'
-/* eslint-env node, es6 */
 
 const parseBoolean = (value, defaultValue) =>
   typeof value === 'boolean'
