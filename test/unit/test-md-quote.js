@@ -46,6 +46,31 @@ test('Quote with text before and after', function (t) {
   t.end()
 })
 
+test('Quote with list before and after', function (t) {
+  const input = `
+    - List 1
+    > Blockquote line 1
+    > Blockquote line 2
+    - List 2`
+  const output = inlineHtml`
+    <ul>
+      <li>List 1</li>
+    </ul>
+    <blockquote>
+      <p>
+        Blockquote line 1
+        <br>
+        Blockquote line 2
+      </p>
+    </blockquote>
+    <ul>
+      <li>List 2</li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Quote with callback', function (t) {
   const input = `
     > Blockquote line 1
