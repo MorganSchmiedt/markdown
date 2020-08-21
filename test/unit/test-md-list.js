@@ -176,15 +176,14 @@ test('Unordered List not at EOF with callback', function (t) {
     Not at the end of the file`
 
   const opt = {
-    onUnorderedList: (node, level) => {
+    onUnorderedList: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'UL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(level, 1, 'Level is valid')
     },
   }
 
-  t.plan(4)
+  t.plan(3)
   parse(input, opt)
 })
 
@@ -195,15 +194,14 @@ test('Unordered List at EOF with callback', function (t) {
     - List 1, Item 2 at the end of the file`
 
   const opt = {
-    onUnorderedList: (node, level) => {
+    onUnorderedList: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'UL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(level, 1, 'Level is valid')
     },
   }
 
-  t.plan(4)
+  t.plan(3)
   parse(input, opt)
 })
 
@@ -252,16 +250,15 @@ test('Unordered List with LF and callback', function (t) {
     - List 1, Item 2 at the end of the file`
 
   const opt = {
-    onUnorderedList: (node, level) => {
+    onUnorderedList: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'UL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(level, 1, 'Level is valid')
       t.equal(node.firstChild.textContent, 'List 1, Item 1Following Item 1', 'Content is valid')
     },
   }
 
-  t.plan(5)
+  t.plan(4)
   parse(input, opt)
 })
 
@@ -306,16 +303,15 @@ test('Unordered List with newlines in the last item and callback', function (t) 
       Following Item 2`
 
   const opt = {
-    onUnorderedList: (node, level) => {
+    onUnorderedList: node => {
       t.notEqual(node, null, 'Parameter is populated')
       t.equal(node.tagName, 'UL', 'Tagname is valid')
       t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(level, 1, 'Level is valid')
       t.equal(node.lastChild.textContent, 'List 1, Item 2Following Item 2', 'Content is valid')
     },
   }
 
-  t.plan(5)
+  t.plan(4)
   parse(input, opt)
 })
 

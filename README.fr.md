@@ -108,8 +108,8 @@ Les Callbacks disponibles sont:
 - `onVidéo`: Fonction appelée lorsqu'une video est parsée.
 - `onCode`: Fonction appelée lorsque du code est parsé.
 - `onMultilineCode`: Fonction appelée lorsque du code multi lignes est parsé. Le deuxième argument est le nom (optionnel) du langage.
-- `onUnorderedList`: Fonction appelée lorsqu'une liste non numérotée est parsée. Le deuxième argument le niveau de la liste. `1` pour les listes de premier niveau, `2` pour les listes imbriquées.
-- `onOrderedList`: Fonction appelée lorsqu'une liste numérotée est parsée. Le deuxième argument le niveau de la liste. `1` pour les listes de premier niveau, `2` pour les listes imbriquées.
+- `onUnorderedList`: Fonction appelée lorsqu'une liste non numérotée est parsée.
+- `onOrderedList`: Fonction appelée lorsqu'une liste numérotée est parsée.
 - `onHorizontalLine`: Fonction appelée lorsqu'une ligne horizontale est parsée.
 - `onQuote`: Fonction appelée lorsqu'une citation est parsée.
 - `onReference`: Fonction appelée lorsqu'une référence est parsée. Le deuxième argument contient la référence.
@@ -581,9 +581,13 @@ Une citation débute avec un signe supérieur (`>`).
 
 ```html
 <blockquote>
-  <p>Citation ligne 1</p>
-  <p>Citation ligne 2</p>
-  <p>Citation ligne 3</p>
+  <p>
+    Citation ligne 1
+    <br>
+    Citation ligne 2
+    <br>
+    Citation ligne 3
+  </p>
 </blockquote>
 ```
 

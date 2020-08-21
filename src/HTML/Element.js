@@ -207,6 +207,18 @@ class Element {
   set id(value) {
     this.setAttribute('id', value)
   }
+
+  _attach() {
+    for (const child of this._children) {
+      if (typeof child !== 'string') {
+        child._attach(child)
+      }
+    }
+
+    if (this.onAttach) {
+      this.onAttach(this)
+    }
+  }
 }
 
 module.exports = Element

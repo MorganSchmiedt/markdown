@@ -133,20 +133,8 @@ test('Element.textContent with multiple element', function (t) {
 })
 
 test('Element.textContent with embedded element', function (t) {
-  const input = 'Text with *italic* and **bold** texts'
-  const textContent = 'Text with italic and bold texts'
-  const element = parse(input)
-
-  t.equal(element.textContent, textContent, 'textContent is valid')
-  t.end()
-})
-
-test('Element.textContent with complex list', function (t) {
-  const input = `
-    - Item 1
-      - Item 1.1
-    - Item 2`
-  const textContent = 'Item 1Item 1.1Item 2'
+  const input = 'Text with *italic*'
+  const textContent = 'Text with italic'
   const element = parse(input)
 
   t.equal(element.textContent, textContent, 'textContent is valid')

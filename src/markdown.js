@@ -80,24 +80,57 @@ const parse = (markdownText, opt = {}) => {
   const text = `${markdownText}\n`
   const textSize = text.length
 
+  let currentNode
+  let targetNode
+  let lastFlushCursor
+  let lineCursor
+  let lineText
+
+  const flushBody = () => {
+    if (currentNode != null) {
+      body.appendChild(currentNode)
+      body.lastChild._attach()
+      currentNode = null
+      targetNode = null
+    }
+  }
+
+  const flush = () => {
+    if (targetNode == null) {
+      currentNode = document.createElement('P')
+      targetNode = currentNode
+    }
+
+    if (lastFlushCursor < lineCursor) {
+      const text =
+        removeEscapeChars(lineText.substring(lastFlushCursor, lineCursor))
+
+      targetNode.appendChild(document.createTextNode(text))
+
+      lastFlushCursor = lineCursor
+    }
+  }
+
+  const next = n => lineText[lineCursor + n]
+
   while (cursor < textSize) {
     const restText = text.substring(cursor)
     const EOLIndex = restText.indexOf('\n')
-    const lineText = restText.substring(0, EOLIndex)
-    const nextRestText = restText.substring(EOLIndex + 1)
+    lineText = restText.substring(0, EOLIndex)
+    // const nextRestText = restText.substring(EOLIndex + 1)
     let ffCursor = EOLIndex + 1
+    let caseFound = false
 
     if (lineText.trim().length === 0) {
-      // Do nothing
+      if (currentNode != null
+      && currentNode.tagName === 'P') {
+        flushBody()
+      }
     } else {
-      let lineCursor = 0
-      let lastFlushCursor = 0
-      const next = n => lineText[lineCursor + n]
+      lineCursor = 0
+      lastFlushCursor = 0
 
-      let currentLine
       let parseLine = true
-      let onLineEnd
-      let targetNode = body
 
       const firstChar = lineText[0]
 
@@ -116,13 +149,11 @@ const parse = (markdownText, opt = {}) => {
           const headerText = lineText.substring(lineText.indexOf(' ') + 1)
           const headerNode = document.createElement(`H${headerLevel}`)
           headerNode.textContent = headerText
+          headerNode.onAttach = opt.onHeader
 
-          if (opt.onHeader) {
-            opt.onHeader(headerNode)
-          }
-
-          currentLine = headerNode
+          currentNode = headerNode
           parseLine = false
+          flushBody()
         }
       } else if (firstChar === '!') {
         if (next(1) === '['
@@ -153,20 +184,14 @@ const parse = (markdownText, opt = {}) => {
               const videoNode = document.createElement('VIDEO')
               videoNode.appendChild(sourceNode)
               videoNode.setAttribute('controls', '')
-
-              if (opt.onVideo) {
-                opt.onVideo(videoNode)
-              }
+              videoNode.onAttach = opt.onVideo
 
               figureNode.appendChild(videoNode)
             } else {
               const imageNode = document.createElement('IMG')
               imageNode.setAttribute('src', url)
               imageNode.setAttribute('alt', '')
-
-              if (opt.onImage) {
-                opt.onImage(imageNode)
-              }
+              imageNode.onAttach = opt.onImage
 
               figureNode.appendChild(imageNode)
             }
@@ -176,8 +201,9 @@ const parse = (markdownText, opt = {}) => {
 
             figureNode.appendChild(captionNode)
 
-            currentLine = figureNode
+            currentNode = figureNode
             parseLine = false
+            flushBody()
           }
         }
       } else if (firstChar === '-') {
@@ -188,36 +214,32 @@ const parse = (markdownText, opt = {}) => {
         && text[cursor + 3] === '\n'
         && text[cursor + 4] === '\n') {
           const hrNode = document.createElement('HR')
+          hrNode.onAttach = opt.onHorizontalLine
 
-          if (opt.onHorizontalLine) {
-            opt.onHorizontalLine(hrNode)
-          }
-
-          currentLine = hrNode
+          currentNode = hrNode
           parseLine = false
+          flushBody()
         } else if (allowUnorderedList
         && next(1) === ' ') {
-          if (body.lastChild == null
-          || body.lastChild.tagName !== 'UL') {
-            body.appendChild(document.createElement('UL'))
+          if (currentNode != null
+          && currentNode.tagName !== 'UL') {
+            flushBody()
           }
 
-          targetNode = body.lastChild
-          currentLine = document.createElement('LI')
+          if (currentNode == null) {
+            const listNode = document.createElement('UL')
+            listNode.onAttach = opt.onUnorderedList
+            listNode.appendChild(document.createElement('LI'))
+
+            currentNode = listNode
+          } else {
+            currentNode.appendChild(document.createElement('LI'))
+          }
+
+          targetNode = currentNode.lastChild
           lineCursor = 2
           lastFlushCursor = lineCursor
-
-          if (opt.onUnorderedList) {
-            if (allowUnordNestedList) {
-              if (/^\n*((|([ ]{2,}))- )|([ ]{2,})/.exec(nextRestText) == null) {
-                onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
-              }
-            } else {
-              if (/^\n*(- )|([ ]{2,})/.exec(nextRestText) == null) {
-                onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
-              }
-            }
-          }
+          caseFound = true
         }
       } else if (allowOrderedList
       && Number.isInteger(parseInt(firstChar, 10))) {
@@ -226,162 +248,136 @@ const parse = (markdownText, opt = {}) => {
         if (match) {
           const syntaxSize = match[0].length
 
-          if (body.lastChild == null
-          || body.lastChild.tagName !== 'OL') {
-            body.appendChild(document.createElement('OL'))
+          if (currentNode != null
+          && currentNode.tagName !== 'OL') {
+            flushBody()
           }
 
-          targetNode = body.lastChild
-          currentLine = document.createElement('LI')
+          if (currentNode == null) {
+            const listNode = document.createElement('OL')
+            listNode.onAttach = opt.onOrderedList
+            listNode.appendChild(document.createElement('LI'))
+
+            currentNode = listNode
+          } else {
+            currentNode.appendChild(document.createElement('LI'))
+          }
+
+          targetNode = currentNode.lastChild
           lineCursor = syntaxSize
           lastFlushCursor = lineCursor
-
-          if (opt.onOrderedList) {
-            if (allowOrdNestedList) {
-              if (/^\n*((|([ ]{3,}))\d+\. )|([ ]{3,})/
-                .exec(nextRestText) == null) {
-                onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
-              }
-            } else {
-              if (/^\n*(\d+\. )|([ ]{3,})/.exec(nextRestText) == null) {
-                onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
-              }
-            }
-          }
+          caseFound = true
         }
       } else if (firstChar === ' '
       && next(1) === ' ') {
-        const itemMatch = /^([ ]{2,})((- )|(\d*\. ))?/.exec(lineText)
+        const itemMatch = /^([ ]{2,})((- )|(\d+\. ))?/
+          .exec(lineText)
+
         const syntaxSize = itemMatch[0].length
         const spaceCount = itemMatch[1].length
         const isNewItem = itemMatch[2] != null
+        const newListTag = itemMatch[2] === '- '
+          ? 'UL'
+          : 'OL'
 
         if (isNewItem === false
-        && body.lastChild != null
-        && body.lastChild.tagName === 'UL'
+        && targetNode != null
+        && targetNode.parentNode.tagName === 'UL'
         && spaceCount >= 2) {
-          currentLine = body.lastChild.lastChild
-          currentLine.appendChild(document.createElement('br'))
-          targetNode = null
+          if (targetNode.tagName === 'LI') {
+            targetNode.appendChild(document.createElement('BR'))
+          }
+
           lineCursor += syntaxSize
           lastFlushCursor += syntaxSize
-
-          if (opt.onUnorderedList) {
-            if (/^\n*((- )|([ ]{2,}))/.exec(nextRestText) == null) {
-              onLineEnd = body => opt.onUnorderedList(body.lastChild, 1)
-            }
-          }
+          caseFound = true
         } else if (isNewItem === false
-        && body.lastChild != null
-        && body.lastChild.tagName === 'OL'
+        && targetNode != null
+        && targetNode.parentNode.tagName === 'OL'
         && spaceCount >= 3) {
-          currentLine = body.lastChild.lastChild
-          currentLine.appendChild(document.createElement('br'))
-          targetNode = null
+          if (targetNode.tagName === 'LI') {
+            targetNode.appendChild(document.createElement('BR'))
+          }
+
           lineCursor += syntaxSize
           lastFlushCursor += syntaxSize
-
-          if (opt.onOrderedList) {
-            if (/^\n*((\d+\. )|([ ]{3,}))/.exec(nextRestText) == null) {
-              onLineEnd = body => opt.onOrderedList(body.lastChild, 1)
-            }
-          }
+          caseFound = true
         }
 
         if (isNewItem
-        && allowUnordNestedList
-        && body.lastChild != null
-        && body.lastChild.tagName === 'UL') {
-          const listMatch = /^( ){2,}- /.exec(lineText)
+        && targetNode.parentNode != null
+        && ((allowUnordNestedList
+            && currentNode.tagName === 'UL'
+            && spaceCount >= 2)
+        || (allowOrdNestedList
+            && currentNode.tagName === 'OL'
+            && spaceCount >= 3))) {
+          let listLevel = 0
+          let i = targetNode
 
-          if (listMatch) {
-            const syntaxSize = listMatch[0].length
-
-            const parentNode = body.lastChild
-            const lastItemNode = parentNode.lastChild
-            const itemContentNode = lastItemNode.lastChild
-
-            if (itemContentNode.tagName === 'UL') {
-              targetNode = itemContentNode
-            } else {
-              lastItemNode.appendChild(document.createElement('UL'))
-              targetNode = lastItemNode.lastChild
+          while (i != null) {
+            if (i.tagName === 'UL'
+            || i.tagName === 'OL') {
+              listLevel += 1
             }
 
-            currentLine = document.createElement('LI')
-            lineCursor = syntaxSize
-            lastFlushCursor = lineCursor
-
-            if (opt.onUnorderedList) {
-              const isLastItem = /^\n*( ){2,}- /.exec(nextRestText) == null
-
-              if (isLastItem) {
-                onLineEnd = body => {
-                  opt.onUnorderedList(body.lastChild.lastChild.lastChild, 2)
-                  opt.onUnorderedList(body.lastChild, 1)
-                }
-              }
-            }
+            i = i.parentNode
           }
-        } else if (isNewItem
-        && allowOrdNestedList
-        && body.lastChild != null
-        && body.lastChild.tagName === 'OL') {
-          const listMatch = /^( ){3,}([0-9]+)\. /.exec(lineText)
 
-          if (listMatch) {
-            const syntaxSize = listMatch[0].length
+          const parentNode = targetNode.parentNode
+          const lastItemNode = parentNode.lastChild
 
-            const parentNode = body.lastChild
-            const lastItemNode = parentNode.lastChild
-            const itemContentNode = lastItemNode.lastChild
+          if (listLevel === 2
+          && targetNode.parentNode.tagName === newListTag) {
+            parentNode.appendChild(document.createElement('LI'))
 
-            if (itemContentNode.tagName === 'OL') {
-              targetNode = itemContentNode
-            } else {
-              lastItemNode.appendChild(document.createElement('OL'))
-              targetNode = lastItemNode.lastChild
-            }
+            targetNode = parentNode.lastChild
+          } else {
+            const listNode = document.createElement(newListTag)
+            listNode.onAttach = newListTag === 'UL'
+              ? opt.onUnorderedList
+              : opt.onOrderedList
+            listNode.appendChild(document.createElement('LI'))
 
-            currentLine = document.createElement('LI')
-            lineCursor = syntaxSize
-            lastFlushCursor = lineCursor
+            lastItemNode.appendChild(listNode)
 
-            if (opt.onOrderedList) {
-              const isLastItem = /^\n*( ){3,}([0-9]+)\. /
-                .exec(nextRestText) == null
-
-              if (isLastItem) {
-                onLineEnd = body => {
-                  opt.onOrderedList(body.lastChild.lastChild.lastChild, 2)
-                  opt.onOrderedList(body.lastChild, 1)
-                }
-              }
-            }
+            targetNode = lastItemNode.lastChild.lastChild
           }
+
+          lineCursor = syntaxSize
+          lastFlushCursor = lineCursor
+          caseFound = true
         }
       } else if (allowQuote
       && firstChar === '>') {
         if (next(1) === ' ') {
-          if (body.lastChild == null
-          || body.lastChild.tagName !== 'BLOCKQUOTE') {
-            body.appendChild(document.createElement('BLOCKQUOTE'))
+          if (currentNode == null
+          || currentNode.tagName !== 'BLOCKQUOTE') {
+            flushBody()
           }
 
-          targetNode = body.lastChild
+          if (currentNode == null) {
+            const pNode = document.createElement('P')
+
+            const quoteNode = document.createElement('BLOCKQUOTE')
+            quoteNode.onAttach = opt.onQuote
+            quoteNode.appendChild(pNode)
+
+            currentNode = quoteNode
+            targetNode = pNode
+          }
+
           lineCursor = 2
           lastFlushCursor = lineCursor
-
-          if (opt.onQuote
-          && nextRestText.startsWith('> ') === false) {
-            onLineEnd = body => opt.onQuote(body.lastChild)
-          }
+          caseFound = true
         }
       } else if (allowMultilineCode
       && lineText.startsWith('```')) {
         const match = /^```(\w*)\n((.|\n)+)\n```/.exec(text.substring(cursor))
 
         if (match) {
+          flushBody()
+
           const matchSize = match[0].length
           const languageName = match[1]
           const codeContent = match[2]
@@ -391,45 +387,28 @@ const parse = (markdownText, opt = {}) => {
 
           const preNode = document.createElement('PRE')
           preNode.appendChild(codeNode)
+          preNode.onAttach = opt.onMultilineCode != null
+            ? node => opt.onMultilineCode(node, languageName)
+            : undefined
 
-          if (opt.onMultilineCode) {
-            opt.onMultilineCode(preNode, languageName)
-          }
-
-          currentLine = preNode
+          currentNode = preNode
+          flushBody()
           ffCursor = matchSize
           parseLine = false
         }
       }
 
       if (parseLine) {
-        if (currentLine == null) {
-          const lastChild = body.lastChild
-
-          if (lastChild != null
-          && lastChild.tagName === 'P'
-          && /\n( )*\n$/.exec(text.substring(0, cursor)) == null) {
-            currentLine = lastChild
-            currentLine.appendChild(document.createElement('BR'))
-            targetNode = null
-          } else {
-            currentLine = document.createElement('P')
-          }
+        if (caseFound === false
+        && currentNode != null
+        && currentNode.tagName !== 'P') {
+          flushBody()
         }
 
-        const flush = node => {
-          if (lastFlushCursor < lineCursor) {
-            const text =
-              removeEscapeChars(lineText.substring(lastFlushCursor, lineCursor))
-
-            currentLine.appendChild(document.createTextNode(text))
-
-            lastFlushCursor = lineCursor
-          }
-
-          if (node != null) {
-            currentLine.appendChild(node)
-          }
+        if (targetNode != null
+        && targetNode.tagName === 'P'
+        && targetNode.firstChild != null) {
+          targetNode.appendChild(document.createElement('BR'))
         }
 
         let lineCursorMax
@@ -448,14 +427,14 @@ const parse = (markdownText, opt = {}) => {
             } else {
               lineCursor = lineCursorMax
               flush()
-              lineCursor += currentLine.ffOnTextEnd
-              lastFlushCursor += currentLine.ffOnTextEnd
+              lineCursor += targetNode.ffOnTextEnd
+              lastFlushCursor += targetNode.ffOnTextEnd
 
-              while (currentLine.upOnTextEnd) {
-                currentLine = currentLine.parentNode
+              while (targetNode.upOnTextEnd) {
+                targetNode = targetNode.parentNode
               }
 
-              currentLine = currentLine.parentNode
+              targetNode = targetNode.parentNode
               lineCursorMax = undefined
             }
           } else {
@@ -486,9 +465,8 @@ const parse = (markdownText, opt = {}) => {
                   const strongNode = document.createElement('STRONG')
                   strongNode.appendChild(emNode)
 
-                  currentLine.appendChild(strongNode)
-                  currentLine = emNode
-
+                  targetNode.appendChild(strongNode)
+                  targetNode = emNode
 
                   ff = syntaxSize
                   lastFlushCursor += syntaxSize
@@ -507,8 +485,8 @@ const parse = (markdownText, opt = {}) => {
                   const strongNode = document.createElement('STRONG')
                   strongNode.ffOnTextEnd = syntaxSize
 
-                  currentLine.appendChild(strongNode)
-                  currentLine = strongNode
+                  targetNode.appendChild(strongNode)
+                  targetNode = strongNode
 
                   ff = syntaxSize
                   lastFlushCursor += syntaxSize
@@ -525,8 +503,8 @@ const parse = (markdownText, opt = {}) => {
                   const emNode = document.createElement('EM')
                   emNode.ffOnTextEnd = syntaxSize
 
-                  currentLine.appendChild(emNode)
-                  currentLine = emNode
+                  targetNode.appendChild(emNode)
+                  targetNode = emNode
 
                   ff = syntaxSize
                   lastFlushCursor += syntaxSize
@@ -547,8 +525,8 @@ const parse = (markdownText, opt = {}) => {
                   const sNode = document.createElement('S')
                   sNode.ffOnTextEnd = syntaxSize
 
-                  currentLine.appendChild(sNode)
-                  currentLine = sNode
+                  targetNode.appendChild(sNode)
+                  targetNode = sNode
 
                   ff = syntaxSize
                   lastFlushCursor += syntaxSize
@@ -563,15 +541,15 @@ const parse = (markdownText, opt = {}) => {
               const match = regex.exec(remainingText)
 
               if (match) {
+                flush()
+
                 const matchSize = match[0].length
                 const content = match[1]
-
-                flush()
 
                 const supNode = document.createElement('SUP')
                 supNode.textContent = content
 
-                currentLine.appendChild(supNode)
+                targetNode.appendChild(supNode)
 
                 ff = syntaxSize + matchSize
                 lastFlushCursor += ff
@@ -584,6 +562,8 @@ const parse = (markdownText, opt = {}) => {
                 const refMatch = /\^(\d+)]/.exec(restLineText)
 
                 if (refMatch) {
+                  flush()
+
                   const ref = refMatch[1]
 
                   const supNode = document.createElement('SUP')
@@ -592,12 +572,11 @@ const parse = (markdownText, opt = {}) => {
                   const linkNode = document.createElement('A')
                   linkNode.setAttribute('href', `#reference${ref}`)
                   linkNode.appendChild(supNode)
+                  linkNode.onAttach = opt.onReference != null
+                    ? node => opt.onReference(node, ref)
+                    : undefined
 
-                  if (opt.onReference) {
-                    opt.onReference(linkNode, ref)
-                  }
-
-                  flush(linkNode)
+                  targetNode.appendChild(linkNode)
 
                   ff = (1 + refMatch[0].length)
                   lastFlushCursor += ff
@@ -606,18 +585,17 @@ const parse = (markdownText, opt = {}) => {
                 const endMatch = /([^\]]+)]\(([^)]+)\)/.exec(restLineText)
 
                 if (endMatch) {
+                  flush()
+
                   const title = endMatch[1]
                   const url = endMatch[2]
 
                   const linkNode = document.createElement('A')
                   linkNode.setAttribute('href', url)
                   linkNode.textContent = title
+                  linkNode.onAttach = opt.onLink
 
-                  if (opt.onLink) {
-                    opt.onLink(linkNode)
-                  }
-
-                  flush(linkNode)
+                  targetNode.appendChild(linkNode)
 
                   ff = (1 + endMatch[0].length)
                   lastFlushCursor += ff
@@ -631,12 +609,15 @@ const parse = (markdownText, opt = {}) => {
                   .exec(restLineText)
 
                 if (endMatch) {
+                  flush()
+
                   const syntaxSize = 1 + endMatch[0].length
                   const altText = endMatch[1]
                   const url = endMatch[2]
                   const style = endMatch[4]
 
                   const imageNode = document.createElement('IMG')
+                  imageNode.onAttach = opt.onImage
                   imageNode.setAttribute('src', url)
                   imageNode.setAttribute('alt', altText)
 
@@ -645,11 +626,7 @@ const parse = (markdownText, opt = {}) => {
                     imageNode.setAttribute('style', style)
                   }
 
-                  if (opt.onImage) {
-                    opt.onImage(imageNode)
-                  }
-
-                  flush(imageNode)
+                  targetNode.appendChild(imageNode)
 
                   ff = syntaxSize
                   lastFlushCursor += ff
@@ -661,15 +638,14 @@ const parse = (markdownText, opt = {}) => {
               const endTagIndex = restLineText.indexOf('`')
 
               if (endTagIndex > 0) {
+                flush()
+
                 const content = restLineText.substring(0, endTagIndex)
                 const codeNode = document.createElement('CODE')
                 codeNode.textContent = content
+                codeNode.onAttach = opt.onCode
 
-                if (opt.onCode) {
-                  opt.onCode(codeNode)
-                }
-
-                flush(codeNode)
+                targetNode.appendChild(codeNode)
 
                 ff = (1 + endTagIndex + 1)
                 lastFlushCursor += ff
@@ -680,17 +656,13 @@ const parse = (markdownText, opt = {}) => {
           lineCursor += ff
         }
       }
-
-      if (targetNode) {
-        targetNode.appendChild(currentLine)
-      }
-
-      if (onLineEnd) {
-        onLineEnd(body)
-      }
     }
 
     cursor += ffCursor
+  }
+
+  if (currentNode) {
+    flushBody()
   }
 
   return body

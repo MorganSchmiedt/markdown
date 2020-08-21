@@ -89,9 +89,9 @@ test('Ordered Nested List', function (t) {
     </ol>
     <p>Some text</p>
     <ol>
-    <li>Item 3</li>
-    <li>Item 4</li>
-  </ol>`
+      <li>Item 3</li>
+      <li>Item 4</li>
+    </ol>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -112,31 +112,47 @@ test('Nested Ord. List with only 2 spaces', function (t) {
   t.end()
 })
 
-test('Nested List with unordered in ordered', function (t) {
+test('Nested List with ordered in unordered', function (t) {
   const input = `
     - Item 1
-      1. Item 1.1`
+      1. Item 1.1
+      2. Item 1.2
+    - Item 2`
 
   const output = inlineHtml`
     <ul>
-      <li>Item 1</li>
-    </ul>
-    <p>  1. Item 1.1</p>`
+      <li>
+        Item 1
+        <ol>
+          <li>Item 1.1</li>
+          <li>Item 1.2</li>
+        </ol>
+      </li>
+      <li>Item 2</li>
+    </ul>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
 })
 
-test('Nested List with ordered in unordered', function (t) {
+test('Nested List with unordered in ordered', function (t) {
   const input = `
     1. Item 1
-      - Item 1.1`
+       - Item 1.1
+       - Item 1.2
+    2. Item 2`
 
   const output = inlineHtml`
     <ol>
-      <li>Item 1</li>
-    </ol>
-    <p>  - Item 1.1</p>`
+      <li>
+        Item 1
+        <ul>
+          <li>Item 1.1</li>
+          <li>Item 1.2</li>
+        </ul>
+      </li>
+      <li>Item 2</li>
+    </ol>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
@@ -145,55 +161,71 @@ test('Nested List with ordered in unordered', function (t) {
 test('Nested unordered List with callback', function (t) {
   const input = `
     - Item 1
-      - Item 1.1`
+      - Item 1.1
+      - Item 1.2
+    - Item 2
+    - Item 3`
+
+  let level = 2
 
   const opt = {
-    onUnorderedList: (node, level) => {
-      if (node == null) {
-        t.fail(`Level ${level}: Node param is null`)
-      }
-
-      const liNode = node.firstChild
-
-      if (liNode.textContent === 'Item 1.1') {
-        t.equal(node.children.length, 1, 'Level 2: Number of children is valid')
-        t.equal(level, 2, 'Level 2: Level is valid')
-      } else {
-        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
-        t.equal(level, 1, 'Level 1: Level is valid')
+    onUnorderedList: node => {
+      if (level === 1) {
+        t.equal(node.children.length, 3, 'Level 1: Number of children is valid')
+      } else if (level === 2) {
+        t.equal(node.children.length, 2, 'Level 2: Number of children is valid')
+        level -= 1
       }
     },
   }
 
-  t.plan(4)
+  t.plan(2)
   parse(input, opt)
 })
 
 test('Nested ordered List with callback', function (t) {
   const input = `
     1. Item 1
-       1. Item 1.1`
+       1. Item 1.1
+       2. Item 1.2`
+
+  let level = 2
 
   const opt = {
-    onOrderedList: (node, level) => {
-      if (node == null) {
-        t.fail(`Level ${level}: Node param is null`)
-      }
-
-      const liNode = node.firstChild
-
-      if (liNode.textContent === 'Item 1.1') {
-        t.equal(node.children.length, 1, 'Level 2: Number of children is valid')
-        t.equal(level, 2, 'Level 2: Level is valid')
-      } else {
+    onOrderedList: node => {
+      if (level === 1) {
         t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
-        t.equal(level, 1, 'Level 1: Level is valid')
+      } else {
+        t.equal(node.children.length, 2, 'Level 2: Number of children is valid')
+        level -= 1
       }
     },
   }
 
-  t.plan(4)
+  t.plan(2)
   parse(input, opt)
+})
+
+test('Nested List with ordered in unordered and callback', function (t) {
+  const input = `
+    - Item 1
+      1. Item 1.1
+      2. Item 1.2
+      3. Item 1.3
+    - Item 2`
+
+  const opt = {
+    onUnorderedList: node => {
+      t.equal(node.children.length, 2, 'Children count in unord list is valid')
+    },
+    onOrderedList: node => {
+      t.equal(node.children.length, 3, 'Children count in ord list is valid')
+    },
+  }
+
+  t.plan(2)
+  parse(input, opt)
+  t.end()
 })
 
 test('Unordered Nested List with allowUnorderedNestedList to false', function (t) {

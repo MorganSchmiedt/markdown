@@ -29,7 +29,7 @@
 - Void HTML elements no longer have a trailing slash.
 - Only special characters are now converted to alphanumeric values.
 - Escape characters are now removed in the parsed element.
-
+- Blockquotes text lines are now embedded in a `<p>` tag.
 
 
 ## 1.0.0 - 2020-08-13

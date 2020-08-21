@@ -109,8 +109,8 @@ Available callbacks are:
 - `onVideo`: Function called when a video is parsed.
 - `onCode`: Function called when an inline code is parsed.
 - `onMultilineCode`: Function called when a multiline code is parsed. The second argument is the (optional) language name.
-- `onUnorderedList`: Function called when a unordered list is parsed. The second argument is the list level. `1` for top level lists and `2` for nested lists.
-- `onOrderedList`: Function called when an ordered list is parsed. The second argument is the list level. `1` for top level lists and `2` for nested lists.
+- `onUnorderedList`: Function called when a unordered list is parsed.
+- `onOrderedList`: Function called when an ordered list is parsed.
 - `onHorizontalLine`: Function called when a horizontal line is parsed.
 - `onQuote`: Function called when a quote is parsed.
 - `onReference`: Function called when a reference is parsed. The second argument contains the reference.
@@ -581,9 +581,13 @@ A quote starts with a "greater than" sign (`>`).
 
 ```html
 <blockquote>
-  <p>Quote Line 1</p>
-  <p>Quote Line 2</p>
-  <p>Quote Line 3</p>
+  <p>
+    Quote Line 1
+    <br>
+    Quote Line 2
+    <br>
+    Quote Line 3
+  </p>
 </blockquote>
 ```
 
