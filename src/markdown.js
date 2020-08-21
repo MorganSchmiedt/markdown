@@ -309,6 +309,7 @@ const parse = (markdownText, opt = {}) => {
         }
 
         if (isNewItem
+        && targetNode != null
         && targetNode.parentNode != null
         && ((allowUnordNestedList
             && currentNode.tagName === 'UL'
