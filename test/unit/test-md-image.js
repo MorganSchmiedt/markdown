@@ -20,6 +20,28 @@ test('Image as a figure', function (t) {
   t.end()
 })
 
+test('Image as a figure surrounded by elements', function (t) {
+  const input = `
+    - List 1
+    ![caption](https://example.com/image)
+    - List 2`
+
+  const output = inlineHtml`
+    <ul>
+      <li>List 1</li>
+    </ul>
+    <figure>
+      <img src="https://example.com/image" alt="">
+      <figcaption>caption</figcaption>
+    </figure>
+    <ul>
+      <li>List 2</li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Image as a figure can NOT be styled by default', function (t) {
   const input = '![alt text](https://example.com/image;height:100px)'
   const output = inlineHtml`
@@ -68,7 +90,15 @@ test('Image inline', function (t) {
   t.end()
 })
 
-test('Image with style and default flag', function (t) {
+test('Image inline at the beginning of line', function (t) {
+  const input = '![alt text](https://example.com/image) was inlined'
+  const output = '<p><img src="https://example.com/image" alt="alt text"> was inlined</p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Image with style and default allowImageStyle', function (t) {
   const input = 'This is an inline ![alt text](https://example.com/image){height: 100px}'
   const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text"></p>'
 

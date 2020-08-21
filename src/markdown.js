@@ -160,10 +160,11 @@ const parse = (markdownText, opt = {}) => {
         if (next(1) === '['
         && allowImage) {
           const restLineText = lineText.substring(lineCursor + 1)
-          const endMatch = /^\[([^\]]+)]\(([^;)]+)(;([^)]+))?\)/
+          const endMatch = /^\[([^\]]+)]\(([^;)]+)(;([^)]+))?\)$/
             .exec(restLineText)
 
           if (endMatch) {
+            flushBody()
             const title = endMatch[1]
             const url = endMatch[2]
             const style = endMatch[4]
