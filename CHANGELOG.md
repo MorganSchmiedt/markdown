@@ -1,23 +1,22 @@
 # Changelog
 
-## 2.0.0beta - TBD
+## 2.0.0 - 2020-08-21
 
 **🌟 New**
 - Unordered and ordered nested lists are supported.
-- Space-only lines are considered empty.
-- `allowUnorderedNestedList`, `allowOrderedNestedList`, `allowReference`, `allowFootnote` options are added.
-- `Element.id`, `Element.className`,  `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes`, `Element.innerHTML`, `Element.outerHTML` are added.
 - Line breaks in (un)ordered lists and nested lists are supported.
+- Space-only lines are considered empty.
+- `allowUnorderedNestedList`, `allowOrderedNestedList`, `allowReference` options are added.
+- `Element.id`, `Element.className`,  `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes`, `Element.innerHTML`, `Element.outerHTML` are added.
+
 
 **⚠ Breaking changes**
 - `allowFootnote` becomes `allowReference`.
 - `onFootnote` becomes `onReference`.
 - `Element.attr` becomes `Element.attributes`.
 - `Element.toHtml()` becomes `Element.innerHTML`.
-- `Element.tagName` property is now read-only.
-- `Element.tagName` now returns the tag name in uppercase.
+- `Element.tagName` property is now read-only and returns the tag name in uppercase.
 - `Element.textContent` returns non-only the text of the Element, but also the text of its descendants.
-- `<video>` HTML tags have now a `controls` attribute by default.
 - Hoziontal lines must now have a blank line before and after the dashes.
 - A single newline adds a `<br>` tag to the last paragraph.
 - Two newlines creates a paragraph.
@@ -30,6 +29,7 @@
 - Only special characters are now converted to alphanumeric values.
 - Escape characters are now removed in the parsed element.
 - Blockquotes text lines are now embedded in a `<p>` tag.
+- `<video>` HTML tags have now a `controls` attribute by default.
 
 
 ## 1.0.0 - 2020-08-13
