@@ -88,6 +88,24 @@ test('Multiline code twice', function (t) {
   t.end()
 })
 
+test('Multiline code with leading space', function (t) {
+  const input = `
+    Once:
+    \`\`\`
+      Line 1.1
+      Line 1.2
+    \`\`\`
+    Twice:
+    \`\`\`
+      Line 2.1
+      Line 2.2
+    \`\`\``
+  const output = '<p>Once:</p><pre><code>  Line 1.1\n  Line 1.2</code></pre><p>Twice:</p><pre><code>  Line 2.1\n  Line 2.2</code></pre>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Multiline code without EOF before end of syntax', function (t) {
   const input = `
     \`\`\`

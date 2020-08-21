@@ -285,6 +285,7 @@ const parse = (markdownText, opt = {}) => {
 
         if (isNewItem === false
         && targetNode != null
+        && targetNode.parentNode != null
         && targetNode.parentNode.tagName === 'UL'
         && spaceCount >= 2) {
           if (targetNode.tagName === 'LI') {
@@ -376,7 +377,8 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (allowMultilineCode
       && lineText.startsWith('```')) {
-        const match = /^```(\w*)\n(([^\n(```)]|\n)+)\n```/.exec(text.substring(cursor))
+        const match = /^```(\w*)\n((.|\n(?!```))+)\n```/
+          .exec(text.substring(cursor))
 
         if (match) {
           flushBody()
