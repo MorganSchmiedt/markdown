@@ -6,7 +6,10 @@ const {
 } = require('./test-lib.js')
 
 const input = `
-  Markdown text here`
+  - Item 1
+    - Item 1.1
+      Item 1.1 suite
+    - Item 1.2`
 
 const element = parse(input, {
   // Parser options here

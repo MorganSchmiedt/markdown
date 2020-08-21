@@ -670,7 +670,6 @@ The following syntaxes are **NOT** supported:
 - Italic, bold and italic-bold texts with one, two and three underscores.
 - Headers with dashes/equal signs underneath.
 - Unordered Lists with a plus sign or a star.
-- Newlines in nested lists.
 - More than one nested list.
 - Horizontal lines with with stars or underscores.
 - Image titles and Link titles.

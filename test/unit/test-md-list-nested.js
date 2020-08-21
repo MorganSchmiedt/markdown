@@ -60,6 +60,34 @@ test('Nested List with only 1 space', function (t) {
   t.end()
 })
 
+test('Unordered Nested List with LF', function (t) {
+  const input = `
+    - Item 1
+      - Item 1.1
+        Following 1.1
+    - Item 2`
+
+  const output = inlineHtml`
+    <ul>
+      <li>
+        Item 1
+        <ul>
+          <li>
+            Item 1.1
+            <br>
+            Following 1.1
+          </li>
+        </ul>
+      </li>
+      <li>
+        Item 2
+      </li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Ordered Nested List', function (t) {
   const input = `
     1. Item 1
@@ -107,6 +135,34 @@ test('Nested Ord. List with only 2 spaces', function (t) {
       <li>Item 1</li>
     </ol>
     <p>  1. Item 1.1</p>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Ordered Nested List', function (t) {
+  const input = `
+    1. Item 1
+       1. Item 1.1
+       Following Item 1.1
+    2. Item 2`
+
+  const output = inlineHtml`
+    <ol>
+      <li>
+        Item 1
+        <ol>
+          <li>
+            Item 1.1
+            <br>
+            Following Item 1.1
+          </li>
+        </ol>
+      </li>
+      <li>
+        Item 2
+      </li>
+    </ol>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()

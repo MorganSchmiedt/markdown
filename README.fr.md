@@ -672,7 +672,6 @@ Les syntaxes suivantes ne sont **PAS** supportées:
 - Les textes en italiques et en gras avec un, deux et trois underscores.
 - Les titres avec des tirets ou des signes égal en dessous.
 - Les listes non-numérotées avec un signe plus ou une étoile.
-- Les sauts de ligne dans les listes imbriquées.
 - Plus d'une liste imbriquée.
 - Les lignes horizontales avec des étoiles ou des underscores.
 - Les titres d'images et les titres de liens.
