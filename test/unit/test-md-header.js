@@ -129,3 +129,21 @@ test('Header with maxHeaderLevel to 2', function (t) {
   t.equal(parseToHtml(input, opt), output, 'Output is valid')
   t.end()
 })
+
+test('Header with item before and after', function (t) {
+  const input = `
+    1. List before
+    ## Header
+    1. List after`
+  const output = inlineHtml`
+    <ol>
+      <li>List before</li>
+    </ol>
+    <h2>Header</h2>
+    <ol>
+      <li>List after</li>
+    </ol>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})

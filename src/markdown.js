@@ -146,6 +146,7 @@ const parse = (markdownText, opt = {}) => {
         }
 
         if (next(headerLevel) === ' ') {
+          flushBody()
           const headerText = lineText.substring(lineText.indexOf(' ') + 1)
           const headerNode = document.createElement(`H${headerLevel}`)
           headerNode.textContent = headerText
