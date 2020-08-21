@@ -68,6 +68,43 @@ test('Multiline code with language name', function (t) {
   t.end()
 })
 
+test('Multiline code twice', function (t) {
+  const input = `
+    Once:
+    \`\`\`
+    Multiline code 1
+    \`\`\`
+    Twice:
+    \`\`\`
+    Multiline code 2
+    \`\`\``
+  const output = inlineHtml`
+    <p>Once:</p>
+    <pre><code>Multiline code 1</code></pre>
+    <p>Twice:</p>
+    <pre><code>Multiline code 2</code></pre>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Multiline code without EOF before end of syntax', function (t) {
+  const input = `
+    \`\`\`
+    Multiline code 1
+    Multiline code 2\`\`\``
+  const output = inlineHtml`
+    <p>
+      \`\`\`
+      <br>
+      Multiline code 1
+      <br>Multiline code 2\`\`\`
+    </p>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Multiline code with callback', function (t) {
   const input = `
     This is some multicode with language

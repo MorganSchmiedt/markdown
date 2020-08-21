@@ -376,7 +376,7 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (allowMultilineCode
       && lineText.startsWith('```')) {
-        const match = /^```(\w*)\n((.|\n)+)\n```/.exec(text.substring(cursor))
+        const match = /^```(\w*)\n(([^\n(```)]|\n)+)\n```/.exec(text.substring(cursor))
 
         if (match) {
           flushBody()
