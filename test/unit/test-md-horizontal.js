@@ -55,6 +55,27 @@ test('Horizontal line without pre-newline', function (t) {
   t.end()
 })
 
+test('Horizontal line with list before/after', function (t) {
+  const input = `
+    - List 1
+
+    ---
+
+    - List 2`
+
+  const output = inlineHtml`
+    <ul>
+      <li>List 1</li>
+    </ul>
+    <hr>
+    <ul>
+      <li>List 2</li>
+    </ul>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Horizontal line with callback', function (t) {
   const input = `
     Pre line text

@@ -215,6 +215,7 @@ const parse = (markdownText, opt = {}) => {
         && text[cursor - 1] === '\n'
         && text[cursor + 3] === '\n'
         && text[cursor + 4] === '\n') {
+          flushBody()
           const hrNode = document.createElement('HR')
           hrNode.onAttach = opt.onHorizontalLine
 
