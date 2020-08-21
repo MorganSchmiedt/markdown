@@ -479,6 +479,26 @@ Une liste peut être imbriquée dans une autre liste en commençant avec au moin
 </ol>
 ```
 
+Les nombres des éléments des listes numérotées ne sont pas pris en compte. La liste est exportée de la même façon si les nombres se suivent ou pas.
+
+*Exemple avec des nombres qui ne se suivent pas*
+```
+5. Item 1
+1. Item 2
+8. Item 3
+3. Item 4
+```
+
+```html
+<ol>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+  <li>Item 4</li>
+</ol>
+```
+
+
 *Exemple avec une liste imbriquée*
 ```
 1. Item 1

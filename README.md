@@ -501,6 +501,26 @@ Nested list items start with at least three spaces, followed by a number and a s
 </ol>
 ```
 
+The numbers of the ordered list items are not taken into account. The list is rendered the same way whether the numbers are in order or not.
+
+*Example with numbers not in order*
+```
+5. Item 1
+1. Item 2
+2. Item 3
+1. Item 4
+```
+
+```html
+<ol>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+  <li>Item 4</li>
+</ol>
+```
+
+
 ## Horizontal Line
 
 A Horizontal line starts with an empty line, followed by three dashes (`---`), followed by another empty line.
