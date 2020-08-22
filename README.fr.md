@@ -59,7 +59,7 @@ const html = parser.parse('mon texte markdown').innerHTML
 Ce paquet peut être ajouté à la liste des dépendances de votre projet [Node.js](https://nodejs.org/en/) en exécutant la commande:
 
 ```
-npm install @deskeen/markdown`
+npm install @deskeen/markdown
 ```
 
 Pour importer le parseur à votre coe JavaScript: 
@@ -68,7 +68,7 @@ Pour importer le parseur à votre coe JavaScript:
 const parseur = require('@deskeen/markdown')
 ```
 
-Pour parser du texte et le transformer en code HTML, utilisez:
+Pour parser du texte et le transformer en HTML, utilisez:
 
 ```javascript
 const codeHtml = parseur.parse('du texte markdown').innerHTML
@@ -129,20 +129,21 @@ function onXXX(element) {
 Le parseur retourne un objet de type `Element` qui est similaire à un objet DOM Element dans le navigateur.
 
 Les propriétés disponibles sont:
-- `tagName`: Nom de la balise. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/tagName)
-- `id`: Attribut id de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/id)
-- `className`: Attribut Class de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/tagName)
-- `attributes`: Attributs de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/attributes)
-- `children`: Liste des enfants. [MDN](https://developer.mozilla.org/fr/docs/Web/API/ParentNode/children)
-- `firstChild`: Premier enfant. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Node/firstChild)
-- `lastChild`: Dernier enfant. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Node/lastChild)
-- `textContent`: Texte de l'élément et de ses descendants. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Node/textContent)
-- `hasAttribute(attrName)`: Retourne si l'élément à un attribut spécifique. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/hasAttribute)
-- `setAttribute(attrName, attrValue)`: Ajoute un attribut à l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/setAttribute)
-- `getAttribute(attrName)`: Retourne un attribute de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/getAttribute)
-- `removeAttribute(attrName)`: Enlève un attribute de l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/removeAttribute)
-- `innerHTML`: Retourne la représentation HTML des éléments contenus dans l'élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/innerHTML)
-- `outerHTML`: Retourne la représentation HTML de l'élément et de ses descendants. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Element/outerHTML)
+- `tagName`: Nom de la balise. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/tagName)
+- `id`: Attribut id de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/id)
+- `className`: Attribut Class de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/tagName)
+- `attributes`: Attributs de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/attributes)
+- `children`: Liste des enfants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/ParentNode/children)
+- `firstChild`: Premier enfant. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Node/firstChild)
+- `lastChild`: Dernier enfant. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Node/lastChild)
+- `parentNode`: Parent de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/ParentNode)
+- `textContent`: Texte de l'élément et de ses descendants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Node/textContent)
+- `hasAttribute(attrName)`: Retourne si l'élément à un attribut spécifique. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/hasAttribute)
+- `setAttribute(attrName, attrValue)`: Ajoute un attribut à l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/setAttribute)
+- `getAttribute(attrName)`: Retourne un attribute de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/getAttribute)
+- `removeAttribute(attrName)`: Enlève un attribute de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/removeAttribute)
+- `innerHTML`: Retourne la représentation HTML des éléments contenus dans l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/innerHTML)
+- `outerHTML`: Retourne la représentation HTML de l'élément et de ses descendants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/outerHTML)
 
 De nouveaux éléments peuvent être créés en utilisant la classe `Element`:
 
@@ -171,8 +172,9 @@ const myDivElement = new Element('div')
 | [Liste numérotée imbriquée](#liste-numérotée)| 3 espaces                 |
 | [Ligne horizontale](#ligne-horizontale)   | `---`                        |
 | [Code](#code)                             | `` `Code` ``                 |
+| [Code multilignes](#code)                 | ```` ```\nCode text\n``` ````|
 | [Citation](#citation)                     | `> Citation`                 |
-| [Référence](#reference)                   | `Référence[^1]`           |
+| [Référence](#reference)                   | `Référence[^1]`              |
 | [Caractère d'échappement](#caractere-d-échappement)| `\# Titre non parsé`|
 
 
@@ -820,7 +822,7 @@ Vous pouvez [reporter un problème](https://github.com/deskeen/markdown/issues/n
 ### Que puis-je faire pour aider?
 
 Vous pouvez:
-- Jeter un coup d'oeil aux problème et voir si vous pouvez aider quelqu'un.
+- Jeter un coup d'oeil aux problèmes et voir si vous pouvez aider quelqu'un.
 - Jeter un coup d'oeil au code et voir si vous pouvez l'améliorer.
 - Traduire cette page dans votre langue.
 - Mettre une étoile à ce dépôt.

@@ -21,7 +21,7 @@ const html = parser.parse('some markdown text').innerHTML
 - [Installation](#installation)
 - [Parser options](#parser-options)
 - [Element object](#element-object)
-- [Markdown syntax cheat sheet](#markdown-syntax-cheat-sheet)
+- [Markdown syntax cheatsheet](#markdown-syntax-cheatsheet)
 - [Markdown syntax](#markdown-syntax)
   - [Italic text](#italic-text)
   - [Bold text](#bold-text)
@@ -60,7 +60,7 @@ const html = parser.parse('some markdown text').innerHTML
 This package can be added to your [Node.js](https://nodejs.org/en/) dependencies by running:
 
 ```
-npm install @deskeen/markdown`
+npm install @deskeen/markdown
 ```
 
 To import the parser to your JavaScript code, use: 
@@ -69,18 +69,18 @@ To import the parser to your JavaScript code, use:
 const parser = require('@deskeen/markdown')
 ```
 
-To parse a text and transform it into HTML code, use:
+To parse a text and transform it into HTML, use:
 
 ```javascript
 const htmlCode = parser.parse('some markdown text').innerHTML
 ```
 
-The parser has been tested on Node.js v10+ but it may be working on previous Node.js versions too.
+The parser has been tested with Node.js v10+ but it may be working with older Node.js versions too.
 
 
 ## Parser options
 
-`parse(markdownText[, options])`
+`const element = parse(markdownText[, options])`
 
 An option object can be passed to the parser.
 
@@ -130,20 +130,21 @@ function onXXX(element) {
 The parser returns a custom `Element` that is similar to a DOM Element in the browser.
 
 Available properties are:
-- `tagName`: Tag name of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
-- `id`: id attribute of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/id)
-- `className`: Class attribute of the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
-- `attributes`: Element attributes. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes)
-- `children`: List of children. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children)
-- `firstChild`: First child. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/firstChild)
-- `lastChild`: Last child. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/lastChild)
-- `textContent`: Text of the element and its descendants. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
-- `hasAttribute(attrName)`: Returns whether the element has the specified attribute. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/hasAttribute)
-- `setAttribute(attrName, attrValue)`: Adds an attribute to the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute)
-- `getAttribute(attrName)`: Returns an element attribute. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute)
-- `removeAttribute(attrName)`: Removes an element attribute. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/removeAttribute)
-- `innerHTML`: Returns the HTML markup of the elements contained in the element. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML)
-- `outerHTML`: Returns the HTML markup of the element and its descendants. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML)
+- `tagName`: Tag name of the element. [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
+- `id`: id attribute of the element. [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/id)
+- `className`: Class attribute of the element. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName)
+- `attributes`: Element attributes. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes)
+- `children`: List of children. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children)
+- `firstChild`: First child. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Node/firstChild)
+- `lastChild`: Last child. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Node/lastChild)
+- `parentNode`: Parent of the element. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode)
+- `textContent`: Text of the element and its descendants. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
+- `hasAttribute(attrName)`: Returns whether the element has the specified attribute. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/hasAttribute)
+- `setAttribute(attrName, attrValue)`: Adds an attribute to the element.( [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute)
+- `getAttribute(attrName)`: Returns an element attribute. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute)
+- `removeAttribute(attrName)`: Removes an element attribute. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/removeAttribute)
+- `innerHTML`: Returns the HTML markup of the elements contained in the element. ([MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML)
+- `outerHTML`: Returns the HTML markup of the element and its descendants.( [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML)
 
 New elements can be created by using the `Element` class:
 
@@ -154,7 +155,7 @@ const myDivElement = new Element('div')
 ```
 
 
-## Markdown syntax cheat sheet
+## Markdown syntax cheatsheet
 
 | Type                                      | Markdown syntax              |
 | ----------------------------------------- | ---------------------------- |
@@ -167,11 +168,12 @@ const myDivElement = new Element('div')
 | [Link](#link)                             | `[Link text](link_url)`      |
 | [Image](#image) and [Video](#video)       | `![Caption](image_url)`      |
 | [Unordered list](#unordered-list)         | `- List item`                |
-| [Unoredered nested list](#unordered-list) | 2 spaces                     |
+| [Unordered nested list](#unordered-list)  | 2 spaces                     |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
 | [Ordered nested list](#ordered-list)      | 3 spaces                     |
 | [Horizontal Line](#horizontal-line)       | `\n\n---\n\n`                |
-| [Code](#code)                             | `` `Code text` ``            |
+| [Inline Code](#code)                      | `` `Code text` ``            |
+| [Multiline Code](#code)                   | ```` ```\nCode text\n``` ````|
 | [Quote](#quote)                           | `> Quote`                    |
 | [Reference](#reference)                   | `Reference[^1]`              |
 | [Escape character](#escape-character)     | `\# Header not parsed`       |
@@ -181,7 +183,7 @@ const myDivElement = new Element('div')
 
 ### Italic text
 
-An italic text is surrounded by a single star (`*`).
+An italic text is surrounded by a star (`*`).
 
 *Example*
 ```
@@ -236,7 +238,7 @@ This is a ~~strikethrough text~~
 
 ### Superscript text
 
-A superscript text starts with a circumflex (`^`) and ends with a space or a newline. A superscript text with spaces can be surrounded by parenthesis (`( )`)
+A superscript text starts with a circumflex (`^`) and ends with a space or a newline. A superscript text that contains spaces can be surrounded by parenthesis (`( )`)
 
 *Example*
 ```
@@ -259,7 +261,7 @@ This is a ^(superscript text)
 
 ## Paragraph
 
-A single newline adds the text to the last paragraph. Two newlines create a new paragraph.
+A single newline adds the line of text to the previous paragraph. Two newlines create a new paragraph.
 
 *Example with a single newline*
 ```
@@ -271,7 +273,7 @@ Second line of text.
 <p>First line of text.<br>Second line of text.</p>
 ```
 
-*Example with two newlines*
+*Example of a paragraph*
 ```
 First line of text.
 
@@ -310,7 +312,7 @@ A header starts with one to six hashes (`#`) followed by a space.
 
 ### Link
 
-A link is made up of two parts. The text surrounded by square brackets (`[]`) followed by an URL surrounded by round brackets (`( )`). i.e. `[Link](url)`
+A link is made up of two parts. The text in square brackets (`[]`), followed by an URL in round brackets (`( )`). i.e. `[Link](url)`
 
 *Example*
 ```
@@ -324,11 +326,9 @@ This is a [link](https://example.com)
 
 ### Image
 
-An image starts with an exclamation mark (`!`) followed by the caption surrounded by square brackets (`[]`), followed by the URL surrounded by round brackets (`( )`). i.e. `![caption](image_url)`
+An image starts with an exclamation mark (`!`) followed by the caption in square brackets (`[]`), followed by the URL in round brackets (`( )`). i.e. `![caption](image_url)`
 
-CSS instructions can be added to the end, surrounded by curly brackets (`{ }`). Instructions are separated by a semicolon (`;`). Parser flag  `allowImageStyle` must be turned on to make it work.
-
-Images set on a separate line and inline images have different HTML outputs.
+CSS instructions can be added to the end in curly brackets (`{ }`). The instructions must be separated by a semicolon (`;`). The parser option  `allowImageStyle` must also be turned on.
 
 *Example of an inline image*
 ```
@@ -445,7 +445,7 @@ Nested list items start with at least two spaces, followed by a dash and  anothe
 
 ## Ordered list
 
-Ordered list items start with a number, followed by a period (`.`) and a space.
+Ordered list items start with a number, followed by a period (`.`), and a space.
 
 Newlines can be inserted within a list item by starting the line with three spaces.
 
@@ -501,7 +501,7 @@ Nested list items start with at least three spaces, followed by a number and a s
 </ol>
 ```
 
-The numbers of the ordered list items are not taken into account. The list is rendered the same way whether the numbers are in order or not.
+The numbers of the ordered list items are not taken into account. The list is rendered the same way whether the numbers are in order, or not.
 
 *Example with numbers not in order*
 ```
@@ -543,7 +543,7 @@ Below horizontal line
 
 ## Code
 
-A technical text is surrounded by a single backtick (`\``)
+A code text is surrounded by a single backtick (`\``)
 
 *Example*
 ```
@@ -559,7 +559,7 @@ This is `some technical term`
 
 A multiline code is surrounded by three backticks (`\``) set on separate lines.
 
-The language name of the code can be added to the opening backticks. It is shown in the output HTML but it is passed to the `onMultilineCode` callback. See example further down.
+The language name of the code can be added to the opening backticks. It is not included in the output HTML but it is passed to the `onMultilineCode` callback. See example further down.
 
 *Example*
 ```
@@ -692,7 +692,7 @@ The following syntaxes are **NOT** supported:
 - Unordered Lists with a plus sign or a star.
 - More than one nested list.
 - Horizontal lines with with stars or underscores.
-- Image titles and Link titles.
+- Image titles and link titles.
 - Links with less-than and greater-than signs.
 - HTML code.
 
@@ -820,7 +820,7 @@ You can [raise an issue](https://github.com/deskeen/markdown/issues/new) and ask
 You can:
 - Have a look at the issues and see if you can help someone.
 - Have a look at the code and see if you can improve it.
-- Translate this README is your language.
+- Translate this README in your language.
 - Star this repo.
 
 
