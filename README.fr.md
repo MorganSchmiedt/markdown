@@ -145,12 +145,13 @@ Les propriétés disponibles sont:
 - `innerHTML`: Retourne la représentation HTML des éléments contenus dans l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/innerHTML)
 - `outerHTML`: Retourne la représentation HTML de l'élément et de ses descendants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/outerHTML)
 
-De nouveaux éléments peuvent être créés en utilisant la classe `Element`:
+De nouveaux éléments peuvent être créés en utilisant la classe `Element` et du texte peut être créé en utilisant la class `Text`:
 
 ```javascript
-const parser = require('@deskeen/markdown')
-const Element = parser.Element
-const myDivElement = new Element('div')
+const { Element, Text } = require('@deskeen/markdown')
+
+const monElementDiv = new Element('div')
+const monTexte = new Text('du text')
 ```
 
 

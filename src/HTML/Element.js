@@ -1,5 +1,8 @@
 'use strict'
 
+const HTML_ENTITY = require('./Entity.js')
+const Text = require('./Text.js')
+
 // https://html.spec.whatwg.org/multipage/syntax.html#void-elements
 const VOID_TAGS = new Set([
   'AREA',
@@ -18,33 +21,6 @@ const VOID_TAGS = new Set([
   'WBR'
 ])
 
-const HTML_CHAR_MAP = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-}
-
-const HTML_CONTENT_ESCAPE_CHARS = '&<>'
-const HTML_ATTR_VALUE_ESCAPE_CHARS = '&"'
-
-const HTML_CONTENT_ESCAPE_REGEX =
-  new RegExp(`[${HTML_CONTENT_ESCAPE_CHARS}]`, 'g')
-
-const HTML_ATTR_VALUE_ESCAPE_REGEX =
-  new RegExp(`[${HTML_ATTR_VALUE_ESCAPE_CHARS}]`, 'g')
-
-const replaceHtmlCharsInContent = text =>
-  text.replace(HTML_CONTENT_ESCAPE_REGEX, char => HTML_CHAR_MAP[char])
-
-const replaceHtmlCharsInAttrValue = text =>
-  text.replace(HTML_ATTR_VALUE_ESCAPE_REGEX, char => HTML_CHAR_MAP[char])
-
-const HTML_FORBIDDEN_CHARS_ATTR_NAME = '<>&"\''
-
-const hasForbiddenCharInAttrName = text =>
-  new RegExp(`[${HTML_FORBIDDEN_CHARS_ATTR_NAME}]`, 'g').exec(text) != null
-
 class Element {
   constructor(tagName) {
     this._tagName = tagName.toUpperCase()
@@ -53,9 +29,7 @@ class Element {
   }
 
   appendChild(node) {
-    if (typeof node !== 'string') {
-      node.parentNode = this
-    }
+    node.parentNode = this
 
     this._children.push(node)
   }
@@ -69,7 +43,9 @@ class Element {
       throw new TypeError(`Element.setAttribute: At least 2 arguments required, but only ${arguments.length} passed`)
     }
 
-    if (hasForbiddenCharInAttrName(attributeName)) {
+    const hasForbiddenCharInAttrName = /[<>&"']/.exec(attributeName) != null
+
+    if (hasForbiddenCharInAttrName) {
       throw new Error('String contains an invalid character')
     }
 
@@ -109,18 +85,14 @@ class Element {
     let output = ''
 
     for (const child of this._children) {
-      if (typeof child === 'string') {
-        output += child
-      } else {
-        output += child.textContent
-      }
+      output += child.textContent
     }
 
     return output
   }
 
   set textContent(value) {
-    this._children = [value]
+    this._children = [new Text(value)]
   }
 
   get children() {
@@ -148,7 +120,8 @@ class Element {
 
     for (const attrName of attrList) {
       const attrValue = this._attributes[attrName]
-      const attrValueHtml = replaceHtmlCharsInAttrValue(attrValue)
+      const attrValueHtml = attrValue.replace(
+        /[&"]/g, char => HTML_ENTITY[char])
 
       html += ` ${attrName}="${attrValueHtml}"`
     }
@@ -160,11 +133,7 @@ class Element {
     }
 
     for (const child of this._children) {
-      if (typeof child === 'string') {
-        html += replaceHtmlCharsInContent(child)
-      } else {
-        html += child.outerHTML
-      }
+      html += child.outerHTML
     }
 
     html += `</${tagName}>`
@@ -182,11 +151,7 @@ class Element {
     let html = ''
 
     for (const child of this._children) {
-      if (typeof child === 'string') {
-        html += replaceHtmlCharsInContent(child)
-      } else {
-        html += child.outerHTML
-      }
+      html += child.outerHTML
     }
 
     return html
@@ -210,7 +175,7 @@ class Element {
 
   _attach() {
     for (const child of this._children) {
-      if (typeof child !== 'string') {
+      if (child._attach) {
         child._attach(child)
       }
     }

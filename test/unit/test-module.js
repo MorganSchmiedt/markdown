@@ -8,6 +8,7 @@ const {
 
 test('Module Exports', function (t) {
   t.equal(typeof parser.Element, 'function', 'Element is there')
+  t.equal(typeof parser.Text, 'function', 'Text is there')
   t.equal(typeof parser.parse, 'function', 'parse is there')
   t.end()
 })

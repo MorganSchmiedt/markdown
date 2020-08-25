@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0 - TBD
+
+**🌟 New**
+
+- Add `Text` class to create Text Elements.
+
+
 ## 2.0.0 - 2020-08-21
 
 **🌟 New**

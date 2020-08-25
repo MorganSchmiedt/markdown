@@ -1,6 +1,7 @@
 'use strict'
 
 const Element = require('./HTML/Element.js')
+const Text = require('./HTML/Text.js')
 const document = require('./HTML/document.js')
 
 const {
@@ -675,4 +676,5 @@ const parse = (markdownText, opt = {}) => {
 }
 
 module.exports.Element = Element
+module.exports.Text = Text
 module.exports.parse = parse
