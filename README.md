@@ -6,6 +6,8 @@ This Markdown-to-HTML parser uses a custom, lightweight, Markdown syntax.
 
 It allows to create: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and references.
 
+A browser module is also available here: [@deskeen/markdown-browser](https://github.com/deskeen/markdown-browser)
+
 
 ## Usage
 
