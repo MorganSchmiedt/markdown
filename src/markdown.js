@@ -390,7 +390,7 @@ const parse = (markdownText, opt = {}) => {
           const codeContent = match[2]
 
           const codeNode = document.createElement('CODE')
-          codeNode.textContent = codeContent
+          codeNode.textContent = codeContent.replace(/\\`/g, '`')
 
           const preNode = document.createElement('PRE')
           preNode.appendChild(codeNode)

@@ -46,6 +46,14 @@ test('Escape "`"', function (t) {
   t.end()
 })
 
+test('Escape "`" in multiline codes', function (t) {
+  const input = '```\nA \\` backquote\n```'
+  const output = '<pre><code>A ` backquote</code></pre>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Escape "!"', function (t) {
   const input = '\\![link](https://example.com)'
   const output = '<p>!<a href="https://example.com">link</a></p>'
