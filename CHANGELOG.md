@@ -5,6 +5,7 @@
 **🌟 New**
 
 - Add `Text` class to create Text Elements.
+- Backticks (`\``) can now be escaped in multiline codes.
 
 
 ## 2.0.0 - 2020-08-21
