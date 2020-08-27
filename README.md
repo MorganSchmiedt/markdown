@@ -616,17 +616,27 @@ A quote starts with a "greater than" sign (`>`).
 
 ## Reference
 
-A reference is made up of: An opening square bracket (`[`), a circumflex (`^`), a reference number and a closing square brackets (`]`). e.g. `[^1]`
+A reference is made up of: An opening square bracket (`[`), a circumflex (`^`), an identifier (a number or a text) and a closing square brackets (`]`). e.g. `[^1]`
+
+The identifier must not contain spaces, tabs, or newlines. It is only used to link the reference with the footnote. The HTML output will be numbered sequentially.
 
 *Example*
 ```
 This is the fist reference[^1].
-And the second one[^2].
+
+And the second one[^two].
+
+[1]: First footnote.
+[two]: Second footnote.
 ```
 
 ```html
 <p>This is the fist reference<a href="#reference1"><sup>1</sup></a>.</p>
 <p>And the second one<a href="#reference2"><sup>2</sup></a>.</p>
+<section>
+  <p><sup id="reference1">1</sup>First footnote.</p>
+  <p><sup id="reference2">2</sup>Second footnote.</p>
+</section>
 ```
 
 ## Escape character

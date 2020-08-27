@@ -86,6 +86,8 @@ const parse = (markdownText, opt = {}) => {
   let lastFlushCursor
   let lineCursor
   let lineText
+  const refContent = {}
+  const refKeys = []
 
   const flushBody = () => {
     if (currentNode != null) {
@@ -403,6 +405,19 @@ const parse = (markdownText, opt = {}) => {
           ffCursor = matchSize
           parseLine = false
         }
+      } else if (allowReference
+      && firstChar === '[') {
+        const match = /^\[([\d\w]+)\]: (.+)/.exec(lineText)
+
+        if (match) {
+          flushBody()
+
+          const ref = match[1]
+          const text = match[2]
+
+          refContent[ref] = text
+          parseLine = false
+        }
       }
 
       if (parseLine) {
@@ -566,18 +581,21 @@ const parse = (markdownText, opt = {}) => {
 
               if (allowReference
               && next(1) === '^') {
-                const refMatch = /\^(\d+)]/.exec(restLineText)
+                const refMatch = /\^([\d\w]+)]/.exec(restLineText)
 
                 if (refMatch) {
                   flush()
 
                   const ref = refMatch[1]
+                  const refNb = refKeys.length + 1
+
+                  refKeys.push(ref)
 
                   const supNode = document.createElement('SUP')
-                  supNode.textContent = ref
+                  supNode.textContent = refNb
 
                   const linkNode = document.createElement('A')
-                  linkNode.setAttribute('href', `#reference${ref}`)
+                  linkNode.setAttribute('href', `#reference${refNb}`)
                   linkNode.appendChild(supNode)
                   linkNode.onAttach = opt.onReference != null
                     ? node => opt.onReference(node, ref)
@@ -670,6 +688,49 @@ const parse = (markdownText, opt = {}) => {
 
   if (currentNode) {
     flushBody()
+  }
+
+  if (allowReference) {
+    const footerNode = document.createElement('section')
+
+    let refNb = 1
+
+    for (const ref of refKeys) {
+      const refValue = refContent[ref]
+
+      if (refValue != null) {
+        const refNode = document.createElement('sup')
+        refNode.id = `reference${refNb}`
+        refNode.textContent = refNb
+
+        const contentParsed = parse(refValue, {
+          allowHeader: false,
+          allowImage: false,
+          allowMultilineCode: false,
+          allowUnorderedList: false,
+          allowOrderedList: false,
+          allowHorizontalLine: false,
+          allowQuote: false,
+          allowReference: false,
+        })
+
+        const contentNode = contentParsed.firstChild
+
+        const lineNode = document.createElement('p')
+        lineNode.appendChild(refNode)
+
+        for (const node of contentNode.children) {
+          lineNode.appendChild(node)
+        }
+
+        footerNode.appendChild(lineNode)
+        refNb += 1
+      }
+    }
+
+    if (footerNode.children.length > 0) {
+      body.appendChild(footerNode)
+    }
   }
 
   return body

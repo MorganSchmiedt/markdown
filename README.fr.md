@@ -41,7 +41,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Code](#code)
   - [Code multi lignes](code-multi-lignes)
   - [Citation](#citation)
-  - [Référence](#reference)
+  - [Référence](#référence)
   - [Caractère d'échappement](#escape-character)
 - [Compatibilité avec d'autres Markdown populaires](#compatibilité-avec-d-autres-Markdown-populaires)
 - [Syntaxes incompatibles](#syntaxes-incompatibles)
@@ -618,17 +618,24 @@ Une citation débute avec un signe supérieur (`>`).
 
 ## référence
 
-Une référence est composée de: Un crochet ouvrant (`[`), un accent circonflexe (`^`), un numéro de référence, et un crochet fermant (`]`). e.g. `[^1]`
+Une référence est composée d': Un crochet ouvrant (`[`), un accent circonflexe (`^`), un identifiant (un nombre ou un texte), et un crochet fermant (`]`). e.g. `[^1]`
 
 *Exemple*
 ```
 Ma première référence[^1].
 Ma seconde[^2].
+
+[1]: 1ere note de bas de page.
+[two]: 2eme note de bas de page.
 ```
 
 ```html
 <p>Ma première référence<a href="#reference1"><sup>1</sup></a>.</p>
 <p>Ma seconde<a href="#reference2"><sup>2</sup></a>.</p>
+<section>
+  <p><sup id="reference1">1</sup>1ere note de bas de page.</p>
+  <p><sup id="reference2">2</sup>2eme note de bas de page.</p>
+</section>
 ```
 
 ## Caractère d'échappement
