@@ -4,7 +4,7 @@ const HTML_ENTITY = require('./Entity.js')
 
 class Text {
   constructor(text) {
-    this.data = text
+    this.data = text.toString()
   }
 
   get textContent() {
