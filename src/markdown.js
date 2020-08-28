@@ -45,7 +45,7 @@ const REGEX_MD_TEXT =
  * @param {boolean} [opt.allowNestedOrderedList=true]
  * @param {boolean} [opt.allowHorizontalLine=true]
  * @param {boolean} [opt.allowQuote=true]
- * @param {boolean} [opt.allowReference=true]
+ * @param {boolean} [opt.allowFootnote=true]
  * @param {function} [opt.onHeader]
  * @param {function} [opt.onLink]
  * @param {function} [opt.onImage]
@@ -86,8 +86,8 @@ const parse = (markdownText, opt = {}) => {
   let lastFlushCursor
   let lineCursor
   let lineText
-  const refContent = {}
-  const refKeys = []
+  const fnNote = {}
+  const fnIdList = []
 
   const flushBody = () => {
     if (currentNode != null) {
@@ -415,7 +415,7 @@ const parse = (markdownText, opt = {}) => {
           const ref = match[1]
           const text = match[2]
 
-          refContent[ref] = text
+          fnNote[ref] = text
           parseLine = false
         }
       }
@@ -587,9 +587,9 @@ const parse = (markdownText, opt = {}) => {
                   flush()
 
                   const ref = refMatch[1]
-                  const refNb = refKeys.length + 1
+                  const refNb = fnIdList.length + 1
 
-                  refKeys.push(ref)
+                  fnIdList.push(ref)
 
                   const supNode = document.createElement('SUP')
                   supNode.textContent = refNb
@@ -695,15 +695,15 @@ const parse = (markdownText, opt = {}) => {
 
     let refNb = 1
 
-    for (const ref of refKeys) {
-      const refValue = refContent[ref]
+    for (const ref of fnIdList) {
+      const refValue = fnNote[ref]
 
       if (refValue != null) {
         const refNode = document.createElement('sup')
         refNode.id = `reference${refNb}`
         refNode.textContent = refNb
 
-        const contentParsed = parse(refValue, {
+        const contentParsed = parse(refValue, Object.assign({}, opt, {
           allowHeader: false,
           allowImage: false,
           allowMultilineCode: false,
@@ -711,15 +711,16 @@ const parse = (markdownText, opt = {}) => {
           allowOrderedList: false,
           allowHorizontalLine: false,
           allowQuote: false,
-          allowReference: false,
-        })
+          allowFootnote: false,
+        }))
 
         const contentNode = contentParsed.firstChild
 
         const lineNode = document.createElement('p')
         lineNode.appendChild(refNode)
 
-        for (const node of contentNode.children) {
+        // childNodes is theoretically a live NodeList
+        for (const node of Array.from(contentNode.childNodes)) {
           lineNode.appendChild(node)
         }
 
