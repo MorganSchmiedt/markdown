@@ -97,6 +97,11 @@ class Element {
 
   get children() {
     return this._children
+      .filter(node => node.constructor.name === 'Element')
+  }
+
+  get childNodes() {
+    return this._children
   }
 
   get firstChild() {

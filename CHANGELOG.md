@@ -8,9 +8,11 @@
 - Backticks (`` ` ``) can now be escaped in multiline codes.
 - Footnotes are implemented.
 - `allowFootnote` option is added and defaults to false.
+- `Element.childNodes` is added.
 
-**🔧 Changes**
+**⚠ Breaking changes**
 - `allowReference` is removed.
+- `Element.children` no longer returns Texts. 
 
 
 ## 2.0.0 - 2020-08-21
