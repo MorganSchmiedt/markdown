@@ -4,7 +4,7 @@
 
 This Markdown-to-HTML parser uses a custom, lightweight, Markdown syntax.
 
-It allows to create: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and references.
+It allows to create: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and footnotes.
 
 A browser module is also available here: [@deskeen/markdown-browser](https://github.com/deskeen/markdown-browser)
 
@@ -41,7 +41,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Code](#code)
   - [Multiline Code](#multiline-code)
   - [Quote](#quote)
-  - [Reference](#reference)
+  - [Footnote](#footnote)
   - [Escape character](#escape-character)
 - [Differences with other Markdown syntaxes](#differences-with-other-markdown-syntaxes)
 - [Unsupported syntaxes](#unsupported-syntaxes)
@@ -99,7 +99,7 @@ Available options are:
 - `allowOrderedNestedList`: Whether ordered nested lists are allowed. Defaults to `true`.
 - `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
-- `allowReference`: Whether references are allowed. Defaults to `true`.
+- `allowFootnote`: Whether footnotes are allowed. Defaults to `false`.
 - `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
 
 Callback functions can be passed to the options as well. They allow to edit the output [element](#element-object) (e.g. add custom attributes).
@@ -115,7 +115,7 @@ Available callbacks are:
 - `onOrderedList`: Function called when an ordered list is parsed.
 - `onHorizontalLine`: Function called when a horizontal line is parsed.
 - `onQuote`: Function called when a quote is parsed.
-- `onReference`: Function called when a reference is parsed. The second argument contains the reference.
+- `onReference`: Function called when a footnote reference is parsed. The second argument contains the identifier.
 
 The first argument of the callbacks is always the parsed [element](#element-object):
 
@@ -178,7 +178,7 @@ const myText = new Text('Some text')
 | [Inline Code](#code)                      | `` `Code text` ``            |
 | [Multiline Code](#code)                   | ```` ```\nCode text\n``` ````|
 | [Quote](#quote)                           | `> Quote`                    |
-| [Reference](#reference)                   | `Reference[^1]`              |
+| [Footnote](#footnote  )                   | `Reference[^1]`              |
 | [Escape character](#escape-character)     | `\# Header not parsed`       |
 
 
@@ -614,11 +614,15 @@ A quote starts with a "greater than" sign (`>`).
 </blockquote>
 ```
 
-## Reference
+## Foonote
 
-A reference is made up of: An opening square bracket (`[`), a circumflex (`^`), an identifier (a number or a text but no space) and a closing square brackets (`]`). e.g. `[^1]`
+A footnote is made up of two parts: a reference and a note.
 
-The identifier is only used to link the reference with the footnote. The HTML output will be numbered sequentially.
+The reference starts with an opening square bracket (`[`), followed by a circumflex (`^`), an identifier (a number or a text but no space) and a closing square brackets (`]`). e.g. `[^1]`
+
+The note should be on its own line anywhere in the document and should match the reference. An extra colon (`:`) is added next to the reference, followed by the note text.
+
+The reference identifier is only used to link the reference with the footnote. The HTML output will be numbered sequentially.
 
 *Example*
 ```
@@ -626,8 +630,8 @@ This is the fist reference[^1].
 
 And the second one[^two].
 
-[1]: First footnote.
-[two]: Second footnote.
+[^1]: First footnote.
+[^two]: Second footnote.
 ```
 
 ```html
@@ -690,7 +694,7 @@ A tick (☑) means that the syntax should work on the platform.
 | Escape char  | `\`      | ☑        | ☑      | ☑       | ☑        |
 | Superscript  | `^`      | ⚠ HTML   | ☑      | ⚠ HTML  | ⚠ N/A    |
 | Subscript    | N/A      | ⚠ HTML   | ☑ N/A  | ⚠ HTML  | ⚠ N/A    |
-| Reference    | `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
+| Foonote      | `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
 | HTML         | N/A      | ⚠ Av.    | ☑ N/A  | ⚠ Av.   | ⚠ Av.    |
 
 Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html), [CommonMark](https://spec.commonmark.org/0.29/)

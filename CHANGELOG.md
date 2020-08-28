@@ -7,6 +7,10 @@
 - Add `Text` class to create Text Elements.
 - Backticks (`` ` ``) can now be escaped in multiline codes.
 - Footnotes are implemented.
+- `allowFootnote` option is added and defaults to false.
+
+**🔧 Changes**
+- `allowReference` is removed.
 
 
 ## 2.0.0 - 2020-08-21

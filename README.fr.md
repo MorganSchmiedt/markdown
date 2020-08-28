@@ -4,7 +4,7 @@
 
 Ce parseur Markdown-vers-HTML utilise une syntaxe personnalisée et allégée du language Markdown.
 
-Il permet de créer: des textes en italique, textes en gras et textes barrés, des exposants, des liens, des titres et sous-titres, des images, des vidéos, du code mono et multi lignes, des listes numérotées et non-numérotées, des listes imbriquées, des lignes horizontales, des citations et des références.
+Il permet de créer: des textes en italique, textes en gras et textes barrés, des exposants, des liens, des titres et sous-titres, des images, des vidéos, du code mono et multi lignes, des listes numérotées et non-numérotées, des listes imbriquées, des lignes horizontales, des citations et des notes de bas de page.
 
 Un module pour le navigateur est aussi disponible ici: [@deskeen/markdown-browser](https://github.com/deskeen/markdown-browser)
 
@@ -41,7 +41,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Code](#code)
   - [Code multi lignes](code-multi-lignes)
   - [Citation](#citation)
-  - [Référence](#référence)
+  - [Note de bas de page](#note-de-bas-de-page)
   - [Caractère d'échappement](#escape-character)
 - [Compatibilité avec d'autres Markdown populaires](#compatibilité-avec-d-autres-Markdown-populaires)
 - [Syntaxes incompatibles](#syntaxes-incompatibles)
@@ -98,7 +98,7 @@ Les options disponibles sont:
 - `allowOrderedList`: Si les listes numérotées imbriquées sont autorisées. `true` par défaut.
 - `allowHorizontalLine`: Si les lignes horizontales sont autorisées. `true` par défaut.
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
-- `allowReference`: Si les références sont autorisées. `true` par défaut.
+- `allowFootnote`: Si les notes de bas de page sont autorisées. `false` par défaut.
 - `maxHeader`: Niveau maximal des titres. Nombre de 1 à 6 inclus. e.g. 2 signifie que les balises autorisées sont `<h1>` et `<h2>`. 6 par défaut.
 
 Des fonctions Callback peuvent aussi être ajoutées aux options du parseur. Ces fonctions permettent de modifier l'[élément](#l-objet-element) de sortie (e.g. ajouter des attributs personnalisés)
@@ -114,7 +114,7 @@ Les Callbacks disponibles sont:
 - `onOrderedList`: Fonction appelée lorsqu'une liste numérotée est parsée.
 - `onHorizontalLine`: Fonction appelée lorsqu'une ligne horizontale est parsée.
 - `onQuote`: Fonction appelée lorsqu'une citation est parsée.
-- `onReference`: Fonction appelée lorsqu'une référence est parsée. Le deuxième argument contient la référence.
+- `onReference`: Fonction appelée lorsqu'une référence est parsée. Le deuxième argument contient l'identifiant.
 
 Le premier argument des Callbacks est toujours l'[élément](#l-objet-element) parsé.
 
@@ -177,7 +177,7 @@ const monTexte = new Text('du text')
 | [Code](#code)                             | `` `Code` ``                 |
 | [Code multilignes](#code)                 | ```` ```\nCode text\n``` ````|
 | [Citation](#citation)                     | `> Citation`                 |
-| [Référence](#reference)                   | `Référence[^1]`              |
+| [Note de bas de page](#note-de-bas-de-page)| `Référence[^1]`             |
 | [Caractère d'échappement](#caractere-d-échappement)| `\# Titre non parsé`|
 
 
@@ -616,19 +616,23 @@ Une citation débute avec un signe supérieur (`>`).
 </blockquote>
 ```
 
-## Référence
+## Note de bas de page
 
-Une référence est composée d': Un crochet ouvrant (`[`), un accent circonflexe (`^`), un identifiant (un nombre ou un texte mais pas d'espaces), et un crochet fermant (`]`). e.g. `[^1]`
+Une note de bas de page est composée de deux parties: une référence et une note.
 
-L'identifiant est seulement utilisé pour faire le lien entre la référence et la note de bas de page. Le code HTML de sortie sera numéroté de façon séquentielle.
+La référence commence avec un crochet ouvrant (`[`), suivi d'un accent circonflexe (`^`), un identifiant (un nombre ou un texte mais pas d'espaces), et un crochet fermant (`]`). e.g. `[^1]`
+
+La note doit être sur sa propre ligne n'importe où dans le document et doit correspondre avec la référence. Un double point (`:`) est ajouté à côté de la référence suivi du texte de la note.
+
+L'identifiant de la référence est seulement utilisé pour faire le lien entre la référence et la note de bas de page. Le code HTML de sortie sera numéroté de façon séquentielle.
 
 *Exemple*
 ```
 Ma première référence[^1].
 Ma seconde[^two].
 
-[1]: 1ere note de bas de page.
-[two]: 2eme note de bas de page.
+[^1]: 1ere note de bas de page.
+[^two]: 2eme note de bas de page.
 ```
 
 ```html
@@ -693,7 +697,7 @@ Une marque (☑) signifie que la syntaxe devrait fonctionner sur la plateforme.
 | Echappement  | `\`      | ☑        | ☑      | ☑       | ☑        |
 | Exposant     | `^`      | ⚠ HTML   | ☑      | ⚠ HTML  | ⚠ N/A    |
 | Indice       | N/A      | ⚠ HTML   | ☑ N/A  | ⚠ HTML  | ⚠ N/A    |
-| Référence    | `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
+| Note bas page| `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
 | HTML         | N/A      | ⚠ Av.    | ☑ N/A  | ⚠ Av.   | ⚠ Av.    |
 
 Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html), [CommonMark](https://spec.commonmark.org/0.29/)

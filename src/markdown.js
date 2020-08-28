@@ -71,7 +71,7 @@ const parse = (markdownText, opt = {}) => {
   const allowOrdNestedList = parseBoolean(opt.allowOrderedNestedList, true)
   const allowHorizontalLine = parseBoolean(opt.allowHorizontalLine, true)
   const allowQuote = parseBoolean(opt.allowQuote, true)
-  const allowReference = parseBoolean(opt.allowReference, true)
+  const allowFootnote = parseBoolean(opt.allowFootnote, false)
   const maxHeader = parseMaxHeader(opt.maxHeader, 3)
 
   const body = new Element('div')
@@ -405,9 +405,9 @@ const parse = (markdownText, opt = {}) => {
           ffCursor = matchSize
           parseLine = false
         }
-      } else if (allowReference
+      } else if (allowFootnote
       && firstChar === '[') {
-        const match = /^\[([\d\w]+)\]: (.+)/.exec(lineText)
+        const match = /^\[\^([\d\w]+)\]: (.+)/.exec(lineText)
 
         if (match) {
           flushBody()
@@ -579,7 +579,7 @@ const parse = (markdownText, opt = {}) => {
             } else if (char === '[') {
               const restLineText = lineText.substring(lineCursor + 1)
 
-              if (allowReference
+              if (allowFootnote
               && next(1) === '^') {
                 const refMatch = /\^([\d\w]+)]/.exec(restLineText)
 
@@ -690,7 +690,7 @@ const parse = (markdownText, opt = {}) => {
     flushBody()
   }
 
-  if (allowReference) {
+  if (allowFootnote) {
     const footerNode = document.createElement('section')
 
     let refNb = 1
