@@ -616,14 +616,16 @@ Une citation débute avec un signe supérieur (`>`).
 </blockquote>
 ```
 
-## référence
+## Référence
 
-Une référence est composée d': Un crochet ouvrant (`[`), un accent circonflexe (`^`), un identifiant (un nombre ou un texte), et un crochet fermant (`]`). e.g. `[^1]`
+Une référence est composée d': Un crochet ouvrant (`[`), un accent circonflexe (`^`), un identifiant (un nombre ou un texte mais pas d'espaces), et un crochet fermant (`]`). e.g. `[^1]`
+
+L'identifiant est seulement utilisé pour faire le lien entre la référence et la note de bas de page. Le code HTML de sortie sera numéroté de façon séquentielle.
 
 *Exemple*
 ```
 Ma première référence[^1].
-Ma seconde[^2].
+Ma seconde[^two].
 
 [1]: 1ere note de bas de page.
 [two]: 2eme note de bas de page.

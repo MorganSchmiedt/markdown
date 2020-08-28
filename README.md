@@ -616,9 +616,9 @@ A quote starts with a "greater than" sign (`>`).
 
 ## Reference
 
-A reference is made up of: An opening square bracket (`[`), a circumflex (`^`), an identifier (a number or a text) and a closing square brackets (`]`). e.g. `[^1]`
+A reference is made up of: An opening square bracket (`[`), a circumflex (`^`), an identifier (a number or a text but no space) and a closing square brackets (`]`). e.g. `[^1]`
 
-The identifier must not contain spaces, tabs, or newlines. It is only used to link the reference with the footnote. The HTML output will be numbered sequentially.
+The identifier is only used to link the reference with the footnote. The HTML output will be numbered sequentially.
 
 *Example*
 ```
