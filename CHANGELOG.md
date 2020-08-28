@@ -1,9 +1,8 @@
 # Changelog
 
-## 2.1.0 - TBD
+## 3.0.0 - 2020-08-28
 
 **🌟 New**
-
 - Add `Text` class to create Text Elements.
 - Backticks (`` ` ``) can now be escaped in multiline codes.
 - Footnotes are implemented.
@@ -23,7 +22,6 @@
 - Space-only lines are considered empty.
 - `allowUnorderedNestedList`, `allowOrderedNestedList`, `allowReference` options are added.
 - `Element.id`, `Element.className`,  `Element.hasAttribute`, `Element.getAttribute`, `Element.setAttribute` and `Element.removeAttribute`, `Element.attributes`, `Element.innerHTML`, `Element.outerHTML` are added.
-
 
 **⚠ Breaking changes**
 - `allowFootnote` becomes `allowReference`.
