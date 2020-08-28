@@ -667,34 +667,34 @@ Cet antislash \ n'est pas enlevé car il n'est pas suivi d'un caractère spécia
 
 Une marque (☑) signifie que la syntaxe devrait fonctionner sur la plateforme.
 
-| Type         | Syntaxe   |   GitHub  |   Reddit   |  GitLab  |
-| ------------ |:----------|:----------|:-----------|:---------|
-| Italique     | `*`       | ☑         | ☑         | ☑       |
-| Gras         | `**`      | ☑         | ☑         | ☑       |
-| Gras-italique| `***`     | ☑         | ☑         | ☑       |   
-| Barré        | `~~`      | ☑         | ☑         | ☑       |
-| Saut de ligne| `\n`      | ☑         | ☑         | ☑       |
-| Paragraphe   | `\n\n`    | ☑         | ☑         | ☑       |
-| Titre        | `#`       | ☑         | ☑         | ☑       |
-| Lien         | `[]()`    | ☑         | ☑         | ☑       |
-| Image        | `![]()`   | ☑         | ☑         | ☑       |
-| Liste        | `-`       | ☑         | ☑         | ☑       |
-| Liste imb.   | 2 espaces | ☑         | ☑         | ☑       |
-| List \\n     | 2 spaces  | ☑         | ☑         | ☑       |
-| Liste num.   | `1.`      | ☑         | ☑         | ☑       |
-| Liste num. imb.|3 espaces| ☑         | ☑         | ☑       |
-| List num. \\n| 3 spaces  | ☑         | ☑         | ☑       |
-| Ligne Horiz. | `\n---\n` | ☑         | ☑         | ☑       |
-| Code         | `` ` ``   | ☑         | ☑         | ☑       |
-| Multi. Code|```` ``` ````| ☑         | ☑         | ☑       |
-| Citation     | `>`       | ☑         | ☑         | ☑       |
-| Echappement  | `\`       | ☑         | ☑         | ☑       |
-| Exposant     | `^`       | ⚠ `<sup>` | ☑        | ⚠ `<sup>`|
-| Indice       | N/A       | ⚠ `<sub>` | N/A      | ⚠ `<sub>`|
-| Référence    | `[^1]`    | ⚠ N/A     | ⚠ N/A    | ⚠ Diff.  |
-| HTML         | N/A       | ⚠ Avail.  | N/A      | ⚠ Avail. |
+|              |  Syntax  |   GitHub  | Reddit |  GitLab | CommonMark|
+| ------------ |:---------|:----------|:-------|:--------|:----------|
+| Italique     | `*`      | ☑        | ☑      | ☑       | ☑        |
+| Gras         | `**`     | ☑        | ☑      | ☑       | ☑        |
+| Gras-italique| `***`    | ☑        | ☑      | ☑       | ⚠ N/A    |
+| Barré        | `~~`     | ☑        | ☑      | ☑       | ⚠ N/A    |
+| Saut de ligne| `\n`     | ☑        | ☑      | ⚠ Espace| ⚠ Espace |
+| Paragraphe   | `\n\n`   | ☑        | ☑      | ☑       | ☑        |
+| Titre        | `#`      | ☑        | ☑      | ☑       | ☑        |
+| Lien         | `[]()`   | ☑        | ☑      | ☑       | ☑        |
+| Image        | `![]()`  | ☑        | ☑      | ☑       | ☑        |
+| Liste        | `-`      | ☑        | ☑      | ☑       | ☑        |
+| Liste imb.   | 2 espaces| ☑        | ☑      | ☑       | ⚠ `\n`   |
+| List \\n     | 2 espaces| ☑        | ☑      | ☑       | ☑        |
+| Liste num.   | `1.`     | ☑        | ☑      | ☑       | ☑        |
+| Liste num.imb.|3 espaces| ☑        | ☑      | ☑       | ⚠ `\n`   |
+| List num. \\n| 3 espaces| ☑        | ☑      | ☑       | ☑        |
+| Ligne Horiz. | `\n---\n`| ☑        | ☑      | ☑       | ☑        |
+| Code         | `` ` ``  | ☑        | ☑      | ☑       | ☑        |
+| Multi.Code|```` ``` ````| ☑        | ☑      | ☑       | ☑        |
+| Citation     | `>`      | ☑        | ☑      | ☑       | ☑        |
+| Echappement  | `\`      | ☑        | ☑      | ☑       | ☑        |
+| Exposant     | `^`      | ⚠ HTML   | ☑      | ⚠ HTML  | ⚠ N/A    |
+| Indice       | N/A      | ⚠ HTML   | ☑ N/A  | ⚠ HTML  | ⚠ N/A    |
+| Référence    | `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
+| HTML         | N/A      | ⚠ Av.    | ☑ N/A  | ⚠ Av.   | ⚠ Av.    |
 
-Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html)
+Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html), [CommonMark](https://spec.commonmark.org/0.29/)
 
 
 ## Syntaxes incompatibles

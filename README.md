@@ -666,34 +666,34 @@ This backslash \ is not removed because it is not followed by a special characte
 
 A tick (☑) means that the syntax should work on the platform.
 
-| Type         |  Syntax   |   GitHub  |   Reddit   |  GitLab  |
-| ------------ |:----------|:----------|:-----------|:---------|
-| Italic       | `*`       | ☑         | ☑         | ☑       |
-| Bold         | `**`      | ☑         | ☑         | ☑       |
-| Bold-italic  | `***`     | ☑         | ☑         | ☑       |   
-| Strikethrough| `~~`      | ☑         | ☑         | ☑       |
-| Newline      | `\n`      | ☑         | ☑         | ☑       |
-| Paragraph    | `\n\n`    | ☑         | ☑         | ☑       |
-| Header       | `#`       | ☑         | ☑         | ☑       |
-| Link         | `[]()`    | ☑         | ☑         | ☑       |
-| Image        | `![]()`   | ☑         | ☑         | ☑       |
-| Un. list     | `-`       | ☑         | ☑         | ☑       |
-| Un. list \\n | 2 spaces  | ☑         | ☑         | ☑       |
-| Un. nested   | 2 spaces  | ☑         | ☑         | ☑       |
-| Ord. list    | `1.`      | ☑         | ☑         | ☑       |
-| Ord. list \\n| 3 spaces  | ☑         | ☑         | ☑       |
-| Ord. nested  | 3 spaces  | ☑         | ☑         | ☑       |
-| Horiz. Line  | `\n---\n` | ☑         | ☑         | ☑       |
-| Code         | `` ` ``   | ☑         | ☑         | ☑       |
-| MultiCode  |```` ``` ````| ☑         | ☑         | ☑       |
-| Quote        | `>`       | ☑         | ☑         | ☑       |
-| Escape char  | `\`       | ☑         | ☑         | ☑       |
-| Superscript  | `^`       | ⚠ `<sup>` | ☑        | ⚠ `<sup>`|
-| Subscript    | N/A       | ⚠ `<sub>` | N/A      | ⚠ `<sub>`|
-| Reference    | `[^1]`    | ⚠ N/A     | ⚠ N/A    | ⚠ Diff.  |
-| HTML         | N/A       | ⚠ Avail.  | N/A      | ⚠ Avail. |
+|              |  Syntax  |   GitHub  | Reddit |  GitLab | CommonMark|
+| ------------ |:---------|:----------|:-------|:--------|:----------|
+| Italic       | `*`      | ☑        | ☑      | ☑       | ☑        |
+| Bold         | `**`     | ☑        | ☑      | ☑       | ☑        |
+| Bold-italic  | `***`    | ☑        | ☑      | ☑       | ⚠ N/A    |
+| Strikethrough| `~~`     | ☑        | ☑      | ☑       | ⚠ N/A    |
+| Newline      | `\n`     | ☑        | ☑      | ⚠ Space | ⚠ Space  |
+| Paragraph    | `\n\n`   | ☑        | ☑      | ☑       | ☑        |
+| Header       | `#`      | ☑        | ☑      | ☑       | ☑        |
+| Link         | `[]()`   | ☑        | ☑      | ☑       | ☑        |
+| Image        | `![]()`  | ☑        | ☑      | ☑       | ☑        |
+| Un. list     | `-`      | ☑        | ☑      | ☑       | ☑        |
+| Un. list \\n | 2 spaces | ☑        | ☑      | ☑       | ⚠ `\n`   |
+| Un. nested   | 2 spaces | ☑        | ☑      | ☑       | ☑        |
+| Ord. list    | `1.`     | ☑        | ☑      | ☑       | ☑        |
+| Ord. list \\n| 3 spaces | ☑        | ☑      | ☑       | ⚠ `\n`   |
+| Ord. nested  | 3 spaces | ☑        | ☑      | ☑       | ☑        |
+| Horiz. Line  | `\n---\n`| ☑        | ☑      | ☑       | ☑        |
+| Code         | `` ` ``  | ☑        | ☑      | ☑       | ☑        |
+| MultiCode |```` ``` ````| ☑        | ☑      | ☑       | ☑        |
+| Quote        | `>`      | ☑        | ☑      | ☑       | ☑        |
+| Escape char  | `\`      | ☑        | ☑      | ☑       | ☑        |
+| Superscript  | `^`      | ⚠ HTML   | ☑      | ⚠ HTML  | ⚠ N/A    |
+| Subscript    | N/A      | ⚠ HTML   | ☑ N/A  | ⚠ HTML  | ⚠ N/A    |
+| Reference    | `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
+| HTML         | N/A      | ⚠ Av.    | ☑ N/A  | ⚠ Av.   | ⚠ Av.    |
 
-Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html)
+Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html), [CommonMark](https://spec.commonmark.org/0.29/)
 
 
 ## Unsupported syntaxes
