@@ -468,18 +468,30 @@ const parse = (markdownText, opt = {}) => {
             if (next(-1) === MD_ESCAPE_CHAR) {
               // Do nothing
             } else if (char === '*') {
-              if (next(1) === '*'
-              && next(2) === '*') {
-                const syntax = '***'
-                const syntaxSize = syntax.length
-                const fromIndex = lineCursor + syntaxSize
-                const endTagIndex =
-                  lineText.substring(fromIndex).indexOf(syntax)
+              const remainingText = lineText.substring(lineCursor)
+              const match = /^(\*{1,3})/.exec(remainingText)
+              const syntax = match[0]
+              const syntaxSize = syntax.length
+              const endTagIndex =
+                remainingText.substr(syntaxSize).indexOf(syntax)
 
-                if (endTagIndex > 0) {
-                  flush()
-                  lineCursorMax = fromIndex + endTagIndex
+              if (endTagIndex > 0) {
+                flush()
+                lineCursorMax = lineCursor + syntaxSize + endTagIndex
 
+                if (syntax === '*') {
+                  const emNode = document.createElement('EM')
+                  emNode.ffOnTextEnd = syntaxSize
+
+                  targetNode.appendChild(emNode)
+                  targetNode = emNode
+                } else if (syntax === '**') {
+                  const strongNode = document.createElement('STRONG')
+                  strongNode.ffOnTextEnd = syntaxSize
+
+                  targetNode.appendChild(strongNode)
+                  targetNode = strongNode
+                } else {
                   const emNode = document.createElement('EM')
                   emNode.ffOnTextEnd = syntaxSize
                   emNode.upOnTextEnd = true
@@ -489,48 +501,10 @@ const parse = (markdownText, opt = {}) => {
 
                   targetNode.appendChild(strongNode)
                   targetNode = emNode
-
-                  ff = syntaxSize
-                  lastFlushCursor += syntaxSize
                 }
-              } else if (next(1) === '*') {
-                const syntax = '**'
-                const syntaxSize = 2
-                const fromIndex = lineCursor + syntaxSize
-                const endTagIndex =
-                  lineText.substring(fromIndex).indexOf(syntax)
 
-                if (endTagIndex > 0) {
-                  flush()
-                  lineCursorMax = fromIndex + endTagIndex
-
-                  const strongNode = document.createElement('STRONG')
-                  strongNode.ffOnTextEnd = syntaxSize
-
-                  targetNode.appendChild(strongNode)
-                  targetNode = strongNode
-
-                  ff = syntaxSize
-                  lastFlushCursor += syntaxSize
-                }
-              } else {
-                const syntaxSize = 1
-                const fromIndex = lineCursor + syntaxSize
-                const endTagIndex = lineText.substring(fromIndex).indexOf('*')
-
-                if (endTagIndex > 0) {
-                  flush()
-                  lineCursorMax = fromIndex + endTagIndex
-
-                  const emNode = document.createElement('EM')
-                  emNode.ffOnTextEnd = syntaxSize
-
-                  targetNode.appendChild(emNode)
-                  targetNode = emNode
-
-                  ff = syntaxSize
-                  lastFlushCursor += syntaxSize
-                }
+                ff = syntaxSize
+                lastFlushCursor += syntaxSize
               }
             } else if (char === '~') {
               if (next(1) === '~') {
