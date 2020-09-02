@@ -238,3 +238,24 @@ test('Element.prepend', function (t) {
   t.equal(el.lastChild.textContent, 'Text 4', 'Original child is last')
   t.end()
 })
+
+test('Element.append', function (t) {
+  const el2 = new Element('p')
+  el2.textContent = 'Text 2'
+
+  const el3 = 'Text 3'
+
+  const el4 = 'Text 4'
+
+  const el = new Element('div')
+  el.textContent = 'Text 1'
+  el.append(el2, el3, el4)
+
+  t.equal(el.childNodes.length, 4, 'Number of childNodes is valid')
+  t.equal(el.firstChild.textContent, 'Text 1', 'First child text is valid')
+  t.equal(el.childNodes[1].tagName, 'P', '2nd child tagName is valid')
+  t.equal(el.childNodes[1].textContent, 'Text 2', '2nd child text is valid')
+  t.equal(el.childNodes[2].textContent, 'Text 3', '3rd child text is valid')
+  t.equal(el.lastChild.textContent, 'Text 4', 'Original child is last')
+  t.end()
+})

@@ -34,6 +34,16 @@ class Element {
     this._children.push(node)
   }
 
+  append(...nodes) {
+    this._children.push(...nodes.map(node => {
+      if (typeof node === 'string') {
+        return new Text(node)
+      }
+
+      return node
+    }))
+  }
+
   prepend(...nodes) {
     this._children.splice(0, 0, ...nodes.map(node => {
       if (typeof node === 'string') {
