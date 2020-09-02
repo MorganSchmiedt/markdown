@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.0 - TBD
+## 3.1.0 - 2020-09-02
 
 **🌟 New**
 - `Element.prepend`, `Element.append` are added.
