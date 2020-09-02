@@ -217,3 +217,24 @@ test('Element.className get/set', function (t) {
   t.equal(parseToHtml(input, opt), output, 'output is valid output is valid')
   t.end()
 })
+
+test('Element.prepend', function (t) {
+  const el1 = 'Text 1'
+
+  const el2 = new Element('p')
+  el2.textContent = 'Text 2'
+
+  const el3 = 'Text 3'
+
+  const el = new Element('div')
+  el.textContent = 'Text 4'
+  el.prepend(el1, el2, el3)
+
+  t.equal(el.childNodes.length, 4, 'Number of childNodes is valid')
+  t.equal(el.firstChild.textContent, 'Text 1', 'First child text is valid')
+  t.equal(el.childNodes[1].tagName, 'P', '2nd child tagName is valid')
+  t.equal(el.childNodes[1].textContent, 'Text 2', '2nd child text is valid')
+  t.equal(el.childNodes[2].textContent, 'Text 3', '3rd child text is valid')
+  t.equal(el.lastChild.textContent, 'Text 4', 'Original child is last')
+  t.end()
+})

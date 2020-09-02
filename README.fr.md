@@ -145,6 +145,8 @@ Les propriétés disponibles sont:
 - `setAttribute(attrName, attrValue)`: Ajoute un attribut à l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/setAttribute)
 - `getAttribute(attrName)`: Retourne un attribute de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/getAttribute)
 - `removeAttribute(attrName)`: Enlève un attribute de l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/removeAttribute)
+- `appendChild(child)`: Ajoute un élément à la fin de la liste des enfants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Node/appendChild)
+- `prepend(...nodesToPreprend)`: Insère une liste d'éléments avant le premier enfant. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/ParentNode/prepend)
 - `innerHTML`: Retourne la représentation HTML des éléments contenus dans l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/innerHTML)
 - `outerHTML`: Retourne la représentation HTML de l'élément et de ses descendants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/outerHTML)
 

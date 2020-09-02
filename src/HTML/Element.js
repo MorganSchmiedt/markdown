@@ -34,6 +34,16 @@ class Element {
     this._children.push(node)
   }
 
+  prepend(...nodes) {
+    this._children.splice(0, 0, ...nodes.map(node => {
+      if (typeof node === 'string') {
+        return new Text(node)
+      }
+
+      return node
+    }))
+  }
+
   hasAttribute(attributeName) {
     return this._attributes[attributeName] !== undefined
   }

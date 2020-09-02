@@ -2,6 +2,9 @@
 
 ## 3.1.0 - TBD
 
+**🌟 New**
+- `Element.prepend` is added.
+
 **🔧 Changes**
 - Bold/Italic texts can not start/end with a space.
 
