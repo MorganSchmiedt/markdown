@@ -62,6 +62,30 @@ test('Bold-italic', function (t) {
   t.end()
 })
 
+test('Emphasis with leading space', function (t) {
+  const input = 'An * italic* text'
+  const output = '<p>An * italic* text</p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Emphasis with trailing space', function (t) {
+  const input = 'An *italic * text'
+  const output = '<p>An *italic * text</p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Emphasis with wrong end tag inside: space+*', function (t) {
+  const input = 'An *italic *tes t* text'
+  const output = '<p>An <em>italic *tes t</em> text</p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Strikethrough', function (t) {
   const input = 'A ~~strikethrough~~ text'
   const output = '<p>A <s>strikethrough</s> text</p>'

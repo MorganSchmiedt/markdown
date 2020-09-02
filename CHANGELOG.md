@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0 - TBD
+
+**🔧 Changes**
+- Bold/Italic texts can not start/end with a space.
+
+
 ## 3.0.0 - 2020-08-28
 
 **🌟 New**
