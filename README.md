@@ -43,7 +43,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Quote](#quote)
   - [Footnote](#footnote)
   - [Escape character](#escape-character)
-- [Differences with other Markdown syntaxes](#differences-with-other-markdown-syntaxes)
+- [Compatibility with other popular Markdown](#compatibility-with-other-popular-Markdown)
 - [Unsupported syntaxes](#unsupported-syntaxes)
 - [Examples](#examples)
   - [Add an identifier to headers](#add-an-identifier-to-headers)

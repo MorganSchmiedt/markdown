@@ -42,7 +42,7 @@ test('Ordered List with extra LF between items', function (t) {
   t.end()
 })
 
-test('Unordered List with complex texts', function (t) {
+test('Ordered List with complex texts', function (t) {
   const input = `
     1. *Italic* item
     2. Item **bold**
@@ -63,7 +63,7 @@ test('Unordered List with complex texts', function (t) {
   t.end()
 })
 
-test('Unordered List with wrong numbers', function (t) {
+test('Ordered List with wrong numbers', function (t) {
   const input = `
     1. *Italic* item
     1. Item **bold**

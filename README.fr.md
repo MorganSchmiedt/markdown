@@ -43,7 +43,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Citation](#citation)
   - [Note de bas de page](#note-de-bas-de-page)
   - [Caractère d'échappement](#escape-character)
-- [Compatibilité avec d'autres Markdown populaires](#compatibilité-avec-d-autres-Markdown-populaires)
+- [Compatibilité avec d'autres Markdown populaires](#compatibilité-avec-d'autres-Markdown-populaires)
 - [Syntaxes incompatibles](#syntaxes-incompatibles)
 - [Exemples](#exemples)
   - [Ajouter un identifiant aux titres](#ajouter-un-identifiant-aux-titres)
