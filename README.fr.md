@@ -643,8 +643,10 @@ Ma seconde[^two].
 <p>Ma première référence<a href="#reference1"><sup>1</sup></a>.</p>
 <p>Ma seconde<a href="#reference2"><sup>2</sup></a>.</p>
 <section>
-  <p><sup id="reference1">1</sup>1ere note de bas de page.</p>
-  <p><sup id="reference2">2</sup>2eme note de bas de page.</p>
+  <ol>
+    <li id="reference1">First footnote.</li>
+    <li id="reference2">Second footnote.</li>
+  </ol>
 </section>
 ```
 

@@ -17,7 +17,9 @@ test('Reference with a single ref', function (t) {
   const output = inlineHtml`
     <p>See reference<a href="#reference1"><sup>1</sup></a></p>
     <section>
-      <p><sup id="reference1">1</sup>some text</p>
+      <ol>
+        <li id="reference1">some text</li>
+      </ol>
     </section>`
 
   const opt = {
@@ -38,8 +40,10 @@ test('Reference with 2 refs', function (t) {
   const output = inlineHtml`
     <p>See this<a href="#reference1"><sup>1</sup></a> and that<a href="#reference2"><sup>2</sup></a></p>
     <section>
-      <p><sup id="reference1">1</sup>ref one</p>
-      <p><sup id="reference2">2</sup>ref two</p>
+      <ol>
+        <li id="reference1">ref one</li>
+        <li id="reference2">ref two</li>
+      </ol>
     </section>`
 
   const opt = {
@@ -59,8 +63,10 @@ test('Reference with 2 refs not in order', function (t) {
   const output = inlineHtml`
     <p>See this<a href="#reference1"><sup>1</sup></a> and that<a href="#reference2"><sup>2</sup></a></p>
     <section>
-      <p><sup id="reference1">1</sup>ref one</p>
-      <p><sup id="reference2">2</sup>ref two</p>
+      <ol>
+        <li id="reference1">ref one</li>
+        <li id="reference2">ref two</li>
+      </ol>
     </section>`
 
   const opt = {
@@ -81,8 +87,10 @@ test('Reference with text ref', function (t) {
   const output = inlineHtml`
     <p>See this<a href="#reference1"><sup>1</sup></a> and that<a href="#reference2"><sup>2</sup></a></p>
     <section>
-      <p><sup id="reference1">1</sup>ref one</p>
-      <p><sup id="reference2">2</sup>ref two</p>
+      <ol>
+        <li id="reference1">ref one</li>
+        <li id="reference2">ref two</li>
+      </ol>
     </section>`
 
   const opt = {
@@ -103,7 +111,9 @@ test('Reference with missing ref key', function (t) {
   const output = inlineHtml`
     <p>See this<a href="#reference1"><sup>1</sup></a> and that</p>
     <section>
-      <p><sup id="reference1">1</sup>ref one</p>
+      <ol>
+        <li id="reference1">ref one</li>
+      </ol>
     </section>`
 
   const opt = {
@@ -123,7 +133,9 @@ test('Reference with missing ref text', function (t) {
   const output = inlineHtml`
     <p>See this<a href="#reference1"><sup>1</sup></a> and that<a href="#reference2"><sup>2</sup></a></p>
     <section>
-      <p><sup id="reference1">1</sup>ref one</p>
+      <ol>
+        <li id="reference1">ref one</li>
+      </ol>
     </section>`
 
   const opt = {
@@ -143,7 +155,9 @@ test('Reference with complex texts', function (t) {
   const output = inlineHtml`
     <p>See reference<a href="#reference1"><sup>1</sup></a></p>
     <section>
-      <p><sup id="reference1">1</sup>some <em>italic</em> and <strong>bold</strong> and a <a href="address">link</a></p>
+      <ol>
+        <li id="reference1">some <em>italic</em> and <strong>bold</strong> and a <a href="address">link</a></li>
+      </ol>
     </section>`
 
   const opt = {

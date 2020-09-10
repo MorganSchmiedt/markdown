@@ -679,7 +679,7 @@ const parse = (markdownText, opt = {}) => {
   }
 
   if (allowFootnote) {
-    const footerNode = document.createElement('section')
+    const listNode = document.createElement('ol')
 
     let refNb = 1
 
@@ -687,10 +687,6 @@ const parse = (markdownText, opt = {}) => {
       const refValue = fnNote[ref]
 
       if (refValue != null) {
-        const refNode = document.createElement('sup')
-        refNode.id = `reference${refNb}`
-        refNode.textContent = refNb
-
         const contentParsed = parse(refValue, Object.assign({}, opt, {
           allowHeader: false,
           allowImage: false,
@@ -704,20 +700,23 @@ const parse = (markdownText, opt = {}) => {
 
         const contentNode = contentParsed.firstChild
 
-        const lineNode = document.createElement('p')
-        lineNode.appendChild(refNode)
+        const itemNode = document.createElement('li')
+        itemNode.id = `reference${refNb}`
 
         // childNodes is theoretically a live NodeList
         for (const node of Array.from(contentNode.childNodes)) {
-          lineNode.appendChild(node)
+          itemNode.appendChild(node)
         }
 
-        footerNode.appendChild(lineNode)
+        listNode.appendChild(itemNode)
         refNb += 1
       }
     }
 
-    if (footerNode.children.length > 0) {
+    if (listNode.children.length > 0) {
+      const footerNode = document.createElement('section')
+      footerNode.appendChild(listNode)
+
       body.appendChild(footerNode)
     }
   }

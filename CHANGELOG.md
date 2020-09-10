@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.0 - 2020-09-10
+
+**🔧 Changes**
+- Footnotes are now embedded in a `ol` tag.
+
+
 ## 3.1.0 - 2020-09-02
 
 **🌟 New**

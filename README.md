@@ -642,8 +642,10 @@ And the second one[^two].
 <p>This is the fist reference<a href="#reference1"><sup>1</sup></a>.</p>
 <p>And the second one<a href="#reference2"><sup>2</sup></a>.</p>
 <section>
-  <p><sup id="reference1">1</sup>First footnote.</p>
-  <p><sup id="reference2">2</sup>Second footnote.</p>
+  <ol>
+    <li id="reference1">First footnote.</li>
+    <li id="reference2">Second footnote.</li>
+  </ol>
 </section>
 ```
 
