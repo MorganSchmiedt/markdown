@@ -115,6 +115,28 @@ test('Element.textContent with one element', function (t) {
   t.end()
 })
 
+test('Element.textContent sets to null', function (t) {
+  const element = new Element('div')
+  element.setAttribute('foo', 'bar')
+  element.append(new Element('p'))
+  element.append(new Element('p'))
+  element.textContent = null
+
+  t.equal(element.outerHTML, '<div foo="bar"></div>', 'textContent is valid')
+  t.end()
+})
+
+test('Element.textContent sets to empty string', function (t) {
+  const element = new Element('div')
+  element.setAttribute('foo', 'bar')
+  element.append(new Element('p'))
+  element.append(new Element('p'))
+  element.textContent = ''
+
+  t.equal(element.outerHTML, '<div foo="bar"></div>', 'textContent is valid')
+  t.end()
+})
+
 test('Element.textContent with multiple element', function (t) {
   const item1Node = new Element('li')
   item1Node.textContent = 'Item 1'

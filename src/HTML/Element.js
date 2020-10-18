@@ -112,7 +112,12 @@ class Element {
   }
 
   set textContent(value) {
-    this._children = [new Text(value)]
+    if (value == null
+    || value.length === 0) {
+      this._children = []
+    } else {
+      this._children = [new Text(value)]
+    }
   }
 
   get children() {

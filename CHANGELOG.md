@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.2 - 2020-10-18
+
+**🌟 New**
+- A Null value or an empty string can be passed to `Element.textContent`.
+
+
 ## 3.2.1 - 2020-10-18
 
 **🔧 Changes**
