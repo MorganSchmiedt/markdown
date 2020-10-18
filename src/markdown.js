@@ -375,6 +375,12 @@ const parse = (markdownText, opt = {}) => {
 
             currentNode = quoteNode
             targetNode = pNode
+          } else if (currentNode.tagName === 'BLOCKQUOTE'
+          && lineText.trim().length === 1) {
+            const pNode = document.createElement('P')
+
+            currentNode.appendChild(pNode)
+            targetNode = pNode
           }
 
           lineCursor = 2

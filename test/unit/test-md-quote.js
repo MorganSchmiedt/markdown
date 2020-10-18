@@ -2,6 +2,7 @@
 /* eslint-disable prefer-arrow-callback */
 
 const {
+  parser,
   parse,
   parseToHtml,
   inlineHtml,
@@ -22,6 +23,22 @@ test('Quote', function (t) {
     </blockquote>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Quote with two lines', function (t) {
+  const input = '> Blockquote line 1\n> \n> Blockquote line 2'
+  const output = inlineHtml`
+    <blockquote>
+      <p>
+        Blockquote line 1
+      </p>
+      <p>
+        Blockquote line 2
+      </p>
+    </blockquote>`
+
+  t.equal(parser.parse(input).innerHTML, output, 'Output is valid')
   t.end()
 })
 
