@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.0.0 - 2020-12-20
+
+**🌟 New**
+- `allowHTMLAttributes` option is added.
+- HTML Attributes can be added to images by appending `{attrValue=AttrName}`.
+
+**⚠ Breaking changes**
+- `allowImageStyle` option is removed.
+
 ## 3.2.2 - 2020-10-18
 
 **🌟 New**

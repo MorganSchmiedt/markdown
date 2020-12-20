@@ -6,10 +6,10 @@ const {
 } = require('./test-lib.js')
 
 const input = `
-  ...Markdown texte here...`
+  ![alt text](https://example.com/image){style=height:100px}`
 
 const element = parse(input, {
-  // Parser options here
+  allowHTMLAttributes: true,
 })
 
 console.log(element.innerHTML)

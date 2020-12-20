@@ -32,13 +32,33 @@ const REGEX_MD_TEXT =
 
 const isSpace = text => /^\s$/.test(text)
 
+const setHTMLAttributes = (node, attrs) => {
+  let cursor = 0
+
+  while (cursor < attrs.length) {
+    const attr = attrs.substring(cursor)
+    const match = /^([^=]+)=(?:"([^"]+)"|([^;]+))?/
+      .exec(attr)
+
+    if (match == null) {
+      return
+    }
+
+    const attrName = match[1]
+    const attrValue = match[2] || match[3]
+
+    node.setAttribute(attrName, attrValue)
+    cursor += (match[0].length + 1)
+  }
+}
+
 /**
  * @param {string} markdownText Markdown text
  * @param {object} opt Parser options
  * @param {boolean} [opt.allowHeader=true]
  * @param {boolean} [opt.allowLink=true]
  * @param {boolean} [opt.allowImage=true]
- * @param {boolean} [opt.allowImageStyle=false]
+ * @param {boolean} [opt.allowHTMLAttributes=false]
  * @param {boolean} [opt.allowCode=true]
  * @param {boolean} [opt.allowMultilineCode=true]
  * @param {boolean} [opt.allowUnorderedList=true]
@@ -64,7 +84,6 @@ const parse = (markdownText, opt = {}) => {
   const allowHeader = parseBoolean(opt.allowHeader, true)
   const allowLink = parseBoolean(opt.allowLink, true)
   const allowImage = parseBoolean(opt.allowImage, true)
-  const allowImageStyle = parseBoolean(opt.allowImageStyle, false)
   const allowCode = parseBoolean(opt.allowCode, true)
   const allowMultilineCode = parseBoolean(opt.allowMultilineCode, true)
   const allowUnorderedList = parseBoolean(opt.allowUnorderedList, true)
@@ -74,6 +93,7 @@ const parse = (markdownText, opt = {}) => {
   const allowHorizontalLine = parseBoolean(opt.allowHorizontalLine, true)
   const allowQuote = parseBoolean(opt.allowQuote, true)
   const allowFootnote = parseBoolean(opt.allowFootnote, false)
+  const allowHTMLAttributes = parseBoolean(opt.allowHTMLAttributes, false)
   const maxHeader = parseMaxHeader(opt.maxHeader, 3)
 
   const body = new Element('div')
@@ -165,20 +185,20 @@ const parse = (markdownText, opt = {}) => {
         if (next(1) === '['
         && allowImage) {
           const restLineText = lineText.substring(lineCursor + 1)
-          const endMatch = /^\[([^\]]+)]\(([^;)]+)(;([^)]+))?\)$/
+          const endMatch = /^\[([^\]]+)]\(([^;)]+)\)(?:{([^}]+)})?$/
             .exec(restLineText)
 
           if (endMatch) {
             flushBody()
             const title = endMatch[1]
             const url = endMatch[2]
-            const style = endMatch[4]
+            const attrs = endMatch[3]
 
             const figureNode = document.createElement('FIGURE')
 
-            if (allowImageStyle
-            && style != null) {
-              figureNode.setAttribute('style', style)
+            if (allowHTMLAttributes
+            && attrs != null) {
+              setHTMLAttributes(figureNode, attrs)
             }
 
             const isVideo = url.endsWith('.mp4')
@@ -624,7 +644,7 @@ const parse = (markdownText, opt = {}) => {
             && next(1) === '[') {
               if (allowImage) {
                 const restLineText = lineText.substring(lineCursor + 1)
-                const endMatch = /^\[([^\]]+)]\(([^;)]+)\)({([^}]+)})?/
+                const endMatch = /^\[([^\]]+)]\(([^;)]+)\)(?:{([^}]+)})?/
                   .exec(restLineText)
 
                 if (endMatch) {
@@ -633,16 +653,16 @@ const parse = (markdownText, opt = {}) => {
                   const syntaxSize = 1 + endMatch[0].length
                   const altText = endMatch[1]
                   const url = endMatch[2]
-                  const style = endMatch[4]
+                  const attrs = endMatch[3]
 
                   const imageNode = document.createElement('IMG')
                   imageNode.onAttach = opt.onImage
                   imageNode.setAttribute('src', url)
                   imageNode.setAttribute('alt', altText)
 
-                  if (allowImageStyle
-                  && style != null) {
-                    imageNode.setAttribute('style', style)
+                  if (allowHTMLAttributes
+                  && attrs != null) {
+                    setHTMLAttributes(imageNode, attrs)
                   }
 
                   targetNode.appendChild(imageNode)

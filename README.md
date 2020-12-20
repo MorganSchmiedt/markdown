@@ -90,7 +90,6 @@ Available options are:
 - `allowHeader`: Whether headers are allowed. Defaults to `true`.
 - `allowLink`: Whether links are allowed. Defaults to `true`.
 - `allowImage`: Whether images are allowed. Defaults to `true`.
-- `allowImageStyle`: Whether inline image styles are allowed. Defaults to `false`.
 - `allowCode`: Whether inline codes are allowed. Defaults to `true`.
 - `allowMultilineCode`: Whether multiline codes are allowed. Defaults to `true`.
 - `allowUnorderedList`: Whether unordered lists are allowed. Defaults to `true`.
@@ -100,6 +99,7 @@ Available options are:
 - `allowHorizontalLine`: Whether horizontal lines are allowed. Defaults to `true`.
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowFootnote`: Whether footnotes are allowed. Defaults to `false`.
+- `allowHTMLAttributes`: Whether HTML attributes are allowed. Defaults to `false` (beta).
 - `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
 
 Callback functions can be passed to the options as well. They allow to edit the output [element](#element-object) (e.g. add custom attributes).
@@ -335,8 +335,6 @@ This is a [link](https://example.com)
 
 An image starts with an exclamation mark (`!`) followed by the caption in square brackets (`[]`), followed by the URL in round brackets (`( )`). i.e. `![caption](image_url)`
 
-CSS instructions can be added to the end in curly brackets (`{ }`). The instructions must be separated by a semicolon (`;`). The parser option  `allowImageStyle` must also be turned on.
-
 *Example of an inline image*
 ```
 This is an ![inline image](https://example.com/some_image.png)
@@ -360,7 +358,7 @@ This is an ![inline image](https://example.com/some_image.png)
 
 *Example of an image with inline style*
 ```
-![Image with inline style](https://example.com/some_image.png){height: 100px; width: 100px}
+![Image with inline style](https://example.com/some_image.png){style="height: 100px; width: 100px"}
 ```
 
 ```html

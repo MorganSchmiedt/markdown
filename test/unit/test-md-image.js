@@ -42,8 +42,8 @@ test('Image as a figure surrounded by elements', function (t) {
   t.end()
 })
 
-test('Image as a figure can NOT be styled by default', function (t) {
-  const input = '![alt text](https://example.com/image;height:100px)'
+test('Image as a figure can NOT have html attr by default', function (t) {
+  const input = '![alt text](https://example.com/image){style=height:100px}'
   const output = inlineHtml`
     <figure>
       <img src="https://example.com/image" alt="">
@@ -54,15 +54,15 @@ test('Image as a figure can NOT be styled by default', function (t) {
   t.end()
 })
 
-test('Image as a figure CAN be styled if allowImageStyle is true', function (t) {
-  const input = '![alt text](https://example.com/image;height:100px)'
+test('Image as a figure CAN have html attr if allowHTMLAttributes is true', function (t) {
+  const input = '![alt text](https://example.com/image){style=height:100px}'
   const output = inlineHtml`
     <figure style="height:100px">
       <img src="https://example.com/image" alt="">
       <figcaption>alt text</figcaption>
     </figure>`
   const opt = {
-    allowImageStyle: true,
+    allowHTMLAttributes: true,
   }
 
   t.equal(parseToHtml(input, opt), output, 'Output is valid')
@@ -70,7 +70,7 @@ test('Image as a figure CAN be styled if allowImageStyle is true', function (t) 
 })
 
 test('Image as a figure with callback', function (t) {
-  const input = '![alt text](https://example.com/image;height:100px)'
+  const input = '![alt text](https://example.com/image)'
   const opt = {
     onImage: node => {
       t.notEqual(node, null, 'Parameter is populated')
@@ -98,19 +98,19 @@ test('Image inline at the beginning of line', function (t) {
   t.end()
 })
 
-test('Image with style and default allowImageStyle', function (t) {
-  const input = 'This is an inline ![alt text](https://example.com/image){height: 100px}'
+test('Image with style and default allowHTMLAttributes', function (t) {
+  const input = 'This is an inline ![alt text](https://example.com/image){style=height: 100px}'
   const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text"></p>'
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
 })
 
-test('Image with style and allowImageStyle to true', function (t) {
-  const input = 'This is an inline ![alt text](https://example.com/image){height: 100px; width: 50px} with style'
+test('Image with style and allowHTMLAttributes to true', function (t) {
+  const input = 'This is an inline ![alt text](https://example.com/image){style="height: 100px; width: 50px"} with style'
   const output = '<p>This is an inline <img src="https://example.com/image" alt="alt text" style="height: 100px; width: 50px"> with style</p>'
   const opt = {
-    allowImageStyle: true,
+    allowHTMLAttributes: true,
   }
 
   t.equal(parseToHtml(input, opt), output, 'Output is valid')

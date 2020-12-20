@@ -89,7 +89,6 @@ Les options disponibles sont:
 - `allowHeader`: Si les titres headers sont autorisés. `true` par défaut.
 - `allowLink`: Si les liens sont autorisés. `true` par défaut.
 - `allowImage`: Si les images sont autorisées. `true` par défaut.
-- `allowImageStyle`: Si du style peut être appliqué aux images. `false` par défaut.
 - `allowCode`: Si du code est autorisé. `true` par défaut.
 - `allowMultilineCode`: Si du code multi lignes est autorisé. `true` par défaut.
 - `allowUnorderedList`: Si les listes non-numérotées sont autorisées. `true` par défaut.
@@ -99,6 +98,7 @@ Les options disponibles sont:
 - `allowHorizontalLine`: Si les lignes horizontales sont autorisées. `true` par défaut.
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
 - `allowFootnote`: Si les notes de bas de page sont autorisées. `false` par défaut.
+- `allowHTMLAttributes`: Si des attributes HTML peuvent sont autorisés. `false` par défaut (beta).
 - `maxHeader`: Niveau maximal des titres. Nombre de 1 à 6 inclus. e.g. 2 signifie que les balises autorisées sont `<h1>` et `<h2>`. 6 par défaut.
 
 Des fonctions Callback peuvent aussi être ajoutées aux options du parseur. Ces fonctions permettent de modifier l'[élément](#l-objet-element) de sortie (e.g. ajouter des attributs personnalisés)
@@ -334,8 +334,6 @@ Ceci est un [lien](https://exemple.com)
 
 Une image commence par un point d'exclamation (`!`) suivi de la légende de l'imagine entouré de de crochets (`[]`), suivi de l'adresse (URL) entouré de parenthèses (`( )`). i.e. `![légende](lien_de_l_image)`
 
-Des instructions CSS peuvent être ajoutés à la suite, entourées d'accolades (`{ }`). Les instructions sont séparés par un point-virgule (`;`). Le paramètre du parseur `allowImageStyle` doit être activé pour que cela fonctionne.
-
 Les images mises sur une ligne séparée et les images contenues dans une ligne de texte génèrent un code HTML différent.
 
 *Exemple d'une image sur une ligne de texte*
@@ -361,7 +359,7 @@ Cette ![image](https://exemple.com/une_image.png) fait partie d'une ligne de tex
 
 *Exemple d'une image avec du CSS*
 ```
-![Image with CSS](https://exemple.com/une_image.png){height: 100px; width: 100px}
+![Image with CSS](https://exemple.com/une_image.png){style="height: 100px; width: 100px"}
 ```
 
 ```html
