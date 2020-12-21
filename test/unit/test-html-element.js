@@ -104,6 +104,7 @@ test('Element.removeAttribute', function (t) {
 
   t.equal(output, undefined, 'removeAttribute returns the right value')
   t.equal(element.hasAttribute('test'), false, 'removeAttribute works')
+  t.equal(element.outerHTML, '<p></p>', 'outerHTML works')
   t.end()
 })
 

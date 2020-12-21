@@ -87,7 +87,7 @@ class Element {
   }
 
   removeAttribute(attributeName) {
-    this._attributes[attributeName] = undefined
+    delete this._attributes[attributeName]
   }
 
   get attributes() {

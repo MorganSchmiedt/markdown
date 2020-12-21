@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.1 - 2020-12-21
+
+**🐛 Bugfix**
+- `Element.removeAttribute` no longer makes `outerHTML` crash.
+
+
 ## 4.0.0 - 2020-12-20
 
 **🌟 New**
