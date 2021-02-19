@@ -4,7 +4,7 @@
 
 Ce parseur Markdown-vers-HTML utilise une syntaxe personnalisée et allégée du language Markdown.
 
-Il permet de créer: des textes en italique, textes en gras et textes barrés, des exposants, des liens, des titres et sous-titres, des images, des vidéos, du code mono et multi lignes, des listes numérotées et non-numérotées, des listes imbriquées, des lignes horizontales, des citations et des notes de bas de page.
+Il permet de créer: des textes en italique, textes en gras et textes barrés, des exposants, des liens, des titres et sous-titres, des images, des vidéos, des éléments audios, du code mono et multi lignes, des listes numérotées et non-numérotées, des listes imbriquées, des lignes horizontales, des citations et des notes de bas de page.
 
 Un module pour le navigateur est aussi disponible ici: [@deskeen/markdown-browser](https://github.com/deskeen/markdown-browser)
 
@@ -35,6 +35,7 @@ const html = parser.parse('mon texte markdown').innerHTML
   - [Lien](#lien)
   - [Image](#image)
   - [Vidéo](#vidéo)
+  - [Audio](#audio)
   - [Liste non-numérotée](#liste-non-numérotée)
   - [Liste numérotée](#liste-numérotée)
   - [Ligne horizontale](#ligne-horizontale)
@@ -107,6 +108,7 @@ Les Callbacks disponibles sont:
 - `onHeader`: Fonction appelée lorsqu'un titre est parsé.
 - `onLink`: Fonction appelée lorsqu'un lien est parsé.
 - `onImage`: Fonction appelée lorsqu'une image est parsée.
+- `onAudio`: Fonction appelée lorsqu'un élément audio est parsé.
 - `onVidéo`: Fonction appelée lorsqu'une video est parsée.
 - `onCode`: Fonction appelée lorsque du code est parsé.
 - `onMultilineCode`: Fonction appelée lorsque du code multi lignes est parsé. Le deuxième argument est le nom (optionnel) du langage.
@@ -172,7 +174,7 @@ const monTexte = new Text('du text')
 | [Exposant](#exposant)                     | `^Exposant`                  |
 | [Titre](#titre)                           | `# Titre`                    |
 | [Lien](#lien)                             | `[Texte affiche](lien)`      |
-| [Image](#image) and [Vidéo](#video)       | `![Légende](lien)`           |
+| [Image](#image),[Vidéo](#video)[Audio](#audio)| `![Légende](lien)`       |
 | [Liste non-numérotée](#liste-non-numérotée)| `- Item de la liste`        |
 | [Liste non-numérotée imbriquée](#liste-non-numérotée)| 2 espaces         |
 | [Liste numérotée](#liste-numérotée)       | `+ Item de liste numérotée`  |
@@ -385,6 +387,25 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
   <video controls="">
     <source src="https://exemple.com/une_video.mp4" type="video/mp4">
   </video>
+  <figcaption>ma légende</figcaption>
+</figure>
+```
+
+## Audio
+
+Les éléments audios fonctionnent de la même manière que les images, i.e. `![légende][adresse_du_son]`.
+
+*Exemple*
+
+```
+![ma légende][https://example.com/some_audio.mp3]
+```
+
+```html
+<figure>
+  <audio controls="">
+    <source src="https://example.com/some_audio.mp3" type="audio/mpeg">
+  </audio>
   <figcaption>ma légende</figcaption>
 </figure>
 ```

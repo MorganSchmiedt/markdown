@@ -4,7 +4,7 @@
 
 This Markdown-to-HTML parser uses a custom, lightweight, Markdown syntax.
 
-It allows to create: italic, bold, strikethrough and superscript texts, headers, links, images, videos, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and footnotes.
+It allows to create: italic, bold, strikethrough and superscript texts, headers, links, images, videos, audios, inline codes, multiline codes, unordered lists, ordered lists, nested lists, horizontal lines, quotes and footnotes.
 
 A browser module is also available here: [@deskeen/markdown-browser](https://github.com/deskeen/markdown-browser)
 
@@ -35,6 +35,7 @@ const html = parser.parse('some markdown text').innerHTML
   - [Link](#link)
   - [Image](#image)
   - [Video](#video)
+  - [Audio](#audio)
   - [Unordered list](#unordered-list)
   - [Ordered list](#ordered-list)
   - [Horizontal Line](#horizontal-line)
@@ -108,6 +109,7 @@ Available callbacks are:
 - `onHeader`: Function called when a header is parsed.
 - `onLink`: Function called when a link is parsed.
 - `onImage`: Function called when an image is parsed.
+- `onAudio`: Function called when an audio element is parsed.
 - `onVideo`: Function called when a video is parsed.
 - `onCode`: Function called when an inline code is parsed.
 - `onMultilineCode`: Function called when a multiline code is parsed. The second argument is the (optional) language name.
@@ -173,7 +175,7 @@ const myText = new Text('Some text')
 | [Superscript text](#superscript-text)     | `^Superscript`               |
 | [Header](#header)                         | `# Header`                   |
 | [Link](#link)                             | `[Link text](link_url)`      |
-| [Image](#image) and [Video](#video)       | `![Caption](image_url)`      |
+| [Image](#image),[Video](#video),[Audio](#audio)| `![Caption](image_url)` |
 | [Unordered list](#unordered-list)         | `- List item`                |
 | [Unordered nested list](#unordered-list)  | 2 spaces                     |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
@@ -385,6 +387,25 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
     <source src="https://example.com/some_video.mp4" type="video/mp4">
   </video>
   <figcaption>my caption</figcaption>
+</figure>
+```
+
+## Audio
+
+Audio elements work the same way as images, i.e. `![caption][audio_url]`.
+
+*Example*
+
+```
+![my audio caption][https://example.com/some_audio.mp3]
+```
+
+```html
+<figure>
+  <audio controls="">
+    <source src="https://example.com/some_audio.mp3" type="audio/mpeg">
+  </audio>
+  <figcaption>my audio caption</figcaption>
 </figure>
 ```
 

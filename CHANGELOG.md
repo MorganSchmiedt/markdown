@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.0 - 2021-02-19
+
+**🌟 New**
+- `<audio>` elements added.
+
 ## 4.0.1 - 2020-12-21
 
 **🐛 Bugfix**

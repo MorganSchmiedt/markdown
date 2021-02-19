@@ -71,6 +71,7 @@ const setHTMLAttributes = (node, attrs) => {
  * @param {function} [opt.onHeader]
  * @param {function} [opt.onLink]
  * @param {function} [opt.onImage]
+ * @param {function} [opt.onAudio]
  * @param {function} [opt.onVideo]
  * @param {function} [opt.onCode]
  * @param {function} [opt.onMultilineCode]
@@ -201,9 +202,18 @@ const parse = (markdownText, opt = {}) => {
               setHTMLAttributes(figureNode, attrs)
             }
 
-            const isVideo = url.endsWith('.mp4')
+            if (url.endsWith('.mp3')) {
+              const sourceNode = document.createElement('SOURCE')
+              sourceNode.setAttribute('src', url)
+              sourceNode.setAttribute('type', 'audio/mpeg')
 
-            if (isVideo) {
+              const audioNode = document.createElement('AUDIO')
+              audioNode.appendChild(sourceNode)
+              audioNode.setAttribute('controls', '')
+              audioNode.onAttach = opt.onAudio
+
+              figureNode.appendChild(audioNode)
+            } else if (url.endsWith('.mp4')) {
               const sourceNode = document.createElement('SOURCE')
               sourceNode.setAttribute('src', url)
               sourceNode.setAttribute('type', 'video/mp4')
