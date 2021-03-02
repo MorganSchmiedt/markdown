@@ -77,7 +77,7 @@ test('Reference with 2 refs not in order', function (t) {
   t.end()
 })
 
-test('Reference with text ref', function (t) {
+test('Reference with two ids below text', function (t) {
   const input = `
     See this[^one] and that[^two]
 
@@ -86,6 +86,56 @@ test('Reference with text ref', function (t) {
 
   const output = inlineHtml`
     <p>See this<a href="#reference1"><sup>1</sup></a> and that<a href="#reference2"><sup>2</sup></a></p>
+    <section>
+      <ol>
+        <li id="reference1">ref one</li>
+        <li id="reference2">ref two</li>
+      </ol>
+    </section>`
+
+  const opt = {
+    allowFootnote: true,
+  }
+
+  t.equal(parseToHtml(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Reference with two ids above text', function (t) {
+  const input = `
+    [^one]: ref one
+    [^two]: ref two
+
+    See this[^one] and that[^two]`
+
+  const output = inlineHtml`
+    <p>See this<a href="#reference1"><sup>1</sup></a> and that<a href="#reference2"><sup>2</sup></a></p>
+    <section>
+      <ol>
+        <li id="reference1">ref one</li>
+        <li id="reference2">ref two</li>
+      </ol>
+    </section>`
+
+  const opt = {
+    allowFootnote: true,
+  }
+
+  t.equal(parseToHtml(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Reference with two ids in between text lines', function (t) {
+  const input = `
+    See this[^one]
+    [^one]: ref one
+
+    And that[^two]
+    [^two]: ref two`
+
+  const output = inlineHtml`
+    <p>See this<a href="#reference1"><sup>1</sup></a></p>
+    <p>And that<a href="#reference2"><sup>2</sup></a></p>
     <section>
       <ol>
         <li id="reference1">ref one</li>
@@ -135,6 +185,51 @@ test('Reference with missing ref text', function (t) {
     <section>
       <ol>
         <li id="reference1">ref one</li>
+      </ol>
+    </section>`
+
+  const opt = {
+    allowFootnote: true,
+  }
+
+  t.equal(parseToHtml(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Reference with two ids', function (t) {
+  const input = `
+    See this[^one] and that[^one]
+
+    [^one]: ref one`
+
+  const output = inlineHtml`
+    <p>See this<a href="#reference1"><sup>1</sup></a> and that<a href="#reference1"><sup>1</sup></a></p>
+    <section>
+      <ol>
+        <li id="reference1">ref one</li>
+      </ol>
+    </section>`
+
+  const opt = {
+    allowFootnote: true,
+  }
+
+  t.equal(parseToHtml(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Reference with two notes', function (t) {
+  const input = `
+    See this[^one]
+
+    [^one]: ref one
+    [^one]: ref two`
+
+  const output = inlineHtml`
+    <p>See this<a href="#reference1"><sup>1</sup></a></p>
+    <section>
+      <ol>
+        <li id="reference1">ref two</li>
       </ol>
     </section>`
 

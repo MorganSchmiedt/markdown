@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.1 - 2021-03-02
+
+**🌟 New**
+- A footnote can be referenced more than once.
+
 ## 4.1.0 - 2021-02-19
 
 **🌟 New**

@@ -110,7 +110,8 @@ const parse = (markdownText, opt = {}) => {
   let lineCursor
   let lineText
   const fnNote = {}
-  const fnIdList = []
+  const fnIdList = new Set()
+  const fnIdNb = new Map()
 
   const flushBody = () => {
     if (currentNode != null) {
@@ -610,10 +611,16 @@ const parse = (markdownText, opt = {}) => {
                 if (refMatch) {
                   flush()
 
-                  const ref = refMatch[1]
-                  const refNb = fnIdList.length + 1
+                  const id = refMatch[1]
+                  let refNb
 
-                  fnIdList.push(ref)
+                  if (fnIdList.has(id) === false) {
+                    fnIdList.add(id)
+                    refNb = fnIdList.size
+                    fnIdNb.set(id, refNb)
+                  } else {
+                    refNb = fnIdNb.get(id)
+                  }
 
                   const supNode = document.createElement('SUP')
                   supNode.textContent = refNb
@@ -622,7 +629,7 @@ const parse = (markdownText, opt = {}) => {
                   linkNode.setAttribute('href', `#reference${refNb}`)
                   linkNode.appendChild(supNode)
                   linkNode.onAttach = opt.onReference != null
-                    ? node => opt.onReference(node, ref)
+                    ? node => opt.onReference(node, id)
                     : undefined
 
                   targetNode.appendChild(linkNode)
@@ -719,7 +726,7 @@ const parse = (markdownText, opt = {}) => {
 
     let refNb = 1
 
-    for (const ref of fnIdList) {
+    for (const ref of fnIdList.keys()) {
       const refValue = fnNote[ref]
 
       if (refValue != null) {
