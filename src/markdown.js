@@ -333,6 +333,7 @@ const parse = (markdownText, opt = {}) => {
           caseFound = true
         } else if (isNewItem === false
         && targetNode != null
+        && targetNode.parentNode != null
         && targetNode.parentNode.tagName === 'OL'
         && spaceCount >= 3) {
           if (targetNode.tagName === 'LI') {
