@@ -164,12 +164,21 @@ test('Element.textContent with embedded element', function (t) {
   t.end()
 })
 
-test('Element.textContent with image', function (t) {
-  const input = '![Caption](image_url)'
-  const textContent = 'Caption'
+test('Element.textContent with an image', function (t) {
+  const input = '![alt text](image_url)'
+  const textContent = ''
   const element = parse(input)
 
-  t.equal(element.textContent, textContent, 'textContent is valid')
+  t.equal(element.textContent, textContent, '')
+  t.end()
+})
+
+test('Element.textContent with an image and a caption', function (t) {
+  const input = '![alt text](image_url "caption")'
+  const textContent = 'caption'
+  const element = parse(input)
+
+  t.equal(element.textContent, textContent, 'caption')
   t.end()
 })
 

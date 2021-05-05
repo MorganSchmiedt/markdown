@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.0.0 - 2021-05-05
+
+**🌟 New**
+- A caption can be added to image/video/audio tags.
+
+**⚠ Breaking changes**
+- Images : The text in brackets refers to the image alt text.
+- Audios and Videos : The text in brackets is no longer used.
+
 ## 4.1.1 - 2021-03-02
 
 **🌟 New**

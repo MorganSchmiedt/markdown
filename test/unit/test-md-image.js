@@ -8,22 +8,68 @@ const {
   test,
 } = require('../test-lib.js')
 
-test('Image as a figure', function (t) {
+test('Image on its own line with an alt text', function (t) {
   const input = '![alt text](https://example.com/image)'
   const output = inlineHtml`
     <figure>
-      <img src="https://example.com/image" alt="">
-      <figcaption>alt text</figcaption>
+      <img src="https://example.com/image" alt="alt text">
     </figure>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
 })
 
-test('Image as a figure surrounded by elements', function (t) {
+test('Image on its own line with an empty alt text', function (t) {
+  const input = '![](https://example.com/image)'
+  const output = inlineHtml`
+    <figure>
+      <img src="https://example.com/image" alt="">
+    </figure>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Image on its own line with an alt text and a title', function (t) {
+  const input = '![alt text](https://example.com/image "My image title")'
+  const output = inlineHtml`
+    <figure>
+      <img src="https://example.com/image" alt="alt text">
+      <figcaption>My image title</figcaption>
+    </figure>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Image on its own line with an empty alt text and a title', function (t) {
+  const input = '![alt text](https://example.com/image "My image title")'
+  const output = inlineHtml`
+    <figure>
+      <img src="https://example.com/image" alt="alt text">
+      <figcaption>My image title</figcaption>
+    </figure>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Image on its own line with an empty title', function (t) {
+  const input = '![](https://example.com/image "")'
+  const output = inlineHtml`
+    <figure>
+      <img src="https://example.com/image" alt="">
+      <figcaption></figcaption>
+    </figure>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Image on its own line surrounded by elements', function (t) {
   const input = `
     - List 1
-    ![caption](https://example.com/image)
+    ![alt text](https://example.com/image)
     - List 2`
 
   const output = inlineHtml`
@@ -31,8 +77,7 @@ test('Image as a figure surrounded by elements', function (t) {
       <li>List 1</li>
     </ul>
     <figure>
-      <img src="https://example.com/image" alt="">
-      <figcaption>caption</figcaption>
+      <img src="https://example.com/image" alt="alt text">
     </figure>
     <ul>
       <li>List 2</li>
@@ -42,24 +87,22 @@ test('Image as a figure surrounded by elements', function (t) {
   t.end()
 })
 
-test('Image as a figure can NOT have html attr by default', function (t) {
+test('Image on its own line can NOT have html attr by default', function (t) {
   const input = '![alt text](https://example.com/image){style=height:100px}'
   const output = inlineHtml`
     <figure>
-      <img src="https://example.com/image" alt="">
-      <figcaption>alt text</figcaption>
+      <img src="https://example.com/image" alt="alt text">
     </figure>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
   t.end()
 })
 
-test('Image as a figure CAN have html attr if allowHTMLAttributes is true', function (t) {
+test('Image on its own line CAN have html attr if allowHTMLAttributes is true', function (t) {
   const input = '![alt text](https://example.com/image){style=height:100px}'
   const output = inlineHtml`
     <figure style="height:100px">
-      <img src="https://example.com/image" alt="">
-      <figcaption>alt text</figcaption>
+      <img src="https://example.com/image" alt="alt text">
     </figure>`
   const opt = {
     allowHTMLAttributes: true,
@@ -69,7 +112,7 @@ test('Image as a figure CAN have html attr if allowHTMLAttributes is true', func
   t.end()
 })
 
-test('Image as a figure with callback', function (t) {
+test('Image on its own line with callback', function (t) {
   const input = '![alt text](https://example.com/image)'
   const opt = {
     onImage: node => {

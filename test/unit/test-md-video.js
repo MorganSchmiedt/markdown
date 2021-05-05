@@ -9,13 +9,13 @@ const {
 } = require('../test-lib.js')
 
 test('Video', function (t) {
-  const input = '![alt text](https://example.com/video.mp4)'
+  const input = '![](https://example.com/video.mp4 "caption")'
   const output = inlineHtml`
     <figure>
       <video controls="">
         <source src="https://example.com/video.mp4" type="video/mp4">
       </video>
-      <figcaption>alt text</figcaption>
+      <figcaption>caption</figcaption>
     </figure>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
@@ -23,7 +23,7 @@ test('Video', function (t) {
 })
 
 test('Video with callback', function (t) {
-  const input = '![alt text](https://example.com/video.mp4)'
+  const input = '![](https://example.com/video.mp4)'
   const opt = {
     onVideo: node => {
       t.notEqual(node, null, 'Parameter is populated')

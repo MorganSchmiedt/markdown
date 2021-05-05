@@ -9,13 +9,26 @@ const {
 } = require('../test-lib.js')
 
 test('Audio', function (t) {
-  const input = '![alt text](https://example.com/sound.mp3)'
+  const input = '![](https://example.com/sound.mp3)'
   const output = inlineHtml`
     <figure>
       <audio controls="">
         <source src="https://example.com/sound.mp3" type="audio/mpeg">
       </audio>
-      <figcaption>alt text</figcaption>
+    </figure>`
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Audio with a caption', function (t) {
+  const input = '![](https://example.com/sound.mp3 "caption")'
+  const output = inlineHtml`
+    <figure>
+      <audio controls="">
+        <source src="https://example.com/sound.mp3" type="audio/mpeg">
+      </audio>
+      <figcaption>caption</figcaption>
     </figure>`
 
   t.equal(parseToHtml(input), output, 'Output is valid')
@@ -23,7 +36,7 @@ test('Audio', function (t) {
 })
 
 test('Audio with callback', function (t) {
-  const input = '![alt text](https://example.com/sound.mp3)'
+  const input = '![](https://example.com/sound.mp3)'
   const opt = {
     onAudio: node => {
       t.notEqual(node, null, 'Parameter is populated')

@@ -187,14 +187,15 @@ const parse = (markdownText, opt = {}) => {
         if (next(1) === '['
         && allowImage) {
           const restLineText = lineText.substring(lineCursor + 1)
-          const endMatch = /^\[([^\]]+)]\(([^;)]+)\)(?:{([^}]+)})?$/
+          const endMatch = /^\[([^\]]*)]\((.+?)(?:\s"(.*)")?\)(?:{(.+?)})?$/
             .exec(restLineText)
 
           if (endMatch) {
             flushBody()
-            const title = endMatch[1]
+            const altText = endMatch[1]
             const url = endMatch[2]
-            const attrs = endMatch[3]
+            const title = endMatch[3]
+            const attrs = endMatch[4]
 
             const figureNode = document.createElement('FIGURE')
 
@@ -228,16 +229,18 @@ const parse = (markdownText, opt = {}) => {
             } else {
               const imageNode = document.createElement('IMG')
               imageNode.setAttribute('src', url)
-              imageNode.setAttribute('alt', '')
+              imageNode.setAttribute('alt', altText)
               imageNode.onAttach = opt.onImage
 
               figureNode.appendChild(imageNode)
             }
 
-            const captionNode = document.createElement('FIGCAPTION')
-            captionNode.textContent = title
+            if (title != null) {
+              const captionNode = document.createElement('FIGCAPTION')
+              captionNode.textContent = title
 
-            figureNode.appendChild(captionNode)
+              figureNode.appendChild(captionNode)
+            }
 
             currentNode = figureNode
             parseLine = false

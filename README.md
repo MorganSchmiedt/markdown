@@ -175,7 +175,7 @@ const myText = new Text('Some text')
 | [Superscript text](#superscript-text)     | `^Superscript`               |
 | [Header](#header)                         | `# Header`                   |
 | [Link](#link)                             | `[Link text](link_url)`      |
-| [Image](#image),[Video](#video),[Audio](#audio)| `![Caption](image_url)` |
+| [Image](#image),[Video](#video),[Audio](#audio)| `![Alt text](image_url)`|
 | [Unordered list](#unordered-list)         | `- List item`                |
 | [Unordered nested list](#unordered-list)  | 2 spaces                     |
 | [Ordered list](#ordered-list)             | `+ Ordered list item`        |
@@ -335,7 +335,7 @@ This is a [link](https://example.com)
 
 ### Image
 
-An image starts with an exclamation mark (`!`) followed by the caption in square brackets (`[]`), followed by the URL in round brackets (`( )`). i.e. `![caption](image_url)`
+An image starts with an exclamation mark (`!`) followed by an alt text in square brackets (`[]`), followed by the URL in round brackets (`( )`). i.e. `![alt text](image_url)`
 
 *Example of an inline image*
 ```
@@ -353,8 +353,19 @@ This is an ![inline image](https://example.com/some_image.png)
 
 ```html
 <figure>
-  <img src="https://example.com/some_image.png" alt="">
-  <figcaption>Image only on a line</figcaption>
+  <img src="https://example.com/some_image.png" alt="Image only on a line">
+</figure>
+```
+
+*Example of an image with a caption*
+```
+![Image with a caption](https://example.com/some_image.png "caption")
+```
+
+```html
+<figure style="height: 100px; width: 100px">
+  <img src="https://example.com/some_image.png" alt="Image with a caption">
+  <figcaption>caption</figcaption>
 </figure>
 ```
 
@@ -365,20 +376,33 @@ This is an ![inline image](https://example.com/some_image.png)
 
 ```html
 <figure style="height: 100px; width: 100px">
-  <img src="https://example.com/some_image.png" alt="">
-  <figcaption>Image with inline style</figcaption>
+  <img src="https://example.com/some_image.png" alt="Image with inline style">
 </figure>
 ```
 
 
 ## Video
 
-Videos work the same way as images, i.e. `![caption][video_url]`.
+Videos work the same way as images, i.e. `![][video_url]`.
 
-*Example*
+*Example of a video*
 
 ```
-![my caption][https://example.com/some_video.mp4]
+![][https://example.com/some_video.mp4 "my caption"]
+```
+
+```html
+<figure>
+  <video controls="">
+    <source src="https://example.com/some_video.mp4" type="video/mp4">
+  </video>
+</figure>
+```
+
+*Example of a video with a caption*
+
+```
+![][https://example.com/some_video.mp4 "my caption"]
 ```
 
 ```html
@@ -392,12 +416,26 @@ Videos work the same way as images, i.e. `![caption][video_url]`.
 
 ## Audio
 
-Audio elements work the same way as images, i.e. `![caption][audio_url]`.
+Audio elements work the same way as images, i.e. `![][audio_url]`.
 
-*Example*
+*Example of an audio*
 
 ```
-![my audio caption][https://example.com/some_audio.mp3]
+![][https://example.com/some_audio.mp3]
+```
+
+```html
+<figure>
+  <audio controls="">
+    <source src="https://example.com/some_audio.mp3" type="audio/mpeg">
+  </audio>
+</figure>
+```
+
+*Example of an audio with a caption*
+
+```
+![][https://example.com/some_audio.mp3 "my audio caption"]
 ```
 
 ```html
@@ -734,7 +772,6 @@ The following syntaxes are **NOT** supported:
 - Unordered Lists with a plus sign or a star.
 - More than one nested list.
 - Horizontal lines with with stars or underscores.
-- Image titles and link titles.
 - Links with less-than and greater-than signs.
 - HTML code.
 
@@ -782,7 +819,9 @@ parseMarkdown('See [this page](https:/example.com)!', {
 ```javascript
 parseMarkdown('![Beautiful image](beautiful_image.png)', {
   onImage: element => {
+    // element.tagName === 'IMG'
     // element.getAttribute('src') === 'beautiful_image.png'
+    // element.getAttribute('alt') === 'Beautiful image'
 
     if (element.hasAttribute('src')) {
       const src = element.getAttribute('src')
@@ -797,8 +836,7 @@ parseMarkdown('![Beautiful image](beautiful_image.png)', {
 
 ```html
 <figure>
-  <img src="https://example.com/beautiful_image.png" alt="">
-  <figcaption>Beautiful image</figcaption>
+  <img src="https://example.com/beautiful_image.png" alt="Beautiful image">
 </figure>
 ```
 

@@ -174,7 +174,7 @@ const monTexte = new Text('du text')
 | [Exposant](#exposant)                     | `^Exposant`                  |
 | [Titre](#titre)                           | `# Titre`                    |
 | [Lien](#lien)                             | `[Texte affiche](lien)`      |
-| [Image](#image),[Vidéo](#video)[Audio](#audio)| `![Légende](lien)`       |
+| [Image](#image),[Vidéo](#video)[Audio](#audio)| `![Texte alt.](lien)`    |
 | [Liste non-numérotée](#liste-non-numérotée)| `- Item de la liste`        |
 | [Liste non-numérotée imbriquée](#liste-non-numérotée)| 2 espaces         |
 | [Liste numérotée](#liste-numérotée)       | `+ Item de liste numérotée`  |
@@ -334,7 +334,7 @@ Ceci est un [lien](https://exemple.com)
 
 ### Image
 
-Une image commence par un point d'exclamation (`!`) suivi de la légende de l'imagine entouré de de crochets (`[]`), suivi de l'adresse (URL) entouré de parenthèses (`( )`). i.e. `![légende](lien_de_l_image)`
+Une image commence par un point d'exclamation (`!`) suivie d'un texte alternatif entouré de de crochets (`[]`), suivi de l'adresse (URL) entouré de parenthèses (`( )`). i.e. `![text alt.](lien_de_l_image)`
 
 Les images mises sur une ligne séparée et les images contenues dans une ligne de texte génèrent un code HTML différent.
 
@@ -354,32 +354,56 @@ Cette ![image](https://exemple.com/une_image.png) fait partie d'une ligne de tex
 
 ```html
 <figure>
-  <img src="https://exemple.com/some_image.png" alt="">
-  <figcaption>Image seule sur la ligne</figcaption>
+  <img src="https://exemple.com/some_image.png" alt="Image seule sur la ligne">
+</figure>
+```
+
+*Exemple d'une image avec une légende*
+```
+![Image avec une légende](https://exemple.com/une_image.png "Légende")
+```
+
+```html
+<figure style="height: 100px; width: 100px">
+  <img src="https://exemple.com/une_image.png" alt="Image avec une légende">
+  <figcaption>Légende</figcaption>
 </figure>
 ```
 
 *Exemple d'une image avec du CSS*
 ```
-![Image with CSS](https://exemple.com/une_image.png){style="height: 100px; width: 100px"}
+![Image avec style](https://exemple.com/une_image.png){style="height: 100px; width: 100px"}
 ```
 
 ```html
 <figure style="height: 100px; width: 100px">
-  <img src="https://exemple.com/une_image.png" alt="">
-  <figcaption>Image with CSS</figcaption>
+  <img src="https://exemple.com/une_image.png" alt="Image avec style">
 </figure>
 ```
 
 
 ## Vidéo
 
-Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][adresse_de_la_video]`.
+Les vidéos fonctionnent de la même manière que les images, i.e. `![][adresse_de_la_video]`.
 
-*Exemple*
+*Exemple d'une vidéo*
 
 ```
-![ma légende][https://exemple.com/une_video.mp4]
+![][https://exemple.com/une_video.mp4]
+```
+
+```html
+<figure>
+  <video controls="">
+    <source src="https://exemple.com/une_video.mp4" type="video/mp4">
+  </video>
+</figure>
+```
+
+*Exemple d'une vidéo avec légende*
+
+```
+![][https://exemple.com/une_video.mp4 "ma légende"]
 ```
 
 ```html
@@ -393,12 +417,24 @@ Les vidéos fonctionnent de la même manière que les images, i.e. `![légende][
 
 ## Audio
 
-Les éléments audios fonctionnent de la même manière que les images, i.e. `![légende][adresse_du_son]`.
+Les éléments audios fonctionnent de la même manière que les images, i.e. `![][adresse_du_son]`.
 
-*Exemple*
-
+*Exemple d'un son*
 ```
-![ma légende][https://example.com/some_audio.mp3]
+![][https://example.com/some_audio.mp3]
+```
+
+```html
+<figure>
+  <audio controls="">
+    <source src="https://example.com/some_audio.mp3" type="audio/mpeg">
+  </audio>
+</figure>
+```
+
+*Exemple d'un son avec légende*
+```
+![][https://example.com/some_audio.mp3 "ma légende"]
 ```
 
 ```html
@@ -737,7 +773,6 @@ Les syntaxes suivantes ne sont **PAS** supportées:
 - Les listes non-numérotées avec un signe plus ou une étoile.
 - Plus d'une liste imbriquée.
 - Les lignes horizontales avec des étoiles ou des underscores.
-- Les titres d'images et les titres de liens.
 - Les liens entre inférieur et supérieur.
 - Le code HTML.
 
@@ -785,7 +820,9 @@ parseMarkdown('See [this page](https:/example.com)!', {
 ```javascript
 parseMarkdown('![Beautiful image](beautiful_image.png)', {
   onImage: element => {
+    // element.tagName === 'IMG'
     // element.getAttribute('src') === 'beautiful_image.png'
+    // element.getAttribute('alt') === 'Beautiful image'
 
     if (element.hasAttribute('src')) {
       const src = element.getAttribute('src')
