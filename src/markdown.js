@@ -37,7 +37,7 @@ const setHTMLAttributes = (node, attrs) => {
 
   while (cursor < attrs.length) {
     const attr = attrs.substring(cursor)
-    const match = /^([^=]+)=(?:"([^"]+)"|([^;]+))?/
+    const match = /^([^=]+)=(?:"(.+?)"|([^;]+))?/
       .exec(attr)
 
     if (match == null) {
@@ -187,7 +187,7 @@ const parse = (markdownText, opt = {}) => {
         if (next(1) === '['
         && allowImage) {
           const restLineText = lineText.substring(lineCursor + 1)
-          const endMatch = /^\[([^\]]*)]\((.+?)(?:\s"(.*)")?\)(?:{(.+?)})?$/
+          const endMatch = /^\[(.*?)]\((.+?)(?:\s"(.*)")?\)(?:{(.+?)})?$/
             .exec(restLineText)
 
           if (endMatch) {
@@ -587,7 +587,7 @@ const parse = (markdownText, opt = {}) => {
               const syntaxSize = 1
               const remainingText = lineText.substring(lineCursor + syntaxSize)
               const regex = remainingText[0] === '('
-                ? /^\(([^)]+)\)/
+                ? /^\((.+?)\)/
                 : /^(\w+)/
               const match = regex.exec(remainingText)
 
@@ -642,7 +642,7 @@ const parse = (markdownText, opt = {}) => {
                   lastFlushCursor += ff
                 }
               } else if (allowLink) {
-                const endMatch = /([^\]]+)]\(([^)]+)\)/.exec(restLineText)
+                const endMatch = /(.+?)]\((.+?)\)/.exec(restLineText)
 
                 if (endMatch) {
                   flush()
@@ -665,7 +665,7 @@ const parse = (markdownText, opt = {}) => {
             && next(1) === '[') {
               if (allowImage) {
                 const restLineText = lineText.substring(lineCursor + 1)
-                const endMatch = /^\[([^\]]+)]\(([^;)]+)\)(?:{([^}]+)})?/
+                const endMatch = /^\[(.+?)]\(([^;)]+)\)(?:{(.+?)})?/
                   .exec(restLineText)
 
                 if (endMatch) {

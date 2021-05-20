@@ -150,6 +150,8 @@ Les propriétés disponibles sont:
 - `appendChild(child)`: Ajoute un élément à la fin de la liste des enfants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Node/appendChild)
 - `prepend(...nodesToPreprend)`: Insère une liste d'éléments avant le premier enfant. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/ParentNode/prepend)
 - `append(...nodesToAppend)`: Insère une liste d'éléments après le dernier enfant. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/ParentNode/append)
+- `removeChild(child)`: Enlève un élément. [MDN](https://developer.mozilla.org/fr/docs/Web/API/Node/removeChild)
+- `remove()`: Enlève un enfant de son parent. [MDN](https://developer.mozilla.org/fr/docs/Web/API/ChildNode/remove)
 - `innerHTML`: Retourne la représentation HTML des éléments contenus dans l'élément. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/innerHTML)
 - `outerHTML`: Retourne la représentation HTML de l'élément et de ses descendants. [MDN Docs](https://developer.mozilla.org/fr/docs/Web/API/Element/outerHTML)
 

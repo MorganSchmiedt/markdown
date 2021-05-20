@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.0 - 2021-05-20
+
+**🌟 New**
+- `Element.removeChild`, `Element.remove` are added.
+
 ## 5.0.0 - 2021-05-05
 
 **🌟 New**

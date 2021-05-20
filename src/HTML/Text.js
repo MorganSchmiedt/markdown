@@ -4,15 +4,21 @@ const HTML_ENTITY = require('./Entity.js')
 
 class Text {
   constructor(text) {
-    this.data = text.toString()
-  }
-
-  get textContent() {
-    return this.data
+    this._symbol = Symbol()
+    this._data = text.toString()
+    this._parentNode = null
   }
 
   get outerHTML() {
-    return this.data.replace(/[&<>]/g, char => HTML_ENTITY[char])
+    return this._data.replace(/[&<>]/g, char => HTML_ENTITY[char])
+  }
+
+  get parentNode() {
+    return this._parentNode
+  }
+
+  get textContent() {
+    return this._data
   }
 }
 

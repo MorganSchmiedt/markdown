@@ -1,6 +1,7 @@
 'use strict'
 
 const HTML_ENTITY = require('./Entity.js')
+const Node = require('./Node.js')
 const Text = require('./Text.js')
 
 // https://html.spec.whatwg.org/multipage/syntax.html#void-elements
@@ -21,103 +22,16 @@ const VOID_TAGS = new Set([
   'WBR'
 ])
 
-class Element {
+class Element extends Node {
   constructor(tagName) {
+    super()
+    this._symbol = Symbol()
     this._tagName = tagName.toUpperCase()
     this._attributes = {}
-    this._children = []
-  }
-
-  appendChild(node) {
-    node.parentNode = this
-
-    this._children.push(node)
-  }
-
-  append(...nodes) {
-    this._children.push(...nodes.map(node => {
-      if (typeof node === 'string') {
-        return new Text(node)
-      }
-
-      return node
-    }))
-  }
-
-  prepend(...nodes) {
-    this._children.splice(0, 0, ...nodes.map(node => {
-      if (typeof node === 'string') {
-        return new Text(node)
-      }
-
-      return node
-    }))
-  }
-
-  hasAttribute(attributeName) {
-    return this._attributes[attributeName] !== undefined
-  }
-
-  setAttribute(attributeName, attributeValue) {
-    if (arguments.length < 2) {
-      throw new TypeError(`Element.setAttribute: At least 2 arguments required, but only ${arguments.length} passed`)
-    }
-
-    const hasForbiddenCharInAttrName = /[<>&"']/.exec(attributeName) != null
-
-    if (hasForbiddenCharInAttrName) {
-      throw new Error('String contains an invalid character')
-    }
-
-    let attrValueText
-
-    if (attributeValue === undefined) {
-      attrValueText = 'undefined'
-    } else if (attributeValue === null) {
-      attrValueText = 'null'
-    } else {
-      attrValueText = attributeValue.toString()
-    }
-
-    this._attributes[attributeName] = attrValueText
-  }
-
-  getAttribute(attributeName) {
-    return this._attributes[attributeName] || null
-  }
-
-  removeAttribute(attributeName) {
-    delete this._attributes[attributeName]
   }
 
   get attributes() {
     return this._attributes
-  }
-
-  // https://dom.spec.whatwg.org/#dom-element-tagname
-  get tagName() {
-    return this._tagName
-  }
-
-  // https://dom.spec.whatwg.org/#dom-node-textcontent
-  // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
-  get textContent() {
-    let output = ''
-
-    for (const child of this._children) {
-      output += child.textContent
-    }
-
-    return output
-  }
-
-  set textContent(value) {
-    if (value == null
-    || value.length === 0) {
-      this._children = []
-    } else {
-      this._children = [new Text(value)]
-    }
   }
 
   get children() {
@@ -125,16 +39,36 @@ class Element {
       .filter(node => node.constructor.name === 'Element')
   }
 
-  get childNodes() {
-    return this._children
+  set className(value) {
+    this.setAttribute('class', value)
   }
 
-  get firstChild() {
-    return this._children[0]
+  get className() {
+    return this.getAttribute('class')
   }
 
-  get lastChild() {
-    return this._children[this._children.length - 1]
+  get id() {
+    return this.getAttribute('id')
+  }
+
+  set id(value) {
+    this.setAttribute('id', value)
+  }
+
+  get innerHTML() {
+    const isVoidElement = VOID_TAGS.has(this.tagName)
+
+    if (isVoidElement) {
+      return ''
+    }
+
+    let html = ''
+
+    for (const child of this._children) {
+      html += child.outerHTML
+    }
+
+    return html
   }
 
   get outerHTML() {
@@ -171,38 +105,76 @@ class Element {
     return html
   }
 
-  get innerHTML() {
-    const isVoidElement = VOID_TAGS.has(this.tagName)
+  // https://dom.spec.whatwg.org/#dom-element-tagname
+  get tagName() {
+    return this._tagName
+  }
 
-    if (isVoidElement) {
-      return ''
+  append(...nodes) {
+    for (const node of nodes) {
+      if (typeof node === 'string') {
+        this.appendChild(new Text(node))
+      } else {
+        this.appendChild(node)
+      }
+    }
+  }
+
+  getAttribute(attributeName) {
+    return this._attributes[attributeName] || null
+  }
+
+  hasAttribute(attributeName) {
+    return this._attributes[attributeName] !== undefined
+  }
+
+  prepend(...nodes) {
+    this._children.splice(0, 0, ...nodes.map(node => {
+      if (typeof node === 'string') {
+        return new Text(node)
+      }
+
+      return node
+    }))
+  }
+
+  remove() {
+    if (this._parentNode == null) {
+      return
     }
 
-    let html = ''
+    return this._parentNode.removeChild(this)
+  }
 
-    for (const child of this._children) {
-      html += child.outerHTML
+  removeAttribute(attributeName) {
+    delete this._attributes[attributeName]
+  }
+
+  setAttribute(attributeName, attributeValue) {
+    if (arguments.length < 2) {
+      throw new TypeError(`Element.setAttribute: At least 2 arguments required, but only ${arguments.length} passed`)
     }
 
-    return html
+    const hasForbiddenCharInAttrName = /[<>&"']/.exec(attributeName) != null
+
+    if (hasForbiddenCharInAttrName) {
+      throw new Error('String contains an invalid character')
+    }
+
+    let attrValueText
+
+    if (attributeValue === undefined) {
+      attrValueText = 'undefined'
+    } else if (attributeValue === null) {
+      attrValueText = 'null'
+    } else {
+      attrValueText = attributeValue.toString()
+    }
+
+    this._attributes[attributeName] = attrValueText
   }
 
-  set className(value) {
-    this.setAttribute('class', value)
-  }
-
-  get className() {
-    return this.getAttribute('class')
-  }
-
-  get id() {
-    return this.getAttribute('id')
-  }
-
-  set id(value) {
-    this.setAttribute('id', value)
-  }
-
+  // Custom
   _attach() {
     for (const child of this._children) {
       if (child._attach) {

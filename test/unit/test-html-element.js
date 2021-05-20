@@ -9,6 +9,7 @@ const {
 } = require('../test-lib.js')
 
 const Element = parser.Element
+const Text = parser.Text
 
 test('Element tagName', function (t) {
   const element = new Element('p')
@@ -289,5 +290,64 @@ test('Element.append', function (t) {
   t.equal(el.childNodes[1].textContent, 'Text 2', '2nd child text is valid')
   t.equal(el.childNodes[2].textContent, 'Text 3', '3rd child text is valid')
   t.equal(el.lastChild.textContent, 'Text 4', 'Original child is last')
+  t.end()
+})
+
+test('Element.removeChild', function (t) {
+  t.throws(() => {
+    new Element('p').removeChild()
+  }, TypeError, 'Node.removeChild: At least 1 argument required, but only 0 passed')
+
+  t.throws(() => {
+    new Element('p').removeChild(new Element('div'))
+  }, Error, 'Node.removeChild: The node to be removed is not a child of this node')
+
+  const el0 = new Element('div')
+  el0.appendChild(new Element('p'))
+
+  t.throws(() => {
+    el0.removeChild(new Element('p'))
+  }, Error, 'Node.removeChild: The node to be removed is not a child of this node')
+
+  const elChild1 = new Element('p')
+  elChild1.textContent = 'Child 1'
+
+  const elChild2 = new Element('p')
+  elChild2.textContent = 'Child 2'
+
+  const el = new Element('div')
+  el.appendChild(elChild1)
+  el.appendChild(elChild2)
+  const removedChild = el.removeChild(elChild2)
+  t.equal(el.childNodes.length, 1, 'Child is removed')
+  t.equal(el.lastChild.textContent, 'Child 1', 'Remaining child is valid')
+  t.equal(elChild2.parentNode, null, 'Removed child parentNode is null')
+  t.equal(removedChild.textContent, 'Child 2', 'return value is valid')
+
+  const textChild = new Text('Text 1')
+  el.appendChild(textChild)
+  t.equal(el.lastChild.textContent, 'Text 1', 'Text Element added')
+  el.removeChild(textChild)
+  t.equal(el.lastChild.textContent, 'Child 1', 'Text Element removed')
+  t.end()
+})
+
+test('Element.remove', function (t) {
+  t.equal(new Element('p').remove(), undefined, 'no return value if no parent')
+
+  const elChild1 = new Element('p')
+  elChild1.textContent = 'Child 1'
+
+  const elChild2 = new Element('p')
+  elChild2.textContent = 'Child 2'
+
+  const el = new Element('div')
+  el.appendChild(elChild1)
+  el.appendChild(elChild2)
+  const removedChild = elChild2.remove()
+  t.equal(el.childNodes.length, 1, 'Child is removed')
+  t.equal(el.firstChild.textContent, 'Child 1', 'Remaining child is valid')
+  t.equal(elChild2.parentNode, null, 'Remaining child parentNode is null')
+  t.equal(removedChild.textContent, 'Child 2', 'return value is valid')
   t.end()
 })
