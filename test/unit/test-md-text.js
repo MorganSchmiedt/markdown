@@ -78,6 +78,14 @@ test('Emphasis with trailing space', function (t) {
   t.end()
 })
 
+test('2 Emphasis on the same line', function (t) {
+  const input = 'A *1* and a *2*.'
+  const output = '<p>A <em>1</em> and a <em>2</em>.</p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Emphasis with wrong end tag inside: space+*', function (t) {
   const input = 'An *italic *tes t* text'
   const output = '<p>An <em>italic *tes t</em> text</p>'

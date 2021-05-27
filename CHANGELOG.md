@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.1 - 2021-05-27
+
+**🐛 Bugfix**
+- Several bold/italic words can be added to a single line.
+
 ## 5.1.0 - 2021-05-20
 
 **🌟 New**

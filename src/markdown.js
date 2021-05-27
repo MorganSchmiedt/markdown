@@ -516,28 +516,30 @@ const parse = (markdownText, opt = {}) => {
               || (targetNode.tagName !== 'EM'
                 && targetNode.tagName !== 'STRONG')) {
                 const remainingText = lineText.substring(lineCursor)
-                const syntaxMatch = /^(\*{1,3})/.exec(remainingText)
-                const syntax = syntaxMatch[0]
-                const syntaxSize = syntax.length
-                const nextChar = remainingText[syntaxSize]
+                const match = /^(\*{1,3})(.*?\S)(\*{1,3})/
+                  .exec(remainingText)
 
-                if (isSpace(nextChar) === false) {
-                  const endMatch = /(.+?)(?=\S\*)/
-                    .exec(remainingText.substr(syntaxSize))
+                if (match) {
+                  const syntaxOpen = match[1]
+                  const syntaxSize = syntaxOpen.length
+                  const content = match[2]
+                  const syntaxClose = match[3]
+                  const firstContentChar = content[0]
 
-                  if (endMatch) {
-                    const endTagIndex = endMatch[0].length + syntaxSize + 1
+                  if (syntaxOpen === syntaxClose
+                  && isSpace(firstContentChar) === false) {
+                    const endTagIndex = syntaxSize + content.length
 
                     flush()
                     lineCursorMax = lineCursor + endTagIndex
 
-                    if (syntax === '*') {
+                    if (syntaxOpen === '*') {
                       const emNode = document.createElement('EM')
                       emNode.ffOnTextEnd = syntaxSize
 
                       targetNode.appendChild(emNode)
                       targetNode = emNode
-                    } else if (syntax === '**') {
+                    } else if (syntaxOpen === '**') {
                       const strongNode = document.createElement('STRONG')
                       strongNode.ffOnTextEnd = syntaxSize
 
@@ -557,9 +559,9 @@ const parse = (markdownText, opt = {}) => {
 
                     lastFlushCursor += syntaxSize
                   }
-                }
 
-                ff = syntaxSize
+                  ff = syntaxSize
+                }
               }
             } else if (char === '~') {
               if (next(1) === '~') {
