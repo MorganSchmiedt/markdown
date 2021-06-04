@@ -15,6 +15,22 @@ test('Link', function (t) {
   t.end()
 })
 
+test('Link with brackets on the same line', function (t) {
+  const input = 'some [...] word [link](example.com)'
+  const output = '<p>some [...] word <a href="example.com">link</a></p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
+test('Link with brackets on the same line', function (t) {
+  const input = 'some [link](example.com) (...)'
+  const output = '<p>some <a href="example.com">link</a> (...)</p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Link with callback', function (t) {
   const input = 'This is a [link](https://example.com)'
   const opt = {

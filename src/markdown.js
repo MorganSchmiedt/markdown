@@ -644,7 +644,7 @@ const parse = (markdownText, opt = {}) => {
                   lastFlushCursor += ff
                 }
               } else if (allowLink) {
-                const endMatch = /(.+?)]\((.+?)\)/.exec(restLineText)
+                const endMatch = /^([^\]]+?)]\(([^)]+?)\)/.exec(restLineText)
 
                 if (endMatch) {
                   flush()

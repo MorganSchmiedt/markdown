@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.2 - 2021-05-04
+
+**🐛 Bugfix**
+- A paragraph can contain brackets before a link.
+
 ## 5.1.1 - 2021-05-27
 
 **🐛 Bugfix**
