@@ -1,6 +1,11 @@
 # Changelog
 
-## 5.1.2 - 2021-05-04
+## 5.1.3 - 2021-06-06
+
+**🐛 Bugfix**
+- An empty text is added when a footnote is missing.
+
+## 5.1.2 - 2021-06-04
 
 **🐛 Bugfix**
 - A paragraph can contain brackets before a link.

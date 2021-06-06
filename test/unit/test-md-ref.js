@@ -185,6 +185,7 @@ test('Reference with missing ref text', function (t) {
     <section>
       <ol>
         <li id="reference1">ref one</li>
+        <li id="reference2"></li>
       </ol>
     </section>`
 

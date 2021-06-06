@@ -733,6 +733,9 @@ const parse = (markdownText, opt = {}) => {
     let refNb = 1
 
     for (const ref of fnIdList.keys()) {
+      const itemNode = document.createElement('li')
+      itemNode.id = `reference${refNb}`
+
       const refValue = fnNote[ref]
 
       if (refValue != null) {
@@ -749,17 +752,14 @@ const parse = (markdownText, opt = {}) => {
 
         const contentNode = contentParsed.firstChild
 
-        const itemNode = document.createElement('li')
-        itemNode.id = `reference${refNb}`
-
         // childNodes is theoretically a live NodeList
         for (const node of Array.from(contentNode.childNodes)) {
           itemNode.appendChild(node)
         }
-
-        listNode.appendChild(itemNode)
-        refNb += 1
       }
+
+      listNode.appendChild(itemNode)
+      refNb += 1
     }
 
     if (listNode.children.length > 0) {
