@@ -759,7 +759,7 @@ A tick (☑) means that the syntax should work on the platform.
 | Escape char  | `\`      | ☑        | ☑      | ☑       | ☑        |
 | Superscript  | `^`      | ⚠ HTML   | ☑      | ⚠ HTML  | ⚠ N/A    |
 | Subscript    | N/A      | ⚠ HTML   | ☑ N/A  | ⚠ HTML  | ⚠ N/A    |
-| Foonote      | `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
+| Foonote      | `[^1]`   | ☑        | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
 | HTML         | N/A      | ⚠ Av.    | ☑ N/A  | ⚠ Av.   | ⚠ Av.    |
 
 Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html), [CommonMark](https://spec.commonmark.org/0.29/)

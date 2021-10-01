@@ -760,7 +760,7 @@ Une marque (☑) signifie que la syntaxe devrait fonctionner sur la plateforme.
 | Echappement  | `\`      | ☑        | ☑      | ☑       | ☑        |
 | Exposant     | `^`      | ⚠ HTML   | ☑      | ⚠ HTML  | ⚠ N/A    |
 | Indice       | N/A      | ⚠ HTML   | ☑ N/A  | ⚠ HTML  | ⚠ N/A    |
-| Note bas page| `[^1]`   | ⚠ N/A    | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
+| Note bas page| `[^1]`   | ☑        | ⚠ N/A  | ⚠ Diff. | ⚠ N/A    |
 | HTML         | N/A      | ⚠ Av.    | ☑ N/A  | ⚠ Av.   | ⚠ Av.    |
 
 Source: [GitHub Markdown](https://guides.github.com/features/mastering-markdown/), [Reddit Markdown](https://www.reddit.com/wiki/markdown), [GitLab Markdown](https://docs.gitlab.com/ee/user/markdown.html), [CommonMark](https://spec.commonmark.org/0.29/)
