@@ -98,6 +98,30 @@ test('Header lvl 3 with callback', function (t) {
   parse(input, opt)
 })
 
+test('Header with bold text', function (t) {
+  const input = '# A **bold** text'
+  const opt = {
+    allowHeaderFormat: true,
+  }
+
+  const output = '<h1>A <strong>bold</strong> text</h1>'
+
+  t.equal(parseToHtml(input, opt), output, 'Output is valid')
+  t.end()
+})
+
+test('Header with link', function (t) {
+  const input = '# A [link](https://example.com)'
+  const opt = {
+    allowHeaderFormat: true,
+  }
+
+  const output = '<h1>A <a href="https://example.com">link</a></h1>'
+
+  t.equal(parseToHtml(input, opt), output, 'Output is valid')
+  t.end()
+})
+
 test('Header with allowHeader flag to false', function (t) {
   const input = `
     # Title

@@ -83,6 +83,7 @@ const setHTMLAttributes = (node, attrs) => {
  */
 const parse = (markdownText, opt = {}) => {
   const allowHeader = parseBoolean(opt.allowHeader, true)
+  const allowHeaderFormat = parseBoolean(opt.allowHeaderFormat, false)
   const allowLink = parseBoolean(opt.allowLink, true)
   const allowImage = parseBoolean(opt.allowImage, true)
   const allowCode = parseBoolean(opt.allowCode, true)
@@ -176,12 +177,20 @@ const parse = (markdownText, opt = {}) => {
           flushBody()
           const headerText = lineText.substring(lineText.indexOf(' ') + 1)
           const headerNode = document.createElement(`H${headerLevel}`)
-          headerNode.textContent = headerText
           headerNode.onAttach = opt.onHeader
 
+          if (allowHeaderFormat) {
+            lineCursor = 2
+            lastFlushCursor = lineCursor
+            targetNode = headerNode
+            caseFound = true
+          } else {
+            headerNode.textContent = headerText
+            parseLine = false
+            flushBody()
+          }
+
           currentNode = headerNode
-          parseLine = false
-          flushBody()
         }
       } else if (firstChar === '!') {
         if (next(1) === '['

@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.2.1 - 2023-08-24
+
+**🌟 New**
+- Formatted text is supported in headers (behind `allowHeaderFormat` flag).
+- `allowHeaderFormat` parser option is added.
+
 ## 5.1.3 - 2021-06-06
 
 **🐛 Bugfix**

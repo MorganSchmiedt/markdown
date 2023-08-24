@@ -89,6 +89,7 @@ An option object can be passed to the parser.
 
 Available options are:
 - `allowHeader`: Whether headers are allowed. Defaults to `true`.
+- `allowHeaderFormat`: Whether formatted text is allowed in headers. Defaults to `false`.
 - `allowLink`: Whether links are allowed. Defaults to `true`.
 - `allowImage`: Whether images are allowed. Defaults to `true`.
 - `allowCode`: Whether inline codes are allowed. Defaults to `true`.

@@ -87,7 +87,8 @@ Le parseur a été testé avec les versions 10+ de Node.js mais il se peut qu'il
 Un objet avec les options peut être passé au parseur.
 
 Les options disponibles sont:
-- `allowHeader`: Si les titres headers sont autorisés. `true` par défaut.
+- `allowHeader`: Si les titres sont autorisés. `true` par défaut.
+- `allowHeaderFormat`: Si du texte formaté est aurotisé dans les titres. `false` par défaut.
 - `allowLink`: Si les liens sont autorisés. `true` par défaut.
 - `allowImage`: Si les images sont autorisées. `true` par défaut.
 - `allowCode`: Si du code est autorisé. `true` par défaut.
