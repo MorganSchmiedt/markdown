@@ -102,7 +102,7 @@ Available options are:
 - `allowQuote`: Whether quotes are allowed. Defaults to `true`.
 - `allowFootnote`: Whether footnotes are allowed. Defaults to `false`.
 - `allowHTMLAttributes`: Whether HTML attributes are allowed. Defaults to `false` (beta).
-- `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 6.
+- `maxHeader`: Max header level. Number from 1 to 6 included. e.g. 2 means authorized header tags are `<h1>` and `<h2>`. Defaults to 3.
 
 Callback functions can be passed to the options as well. They allow to edit the output [element](#element-object) (e.g. add custom attributes).
 

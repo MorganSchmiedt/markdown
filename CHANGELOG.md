@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.2.2 - 2023-08-24
+
+**🐛 Bugfix**
+- Headers no longer start with extra `#` when `allowHeaderFormat` is on.
+
 ## 5.2.1 - 2023-08-24
 
 **🌟 New**

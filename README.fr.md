@@ -101,7 +101,7 @@ Les options disponibles sont:
 - `allowQuote`: Si les citations sont autorisées. `true` par défaut.
 - `allowFootnote`: Si les notes de bas de page sont autorisées. `false` par défaut.
 - `allowHTMLAttributes`: Si des attributes HTML peuvent sont autorisés. `false` par défaut (beta).
-- `maxHeader`: Niveau maximal des titres. Nombre de 1 à 6 inclus. e.g. 2 signifie que les balises autorisées sont `<h1>` et `<h2>`. 6 par défaut.
+- `maxHeader`: Niveau maximal des titres. Nombre de 1 à 6 inclus. e.g. 2 signifie que les balises autorisées sont `<h1>` et `<h2>`. 3 par défaut.
 
 Des fonctions Callback peuvent aussi être ajoutées aux options du parseur. Ces fonctions permettent de modifier l'[élément](#l-objet-element) de sortie (e.g. ajouter des attributs personnalisés)
 

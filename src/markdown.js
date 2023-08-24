@@ -180,7 +180,7 @@ const parse = (markdownText, opt = {}) => {
           headerNode.onAttach = opt.onHeader
 
           if (allowHeaderFormat) {
-            lineCursor = 2
+            lineCursor = headerLevel + 1
             lastFlushCursor = lineCursor
             targetNode = headerNode
             caseFound = true
