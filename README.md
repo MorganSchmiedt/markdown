@@ -324,7 +324,7 @@ A header starts with one to six hashes (`#`) followed by a space.
 
 ### Link
 
-A link is made up of two parts. The text in square brackets (`[]`), followed by an URL in round brackets (`( )`). i.e. `[Link](url)`
+A link is made up of two parts. The text in square brackets (`[]`), followed by an URL in round brackets (`( )`), i.e. `[Link](url)`. Closing brackets in the text must be escaped.
 
 *Example*
 ```
@@ -333,6 +333,16 @@ This is a [link](https://example.com)
 
 ```html
 <p>This is a <a href="https://example.com">link</a></p>
+```
+
+*Example with a closing bracket*
+
+```
+According to [[1\]](#ref1), this package is the best!
+```
+
+```html
+<p>According to <a href="#ref1">[1]</a>, this package is the best!</p>
 ```
 
 

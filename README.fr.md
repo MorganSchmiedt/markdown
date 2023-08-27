@@ -323,7 +323,7 @@ Un titre commence par un à six caractères dièse (`#`), suivi d'un espace.
 
 ### Lien
 
-Un lien est composé de deux parties. Le texte, entouré de crochets (`[]`) suivi du lien, entouré de parenthèses (`( )`). i.e. `[Link](url)`
+Un lien est composé de deux parties. Le texte, entouré de crochets (`[]`) suivi du lien, entouré de parenthèses (`( )`), i.e. `[Link](url)`. Les crochets fermants dans le texte doivent être précédés du caractère d'échappement.
 
 *Exemple*
 ```
@@ -332,6 +332,17 @@ Ceci est un [lien](https://exemple.com)
 
 ```html
 <p>Ceci est un <a href="https://exemple.com">lien</a></p>
+```
+
+
+*Exemple avec un crochet fermant*
+
+```
+Selon [[1\]](#ref1), ce module est le meilleur !
+```
+
+```html
+<p>Selon <a href="#ref1">[1]</a>, ce module est le meilleur !</p>
 ```
 
 

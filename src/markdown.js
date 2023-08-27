@@ -23,6 +23,10 @@ const MD_CHARS = [
 
 const REGEX_ESCAPE_CHAR =
   new RegExp(`\\${MD_ESCAPE_CHAR}([${MD_CHARS}])`, 'g')
+const REGEX_REP_ESC_CHAR_LINK_TEXT =
+  new RegExp(`\\${MD_ESCAPE_CHAR}\\]`, 'g')
+const REGEX_CLOSING_LINK =
+  new RegExp(`^((?:[^\\]]|\\${MD_ESCAPE_CHAR}])+?)]\\(([^)]+?)\\)`)
 
 const removeEscapeChars = text =>
   text.replace(REGEX_ESCAPE_CHAR, (match, char) => char)
@@ -653,12 +657,13 @@ const parse = (markdownText, opt = {}) => {
                   lastFlushCursor += ff
                 }
               } else if (allowLink) {
-                const endMatch = /^([^\]]+?)]\(([^)]+?)\)/.exec(restLineText)
+                const endMatch = REGEX_CLOSING_LINK.exec(restLineText)
 
                 if (endMatch) {
                   flush()
 
                   const title = endMatch[1]
+                    .replace(REGEX_REP_ESC_CHAR_LINK_TEXT, ']')
                   const url = endMatch[2]
 
                   const linkNode = document.createElement('A')

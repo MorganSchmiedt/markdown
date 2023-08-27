@@ -31,6 +31,14 @@ test('Link with brackets on the same line', function (t) {
   t.end()
 })
 
+test('Link with a closing bracket inside', function (t) {
+  const input = 'see [[1\\]](#ref1) (...)'
+  const output = '<p>see <a href="#ref1">[1]</a> (...)</p>'
+
+  t.equal(parseToHtml(input), output, 'Output is valid')
+  t.end()
+})
+
 test('Link with callback', function (t) {
   const input = 'This is a [link](https://example.com)'
   const opt = {

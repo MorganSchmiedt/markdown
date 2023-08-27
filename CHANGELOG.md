@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.3.1 - 2023-08-27
+
+**🌟 New**
+- Escaped closing brackets are supported in links.
+
+
 ## 5.2.2 - 2023-08-24
 
 **🐛 Bugfix**
