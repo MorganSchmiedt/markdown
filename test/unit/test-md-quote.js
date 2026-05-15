@@ -1,15 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parser,
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
-
-test('Quote', function (t) {
+test('Quote', () => {
   const input = `
     > Blockquote line 1
     > Blockquote line 2`
@@ -22,11 +17,10 @@ test('Quote', function (t) {
       </p>
     </blockquote>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Quote with two lines', function (t) {
+test('Quote with two lines', () => {
   const input = '> Blockquote line 1\n> \n> Blockquote line 2'
   const output = inlineHtml`
     <blockquote>
@@ -38,11 +32,10 @@ test('Quote with two lines', function (t) {
       </p>
     </blockquote>`
 
-  t.equal(parser.parse(input).innerHTML, output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parse(input).innerHTML, output, 'Output is valid')
 })
 
-test('Quote with text before and after', function (t) {
+test('Quote with text before and after', () => {
   const input = `
     Some text
     > Blockquote line 1
@@ -59,11 +52,10 @@ test('Quote with text before and after', function (t) {
     </blockquote>
     <p>Some more text</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Quote with list before and after', function (t) {
+test('Quote with list before and after', () => {
   const input = `
     - List 1
     > Blockquote line 1
@@ -84,28 +76,29 @@ test('Quote with list before and after', function (t) {
       <li>List 2</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Quote with callback', function (t) {
+test('Quote with callback', (t, done) => {
   const input = `
     > Blockquote line 1
     > Blockquote line 2`
+
+  /** @type {ParserOptions} */
   const opt = {
     onQuote: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'BLOCKQUOTE', 'Tagname is valid')
-      t.notEqual(node.children, null, 'Node has child(en)')
-      t.equal(node.children.length, 1, 'Blockquote has 1 children')
-      t.end()
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'BLOCKQUOTE', 'Tagname is valid')
+      assert.notEqual(node.children, null, 'Node has child(en)')
+      assert.strictEqual(node.children.length, 1, 'Blockquote has 1 children')
+      done()
     },
   }
 
   parse(input, opt)
 })
 
-test('Quote with allowQuote flag to false', function (t) {
+test('Quote with allowQuote flag to false', () => {
   const input = `
     > Blockquote line 1
     > Blockquote line 2`
@@ -115,6 +108,5 @@ test('Quote with allowQuote flag to false', function (t) {
     allowQuote: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })

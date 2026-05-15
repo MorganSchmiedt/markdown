@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.0.0 - 2026-05-15
+
+**🌟 New**
+- `Element.lastChildElement` added.
+
+**🔧 Changes**
+
+- Strong/EM tags are better parsed.
+- Most JSDoc/Types are added.
+- Project now uses ES modules (ESM).
+
 ## 5.3.1 - 2023-08-27
 
 **🌟 New**

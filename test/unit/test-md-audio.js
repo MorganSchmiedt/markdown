@@ -1,14 +1,11 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
 
-test('Audio', function (t) {
+test('Audio', () => {
   const input = '![](https://example.com/sound.mp3)'
   const output = inlineHtml`
     <figure>
@@ -17,11 +14,10 @@ test('Audio', function (t) {
       </audio>
     </figure>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Audio with a caption', function (t) {
+test('Audio with a caption', () => {
   const input = '![](https://example.com/sound.mp3 "caption")'
   const output = inlineHtml`
     <figure>
@@ -31,17 +27,17 @@ test('Audio with a caption', function (t) {
       <figcaption>caption</figcaption>
     </figure>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Audio with callback', function (t) {
+test('Audio with callback', (t, done) => {
   const input = '![](https://example.com/sound.mp3)'
+  /** @type {ParserOptions} */
   const opt = {
     onAudio: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'AUDIO', 'Tagname is valid')
-      t.end()
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'AUDIO', 'Tagname is valid')
+      done()
     },
   }
 

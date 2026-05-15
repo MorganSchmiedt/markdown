@@ -1,14 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
-
-test('Unordered List', function (t) {
+test('Unordered List', () => {
   const input = `
     - First list item
     - Second list item
@@ -20,11 +16,10 @@ test('Unordered List', function (t) {
       <li>Third list item</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List with extra LF between items', function (t) {
+test('Unordered List with extra LF between items', () => {
   const input = `
     - First list item
 
@@ -38,11 +33,10 @@ test('Unordered List with extra LF between items', function (t) {
       <li>Third list item</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List with complex texts', function (t) {
+test('Unordered List with complex texts', () => {
   const input = `
     - *Italic* item
     - Item **bold**
@@ -59,11 +53,10 @@ test('Unordered List with complex texts', function (t) {
       <li><a href="url">Link</a></li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List with 2-space-LF', function (t) {
+test('Unordered List with 2-space-LF', () => {
   const input = `
     - Item 1
       Following Item 1
@@ -79,11 +72,10 @@ test('Unordered List with 2-space-LF', function (t) {
       <li>Item 2</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List with LF between item contents', function (t) {
+test('Unordered List with LF between item contents', () => {
   const input = `
     - Item 1
       Item 1.1
@@ -103,11 +95,10 @@ test('Unordered List with LF between item contents', function (t) {
       <li>Item 2</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List with LF (1 space only)', function (t) {
+test('Unordered List with LF (1 space only)', () => {
   const input = `
     - Item 1
      Following Item 1`
@@ -120,11 +111,10 @@ test('Unordered List with LF (1 space only)', function (t) {
     </ul>
     <p> Following Item 1</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List with LF (> 2 spaces)', function (t) {
+test('Unordered List with LF (> 2 spaces)', () => {
   const input = `
     - Item 1
        Following Item 1
@@ -141,11 +131,10 @@ test('Unordered List with LF (> 2 spaces)', function (t) {
       </li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List with 2 LF', function (t) {
+test('Unordered List with 2 LF', () => {
   const input = `
     - Item 1
       Following Item 1
@@ -164,48 +153,50 @@ test('Unordered List with 2 LF', function (t) {
       <li>Item 2</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered List not at EOF with callback', function (t) {
+// eslint-disable-next-line prefer-arrow-callback
+test('Unordered List not at EOF with callback', function (t, done) {
   const input = `
     Some text
     - List 1, Item 1
     - List 1, Item 2
     Not at the end of the file`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'UL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'UL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(3)
   parse(input, opt)
 })
 
-test('Unordered List at EOF with callback', function (t) {
+test('Unordered List at EOF with callback', (t, done) => {
   const input = `
     Some text
     - List 1, Item 1
     - List 1, Item 2 at the end of the file`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'UL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'UL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(3)
   parse(input, opt)
 })
 
-test('Unordered List with extra LF between items and callback', function (t) {
+test('Unordered List with extra LF between items and callback', (t, done) => {
   const input = `
     - First list item
 
@@ -213,17 +204,18 @@ test('Unordered List with extra LF between items and callback', function (t) {
 
     - Third list item`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.equal(node.children.length, 3, 'Number of children is valid')
+      assert.strictEqual(node.children.length, 3, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
 })
 
-test('Unordered List with extra LF between items, callback, and allowUnorderedNestedList to false', function (t) {
+test('Unordered List with extra LF between items, callback, and allowUnorderedNestedList to false', (t, done) => {
   const input = `
     - First list item
 
@@ -231,91 +223,94 @@ test('Unordered List with extra LF between items, callback, and allowUnorderedNe
 
     - Third list item`
 
+  /** @type {ParserOptions} */
   const opt = {
     allowUnorderedNestedList: false,
     onUnorderedList: node => {
-      t.equal(node.children.length, 3, 'Number of children is valid')
+      assert.strictEqual(node.children.length, 3, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
 })
 
-test('Unordered List with LF and callback', function (t) {
+test('Unordered List with LF and callback', (t, done) => {
   const input = `
     Some text
     - List 1, Item 1
       Following Item 1
     - List 1, Item 2 at the end of the file`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'UL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(node.firstChild.textContent, 'List 1, Item 1Following Item 1', 'Content is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'UL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      assert.strictEqual(node.firstChild.textContent, 'List 1, Item 1Following Item 1', 'Content is valid')
+      done()
     },
   }
 
-  t.plan(4)
   parse(input, opt)
 })
 
-test('Unordered List with 1-space-LF and callback', function (t) {
+test('Unordered List with 1-space-LF and callback', (t, done) => {
   const input = `
     - Item 1
      Not Line 2`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.equal(node.firstChild.textContent, 'Item 1', 'Content is valid')
+      assert.strictEqual(node.firstChild.textContent, 'Item 1', 'Content is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
-  t.end()
 })
 
-test('Unordered List with 3-space-LF and callback', function (t) {
+test('Unordered List with 3-space-LF and callback', (t, done) => {
   const input = `
     - Item 1
        Line 2
         Line 3`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.equal(node.firstChild.textContent, 'Item 1Line 2Line 3', 'Content is valid')
+      assert.strictEqual(node.firstChild.textContent, 'Item 1Line 2Line 3', 'Content is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
-  t.end()
 })
 
-test('Unordered List with newlines in the last item and callback', function (t) {
+test('Unordered List with newlines in the last item and callback', (t, done) => {
   const input = `
     Some text
     - List 1, Item 1
     - List 1, Item 2
       Following Item 2`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'UL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(node.lastChild.textContent, 'List 1, Item 2Following Item 2', 'Content is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'UL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      assert.strictEqual(node.lastChild?.textContent, 'List 1, Item 2Following Item 2', 'Content is valid')
+      done()
     },
   }
 
-  t.plan(4)
   parse(input, opt)
 })
 
-test('Unordered List with extra LF between item content and callback', function (t) {
+test('Unordered List with extra LF between item content and callback', (t, done) => {
   const input = `
     - First list item
       Line 2
@@ -323,27 +318,30 @@ test('Unordered List with extra LF between item content and callback', function 
       Line 3
     - Second list item`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.equal(node.children.length, 2, 'Number of children is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
 })
 
-test('Unordered list with allowUnorderedList flag to false', function (t) {
+test('Unordered list with allowUnorderedList flag to false', (t, done) => {
   const input = `
     - First list item
     - Second list item
     - Third list item`
   const output = inlineHtml`
     <p>- First list item<br>- Second list item<br>- Third list item</p>`
+
+  /** @type {ParserOptions} */
   const opt = {
     allowUnorderedList: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
+  done()
 })

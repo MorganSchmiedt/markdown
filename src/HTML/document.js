@@ -1,11 +1,16 @@
-'use strict'
+// @ts-check
 
-const Element = require('./Element.js')
-const Text = require('./Text.js')
+import Element from './Element.js'
+import Text from './Text.js'
 
-const document = {
+export default {
+  /**
+   * @param {string} tagName
+   */
   createElement: tagName => new Element(tagName),
+
+  /**
+   * @param {string} text
+   */
   createTextNode: text => new Text(text),
 }
-
-module.exports = document

@@ -1,14 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
-
-test('Reference with a single ref', function (t) {
+test('Reference with a single ref', () => {
   const input = `
     See reference[^1]
 
@@ -26,11 +22,10 @@ test('Reference with a single ref', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with 2 refs', function (t) {
+test('Reference with 2 refs', () => {
   const input = `
     See this[^1] and that[^2]
 
@@ -50,11 +45,10 @@ test('Reference with 2 refs', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with 2 refs not in order', function (t) {
+test('Reference with 2 refs not in order', () => {
   const input = `
     See this[^1] and that[^2]
     [^2]: ref two
@@ -73,11 +67,10 @@ test('Reference with 2 refs not in order', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with two ids below text', function (t) {
+test('Reference with two ids below text', () => {
   const input = `
     See this[^one] and that[^two]
 
@@ -97,11 +90,10 @@ test('Reference with two ids below text', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with two ids above text', function (t) {
+test('Reference with two ids above text', () => {
   const input = `
     [^one]: ref one
     [^two]: ref two
@@ -121,11 +113,10 @@ test('Reference with two ids above text', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with two ids in between text lines', function (t) {
+test('Reference with two ids in between text lines', () => {
   const input = `
     See this[^one]
     [^one]: ref one
@@ -147,11 +138,10 @@ test('Reference with two ids in between text lines', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with missing ref key', function (t) {
+test('Reference with missing ref key', () => {
   const input = `
     See this[^one] and that
 
@@ -170,11 +160,10 @@ test('Reference with missing ref key', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with missing ref text', function (t) {
+test('Reference with missing ref text', () => {
   const input = `
     See this[^one] and that[^two]
 
@@ -193,11 +182,10 @@ test('Reference with missing ref text', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with two ids', function (t) {
+test('Reference with two ids', () => {
   const input = `
     See this[^one] and that[^one]
 
@@ -215,11 +203,10 @@ test('Reference with two ids', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with two notes', function (t) {
+test('Reference with two notes', () => {
   const input = `
     See this[^one]
 
@@ -238,11 +225,10 @@ test('Reference with two notes', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with complex texts', function (t) {
+test('Reference with complex texts', () => {
   const input = `
     See reference[^1]
 
@@ -260,30 +246,30 @@ test('Reference with complex texts', function (t) {
     allowFootnote: true,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Reference with callback', function (t) {
+test('Reference with callback', (t, done) => {
   const input = `
     See reference[^1]
 
     [^1]: some text`
 
+  /** @type {ParserOptions} */
   const opt = {
     allowFootnote: true,
     onReference: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'A', 'Tagname is valid')
-      t.notEqual(node.firstChild, '1', 'firstChild is there')
-      t.end()
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'A', 'Tagname is valid')
+      assert.notEqual(node.firstChild, '1', 'firstChild is there')
+      done()
     },
   }
 
   parse(input, opt)
 })
 
-test('Reference with allowReference to false', function (t) {
+test('Reference with allowFootnote to false', () => {
   const input = `
     See reference[^1]
 
@@ -293,10 +279,10 @@ test('Reference with allowReference to false', function (t) {
     <p>See reference[<sup>1</sup>]</p>
     <p>[<sup>1</sup>]: some text</p>`
 
+  /** @type {ParserOptions} */
   const opt = {
-    allowReference: false,
+    allowFootnote: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })

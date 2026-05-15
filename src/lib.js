@@ -1,12 +1,23 @@
-'use strict'
+// @ts-check
 
-const parseBoolean = (value, defaultValue) =>
+/**
+ * @param {boolean|any} value
+ * @param {boolean} defaultValue
+ * @returns {boolean}
+ */
+export const parseBoolean = (value, defaultValue) =>
   typeof value === 'boolean'
     ? value
     : defaultValue
 
-const parseMaxHeader = (value, defaultValue) => {
-  if (Number.isInteger(value)
+/**
+ * @param {void|null|number} value
+ * @param {number} defaultValue
+ * @returns {number}
+ */
+export const parseMaxHeader = (value, defaultValue) => {
+  if (value != null
+  && Number.isSafeInteger(value)
   && value >= 1
   && value <= 6) {
     return value
@@ -15,5 +26,3 @@ const parseMaxHeader = (value, defaultValue) => {
   return defaultValue
 }
 
-module.exports.parseBoolean = parseBoolean
-module.exports.parseMaxHeader = parseMaxHeader

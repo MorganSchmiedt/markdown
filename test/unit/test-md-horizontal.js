@@ -1,14 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
-
-test('Horizontal line', function (t) {
+test('Horizontal line', () => {
   const input = `
     Pre line text
 
@@ -21,11 +17,10 @@ test('Horizontal line', function (t) {
     <hr>
     <p>Post line text</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Horizontal line without pre-newline', function (t) {
+test('Horizontal line without pre-newline', () => {
   const input = `
     Pre line text
     ---
@@ -36,11 +31,10 @@ test('Horizontal line without pre-newline', function (t) {
     <p>Pre line text<br>---</p>
     <p>Post line text</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Horizontal line without pre-newline', function (t) {
+test('Horizontal line without pre-newline', () => {
   const input = `
     Pre line text
 
@@ -51,11 +45,10 @@ test('Horizontal line without pre-newline', function (t) {
     <p>Pre line text</p>
     <p>---<br>Post line text</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Horizontal line with list before/after', function (t) {
+test('Horizontal line with list before/after', () => {
   const input = `
     - List 1
 
@@ -72,11 +65,10 @@ test('Horizontal line with list before/after', function (t) {
       <li>List 2</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Horizontal line with callback', function (t) {
+test('Horizontal line with callback', (t, done) => {
   const input = `
     Pre line text
 
@@ -84,18 +76,19 @@ test('Horizontal line with callback', function (t) {
 
     Post line text`
 
+  /** @type {ParserOptions} */
   const opt = {
     onHorizontalLine: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'HR', 'Tagname is valid')
-      t.end()
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'HR', 'Tagname is valid')
+      done()
     },
   }
 
   parse(input, opt)
 })
 
-test('Horizontal line with allowHorizontalLine flag to false', function (t) {
+test('Horizontal line with allowHorizontalLine flag to false', () => {
   const input = `
     Pre line text
 
@@ -111,6 +104,5 @@ test('Horizontal line with allowHorizontalLine flag to false', function (t) {
     allowHorizontalLine: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })

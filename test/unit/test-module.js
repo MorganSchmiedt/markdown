@@ -1,14 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parser } from '../test-lib.js'
 
-const {
-  parser,
-  test,
-} = require('../test-lib.js')
-
-test('Module Exports', function (t) {
-  t.equal(typeof parser.Element, 'function', 'Element is there')
-  t.equal(typeof parser.Text, 'function', 'Text is there')
-  t.equal(typeof parser.parse, 'function', 'parse is there')
-  t.end()
+test('Module Exports', () => {
+  assert.strictEqual(typeof parser.Element, 'function', 'Element is there')
+  assert.strictEqual(typeof parser.Text, 'function', 'Text is there')
+  assert.strictEqual(typeof parser.parse, 'function', 'parse is there')
 })

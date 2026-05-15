@@ -1,6 +1,6 @@
 {
   "name": "@deskeen/markdown",
-  "version": "5.3.1",
+  "version": "6.0.0",
   "description": "Node.js Markdown to HTML Parser",
   "author": "Morgan Schmiedt",
   "license": "MIT",
@@ -12,11 +12,13 @@
     "node.js"
   ],
   "main": "src/markdown.js",
+  "type":"module",
   "scripts": {
-    "test": "npm run tests-only",
-    "tests-only": "tape test/unit/*"
+    "test": "node --test"
   },
   "devDependencies": {
-    "tape": "^5.0.1"
+    "@eslint/js": "^10.0.1",
+    "globals": "^15.8.0",
+    "@stylistic/eslint-plugin": "^5.10.0"
   }
 }

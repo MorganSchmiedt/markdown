@@ -1,14 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
-
-test('Video', function (t) {
+test('Video', () => {
   const input = '![](https://example.com/video.mp4 "caption")'
   const output = inlineHtml`
     <figure>
@@ -18,17 +14,17 @@ test('Video', function (t) {
       <figcaption>caption</figcaption>
     </figure>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Video with callback', function (t) {
+test('Video with callback', (t, done) => {
   const input = '![](https://example.com/video.mp4)'
+  /** @type {ParserOptions} */
   const opt = {
     onVideo: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'VIDEO', 'Tagname is valid')
-      t.end()
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'VIDEO', 'Tagname is valid')
+      done()
     },
   }
 

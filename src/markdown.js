@@ -1,16 +1,15 @@
-'use strict'
+// @ts-check
 
-const Element = require('./HTML/Element.js')
-const Text = require('./HTML/Text.js')
-const document = require('./HTML/document.js')
+import Element from './HTML/Element.js'
+import Text from './HTML/Text.js'
+import document from './HTML/document.js'
 
-const {
-  parseBoolean,
-  parseMaxHeader,
-} = require('./lib.js')
+import { parseBoolean, parseMaxHeader } from './lib.js'
 
+/** @type {string} */
 const MD_ESCAPE_CHAR = '\\'
 
+/** @type {string} */
 const MD_CHARS = [
   '*',
   '[',
@@ -21,26 +20,39 @@ const MD_CHARS = [
   '^',
 ].join('')
 
+/** @type {RegExp} */
 const REGEX_ESCAPE_CHAR =
   new RegExp(`\\${MD_ESCAPE_CHAR}([${MD_CHARS}])`, 'g')
+/** @type {RegExp} */
 const REGEX_REP_ESC_CHAR_LINK_TEXT =
   new RegExp(`\\${MD_ESCAPE_CHAR}\\]`, 'g')
+/** @type {RegExp} */
 const REGEX_CLOSING_LINK =
   new RegExp(`^((?:[^\\]]|\\${MD_ESCAPE_CHAR}])+?)]\\(([^)]+?)\\)`)
 
+/**
+ * @param {string} text
+ * @returns {string}
+ */
 const removeEscapeChars = text =>
   text.replace(REGEX_ESCAPE_CHAR, (match, char) => char)
 
+/** @type {RegExp} */
 const REGEX_MD_TEXT =
   new RegExp(`[${MD_CHARS}]`)
 
-const isSpace = text => /^\s$/.test(text)
-
-const setHTMLAttributes = (node, attrs) => {
+/**
+ * Reads text attributes and assigns them to an Element.
+ *
+ * @param {Element} element
+ * @param {string} attributesText
+ * @returns {void}
+ */
+const setHTMLAttributes = (element, attributesText) => {
   let cursor = 0
 
-  while (cursor < attrs.length) {
-    const attr = attrs.substring(cursor)
+  while (cursor < attributesText.length) {
+    const attr = attributesText.substring(cursor)
     const match = /^([^=]+)=(?:"(.+?)"|([^;]+))?/
       .exec(attr)
 
@@ -51,56 +63,63 @@ const setHTMLAttributes = (node, attrs) => {
     const attrName = match[1]
     const attrValue = match[2] || match[3]
 
-    node.setAttribute(attrName, attrValue)
+    element.setAttribute(attrName, attrValue)
     cursor += (match[0].length + 1)
   }
 }
 
 /**
- * @param {string} markdownText Markdown text
- * @param {object} opt Parser options
- * @param {boolean} [opt.allowHeader=true]
- * @param {boolean} [opt.allowLink=true]
- * @param {boolean} [opt.allowImage=true]
- * @param {boolean} [opt.allowHTMLAttributes=false]
- * @param {boolean} [opt.allowCode=true]
- * @param {boolean} [opt.allowMultilineCode=true]
- * @param {boolean} [opt.allowUnorderedList=true]
- * @param {boolean} [opt.allowNestedUnorderedList=true]
- * @param {boolean} [opt.allowOrderedList=true]
- * @param {boolean} [opt.allowNestedOrderedList=true]
- * @param {boolean} [opt.allowHorizontalLine=true]
- * @param {boolean} [opt.allowQuote=true]
- * @param {boolean} [opt.allowFootnote=true]
- * @param {function} [opt.onHeader]
- * @param {function} [opt.onLink]
- * @param {function} [opt.onImage]
- * @param {function} [opt.onAudio]
- * @param {function} [opt.onVideo]
- * @param {function} [opt.onCode]
- * @param {function} [opt.onMultilineCode]
- * @param {function} [opt.onUnorderedList]
- * @param {function} [opt.onOrderedList]
- * @param {function} [opt.onHorizontalLine]
- * @param {function} [opt.onQuote]
- * @param {function} [opt.onReference]
+ * @typedef {Object} ParserOptions
+ * @property {boolean} [allowHeader=true]
+ * @property {boolean} [allowHeaderFormat=false]
+ * @property {number} [maxHeader=3]
+ * @property {boolean} [allowLink=true]
+ * @property {boolean} [allowImage=true]
+ * @property {boolean} [allowHTMLAttributes=false]
+ * @property {boolean} [allowCode=true]
+ * @property {boolean} [allowMultilineCode=true]
+ * @property {boolean} [allowUnorderedList=true]
+ * @property {boolean} [allowUnorderedNestedList=true]
+ * @property {boolean} [allowOrderedList=true]
+ * @property {boolean} [allowOrderedNestedList=true]
+ * @property {boolean} [allowHorizontalLine=true]
+ * @property {boolean} [allowQuote=true]
+ * @property {boolean} [allowFootnote=true]
+ * @property {function(Element): undefined} [onHeader]
+ * @property {function(Element): undefined} [onLink]
+ * @property {function(Element): undefined} [onImage]
+ * @property {function(Element): undefined} [onAudio]
+ * @property {function(Element): undefined} [onVideo]
+ * @property {function(Element): undefined} [onCode]
+ * @property {function(Element, string): undefined} [onMultilineCode]
+ * @property {function(Element): undefined} [onUnorderedList]
+ * @property {function(Element): undefined} [onOrderedList]
+ * @property {function(Element): undefined} [onHorizontalLine]
+ * @property {function(Element): undefined} [onQuote]
+ * @property {function(Element, string): undefined} [onReference]
  */
-const parse = (markdownText, opt = {}) => {
-  const allowHeader = parseBoolean(opt.allowHeader, true)
-  const allowHeaderFormat = parseBoolean(opt.allowHeaderFormat, false)
-  const allowLink = parseBoolean(opt.allowLink, true)
-  const allowImage = parseBoolean(opt.allowImage, true)
-  const allowCode = parseBoolean(opt.allowCode, true)
-  const allowMultilineCode = parseBoolean(opt.allowMultilineCode, true)
-  const allowUnorderedList = parseBoolean(opt.allowUnorderedList, true)
-  const allowUnordNestedList = parseBoolean(opt.allowUnorderedNestedList, true)
-  const allowOrderedList = parseBoolean(opt.allowOrderedList, true)
-  const allowOrdNestedList = parseBoolean(opt.allowOrderedNestedList, true)
-  const allowHorizontalLine = parseBoolean(opt.allowHorizontalLine, true)
-  const allowQuote = parseBoolean(opt.allowQuote, true)
-  const allowFootnote = parseBoolean(opt.allowFootnote, false)
-  const allowHTMLAttributes = parseBoolean(opt.allowHTMLAttributes, false)
-  const maxHeader = parseMaxHeader(opt.maxHeader, 3)
+
+/**
+ * @param {string} markdownText Markdown text
+ * @param {ParserOptions} [opt] Parser options
+ * @returns {Element} HTML Text
+ */
+const parse = (markdownText, opt) => {
+  const allowHeader = parseBoolean(opt?.allowHeader, true)
+  const allowHeaderFormat = parseBoolean(opt?.allowHeaderFormat, false)
+  const allowLink = parseBoolean(opt?.allowLink, true)
+  const allowImage = parseBoolean(opt?.allowImage, true)
+  const allowCode = parseBoolean(opt?.allowCode, true)
+  const allowMultilineCode = parseBoolean(opt?.allowMultilineCode, true)
+  const allowUnorderedList = parseBoolean(opt?.allowUnorderedList, true)
+  const allowUnordNestedList = parseBoolean(opt?.allowUnorderedNestedList, true)
+  const allowOrderedList = parseBoolean(opt?.allowOrderedList, true)
+  const allowOrdNestedList = parseBoolean(opt?.allowOrderedNestedList, true)
+  const allowHorizontalLine = parseBoolean(opt?.allowHorizontalLine, true)
+  const allowQuote = parseBoolean(opt?.allowQuote, true)
+  const allowFootnote = parseBoolean(opt?.allowFootnote, false)
+  const allowHTMLAttributes = parseBoolean(opt?.allowHTMLAttributes, false)
+  const maxHeader = parseMaxHeader(opt?.maxHeader, 3)
 
   const body = new Element('div')
 
@@ -109,19 +128,31 @@ const parse = (markdownText, opt = {}) => {
   const text = `${markdownText}\n`
   const textSize = text.length
 
-  let currentNode
-  let targetNode
+  /** @type {null|Element} */
+  let currentNode = null
+  /** @type {null|Element} */
+  let targetNode = null
+  /** @type {number} */
   let lastFlushCursor
+  /** @type {number} */
   let lineCursor
+  /** @type {string} */
   let lineText
+
+  /**
+   * Footnotes
+   * @type {Object<string, string>}
+   * */
   const fnNote = {}
+  /** @type {Set<string>} */
   const fnIdList = new Set()
+  /** @type {Map<string, number>} */
   const fnIdNb = new Map()
 
   const flushBody = () => {
     if (currentNode != null) {
       body.appendChild(currentNode)
-      body.lastChild._attach()
+      body.lastChildElement?._attach()
       currentNode = null
       targetNode = null
     }
@@ -143,14 +174,22 @@ const parse = (markdownText, opt = {}) => {
     }
   }
 
+  /**
+   * Returns n-th character of the processed line
+   * @param {number} n
+   * @returns {string}
+   */
   const next = n => lineText[lineCursor + n]
 
   while (cursor < textSize) {
+    /** @type {string} */
     const restText = text.substring(cursor)
+    /** @type {number} */
     const EOLIndex = restText.indexOf('\n')
     lineText = restText.substring(0, EOLIndex)
-    // const nextRestText = restText.substring(EOLIndex + 1)
+    /** @type {number} */
     let ffCursor = EOLIndex + 1
+    /** @type {boolean} */
     let caseFound = false
 
     if (lineText.trim().length === 0) {
@@ -164,12 +203,14 @@ const parse = (markdownText, opt = {}) => {
 
       let parseLine = true
 
+      /** @type {string} */
       const firstChar = lineText[0]
 
       if (firstChar === MD_ESCAPE_CHAR) {
         lineCursor = 1
       } else if (allowHeader
       && firstChar === '#') {
+        /** @type {number} */
         let headerLevel = 1
 
         while (headerLevel < maxHeader
@@ -179,9 +220,11 @@ const parse = (markdownText, opt = {}) => {
 
         if (next(headerLevel) === ' ') {
           flushBody()
+          /** @type {string} */
           const headerText = lineText.substring(lineText.indexOf(' ') + 1)
+          /** @type {Element} */
           const headerNode = document.createElement(`H${headerLevel}`)
-          headerNode.onAttach = opt.onHeader
+          headerNode.onAttach = opt?.onHeader
 
           if (allowHeaderFormat) {
             lineCursor = headerLevel + 1
@@ -199,17 +242,24 @@ const parse = (markdownText, opt = {}) => {
       } else if (firstChar === '!') {
         if (next(1) === '['
         && allowImage) {
+          /** @type {string} */
           const restLineText = lineText.substring(lineCursor + 1)
+          /** @type {null|RegExpExecArray} */
           const endMatch = /^\[(.*?)]\((.+?)(?:\s"(.*)")?\)(?:{(.+?)})?$/
             .exec(restLineText)
 
-          if (endMatch) {
+          if (endMatch != null) {
             flushBody()
+            /** @type {string} */
             const altText = endMatch[1]
+            /** @type {string} */
             const url = endMatch[2]
+            /** @type {string} */
             const title = endMatch[3]
+            /** @type {string} */
             const attrs = endMatch[4]
 
+            /** @type {Element} */
             const figureNode = document.createElement('FIGURE')
 
             if (allowHTMLAttributes
@@ -218,37 +268,43 @@ const parse = (markdownText, opt = {}) => {
             }
 
             if (url.endsWith('.mp3')) {
+              /** @type {Element} */
               const sourceNode = document.createElement('SOURCE')
               sourceNode.setAttribute('src', url)
               sourceNode.setAttribute('type', 'audio/mpeg')
 
+              /** @type {Element} */
               const audioNode = document.createElement('AUDIO')
               audioNode.appendChild(sourceNode)
               audioNode.setAttribute('controls', '')
-              audioNode.onAttach = opt.onAudio
+              audioNode.onAttach = opt?.onAudio
 
               figureNode.appendChild(audioNode)
             } else if (url.endsWith('.mp4')) {
+              /** @type {Element} */
               const sourceNode = document.createElement('SOURCE')
               sourceNode.setAttribute('src', url)
               sourceNode.setAttribute('type', 'video/mp4')
 
+              /** @type {Element} */
               const videoNode = document.createElement('VIDEO')
               videoNode.appendChild(sourceNode)
               videoNode.setAttribute('controls', '')
-              videoNode.onAttach = opt.onVideo
+              videoNode.onAttach = opt?.onVideo
 
               figureNode.appendChild(videoNode)
             } else {
+              /** @type {Element} */
               const imageNode = document.createElement('IMG')
               imageNode.setAttribute('src', url)
               imageNode.setAttribute('alt', altText)
-              imageNode.onAttach = opt.onImage
+              imageNode.onAttach = opt?.onImage
 
               figureNode.appendChild(imageNode)
             }
 
             if (title != null) {
+              /** @type {Element} */
               const captionNode = document.createElement('FIGCAPTION')
               captionNode.textContent = title
 
@@ -268,8 +324,9 @@ const parse = (markdownText, opt = {}) => {
         && text[cursor + 3] === '\n'
         && text[cursor + 4] === '\n') {
           flushBody()
+          /** @type {Element} */
           const hrNode = document.createElement('HR')
-          hrNode.onAttach = opt.onHorizontalLine
+          hrNode.onAttach = opt?.onHorizontalLine
 
           currentNode = hrNode
           parseLine = false
@@ -282,8 +339,9 @@ const parse = (markdownText, opt = {}) => {
           }
 
           if (currentNode == null) {
+            /** @type {Element} */
             const listNode = document.createElement('UL')
-            listNode.onAttach = opt.onUnorderedList
+            listNode.onAttach = opt?.onUnorderedList
             listNode.appendChild(document.createElement('LI'))
 
             currentNode = listNode
@@ -291,7 +349,7 @@ const parse = (markdownText, opt = {}) => {
             currentNode.appendChild(document.createElement('LI'))
           }
 
-          targetNode = currentNode.lastChild
+          targetNode = currentNode.lastChildElement
           lineCursor = 2
           lastFlushCursor = lineCursor
           caseFound = true
@@ -310,7 +368,7 @@ const parse = (markdownText, opt = {}) => {
 
           if (currentNode == null) {
             const listNode = document.createElement('OL')
-            listNode.onAttach = opt.onOrderedList
+            listNode.onAttach = opt?.onOrderedList
             listNode.appendChild(document.createElement('LI'))
 
             currentNode = listNode
@@ -318,19 +376,28 @@ const parse = (markdownText, opt = {}) => {
             currentNode.appendChild(document.createElement('LI'))
           }
 
-          targetNode = currentNode.lastChild
+          targetNode = currentNode.lastChildElement
           lineCursor = syntaxSize
           lastFlushCursor = lineCursor
           caseFound = true
         }
       } else if (firstChar === ' '
       && next(1) === ' ') {
+        /** @type {null|RegExpExecArray} */
         const itemMatch = /^([ ]{2,})((- )|(\d+\. ))?/
           .exec(lineText)
 
+        if (itemMatch == null) {
+          throw new Error('Unexpected error')
+        }
+
+        /** @type {number} */
         const syntaxSize = itemMatch[0].length
+        /** @type {number} */
         const spaceCount = itemMatch[1].length
+        /** @type {boolean} */
         const isNewItem = itemMatch[2] != null
+        /** @type {string} */
         const newListTag = itemMatch[2] === '- '
           ? 'UL'
           : 'OL'
@@ -365,12 +432,14 @@ const parse = (markdownText, opt = {}) => {
         && targetNode != null
         && targetNode.parentNode != null
         && ((allowUnordNestedList
-            && currentNode.tagName === 'UL'
+            && currentNode?.tagName === 'UL'
             && spaceCount >= 2)
         || (allowOrdNestedList
-            && currentNode.tagName === 'OL'
+            && currentNode?.tagName === 'OL'
             && spaceCount >= 3))) {
+          /** @type {number} */
           let listLevel = 0
+          /** @type {null|Element} */
           let i = targetNode
 
           while (i != null) {
@@ -382,24 +451,26 @@ const parse = (markdownText, opt = {}) => {
             i = i.parentNode
           }
 
+          /** @type {null|Element} */
           const parentNode = targetNode.parentNode
-          const lastItemNode = parentNode.lastChild
+          /** @type {null|Element} */
+          const lastItemNode = parentNode.lastChildElement
 
           if (listLevel === 2
           && targetNode.parentNode.tagName === newListTag) {
             parentNode.appendChild(document.createElement('LI'))
 
-            targetNode = parentNode.lastChild
-          } else {
+            targetNode = parentNode.lastChildElement
+          } else if (lastItemNode != null) {
             const listNode = document.createElement(newListTag)
             listNode.onAttach = newListTag === 'UL'
-              ? opt.onUnorderedList
-              : opt.onOrderedList
+              ? opt?.onUnorderedList
+              : opt?.onOrderedList
             listNode.appendChild(document.createElement('LI'))
 
             lastItemNode.appendChild(listNode)
 
-            targetNode = lastItemNode.lastChild.lastChild
+            targetNode = lastItemNode.lastChildElement?.lastChildElement ?? null
           }
 
           lineCursor = syntaxSize
@@ -415,16 +486,19 @@ const parse = (markdownText, opt = {}) => {
           }
 
           if (currentNode == null) {
+            /** @type {Element} */
             const pNode = document.createElement('P')
 
+            /** @type {Element} */
             const quoteNode = document.createElement('BLOCKQUOTE')
-            quoteNode.onAttach = opt.onQuote
+            quoteNode.onAttach = opt?.onQuote
             quoteNode.appendChild(pNode)
 
             currentNode = quoteNode
             targetNode = pNode
           } else if (currentNode.tagName === 'BLOCKQUOTE'
           && lineText.trim().length === 1) {
+            /** @type {Element} */
             const pNode = document.createElement('P')
 
             currentNode.appendChild(pNode)
@@ -437,24 +511,36 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (allowMultilineCode
       && lineText.startsWith('```')) {
+        /** @type {null|RegExpExecArray} */
         const match = /^```(\w*)\n((.|\n(?!```))+)\n```/
           .exec(text.substring(cursor))
 
-        if (match) {
+        if (match != null) {
           flushBody()
 
+          /** @type {number} */
           const matchSize = match[0].length
+          /** @type {string} */
           const languageName = match[1]
+          /** @type {string} */
           const codeContent = match[2]
 
+          /** @type {Element} */
           const codeNode = document.createElement('CODE')
           codeNode.textContent = codeContent.replace(/\\`/g, '`')
 
+          /** @type {Element} */
           const preNode = document.createElement('PRE')
           preNode.appendChild(codeNode)
-          preNode.onAttach = opt.onMultilineCode != null
-            ? node => opt.onMultilineCode(node, languageName)
-            : undefined
+
+          /**
+           * @param {Element} node
+           * */
+          preNode.onAttach = node => {
+            if (typeof opt?.onMultilineCode === 'function') {
+              opt.onMultilineCode(node, languageName)
+            }
+          }
 
           currentNode = preNode
           flushBody()
@@ -463,12 +549,15 @@ const parse = (markdownText, opt = {}) => {
         }
       } else if (allowFootnote
       && firstChar === '[') {
+        /** @type {null|RegExpExecArray} */
         const match = /^\[\^([\d\w]+)\]: (.+)/.exec(lineText)
 
-        if (match) {
+        if (match != null) {
           flushBody()
 
+          /** @type {string} */
           const ref = match[1]
+          /** @type {string} */
           const text = match[2]
 
           fnNote[ref] = text
@@ -489,6 +578,7 @@ const parse = (markdownText, opt = {}) => {
           targetNode.appendChild(document.createElement('BR'))
         }
 
+        /** @type {undefined|number} */
         let lineCursorMax
 
         while (lineCursor <= EOLIndex) {
@@ -505,17 +595,21 @@ const parse = (markdownText, opt = {}) => {
             } else {
               lineCursor = lineCursorMax
               flush()
-              lineCursor += targetNode.ffOnTextEnd
-              lastFlushCursor += targetNode.ffOnTextEnd
 
-              while (targetNode.upOnTextEnd) {
+              if (targetNode?._ffOnTextEnd != null) {
+                lineCursor += targetNode._ffOnTextEnd
+                lastFlushCursor += targetNode._ffOnTextEnd
+              }
+
+              while (targetNode?._upOnTextEnd) {
                 targetNode = targetNode.parentNode
               }
 
-              targetNode = targetNode.parentNode
+              targetNode = targetNode?.parentNode ?? null
               lineCursorMax = undefined
             }
           } else {
+            /** @type {string} */
             const char = match[0]
 
             ff = 1
@@ -528,50 +622,46 @@ const parse = (markdownText, opt = {}) => {
               if (targetNode == null
               || (targetNode.tagName !== 'EM'
                 && targetNode.tagName !== 'STRONG')) {
+                /** @type {string} */
                 const remainingText = lineText.substring(lineCursor)
-                const match = /^(\*{1,3})(.*?\S)(\*{1,3})/
+                /** @type {null|RegExpExecArray} */
+                const match = /^(\*{1,3})(?!\s|\*)(.+?)(?<!\s|\*)(\1)(?!\*)/
                   .exec(remainingText)
 
                 if (match) {
                   const syntaxOpen = match[1]
                   const syntaxSize = syntaxOpen.length
                   const content = match[2]
-                  const syntaxClose = match[3]
-                  const firstContentChar = content[0]
+                  const endTagIndex = syntaxSize + content.length
 
-                  if (syntaxOpen === syntaxClose
-                  && isSpace(firstContentChar) === false) {
-                    const endTagIndex = syntaxSize + content.length
+                  flush()
+                  lineCursorMax = lineCursor + endTagIndex
 
-                    flush()
-                    lineCursorMax = lineCursor + endTagIndex
+                  if (syntaxOpen === '*') {
+                    const emNode = document.createElement('EM')
+                    emNode._ffOnTextEnd = syntaxSize
 
-                    if (syntaxOpen === '*') {
-                      const emNode = document.createElement('EM')
-                      emNode.ffOnTextEnd = syntaxSize
+                    targetNode.appendChild(emNode)
+                    targetNode = emNode
+                  } else if (syntaxOpen === '**') {
+                    const strongNode = document.createElement('STRONG')
+                    strongNode._ffOnTextEnd = syntaxSize
 
-                      targetNode.appendChild(emNode)
-                      targetNode = emNode
-                    } else if (syntaxOpen === '**') {
-                      const strongNode = document.createElement('STRONG')
-                      strongNode.ffOnTextEnd = syntaxSize
+                    targetNode.appendChild(strongNode)
+                    targetNode = strongNode
+                  } else {
+                    const emNode = document.createElement('EM')
+                    emNode._ffOnTextEnd = syntaxSize
+                    emNode._upOnTextEnd = true
 
-                      targetNode.appendChild(strongNode)
-                      targetNode = strongNode
-                    } else {
-                      const emNode = document.createElement('EM')
-                      emNode.ffOnTextEnd = syntaxSize
-                      emNode.upOnTextEnd = true
+                    const strongNode = document.createElement('STRONG')
+                    strongNode.appendChild(emNode)
 
-                      const strongNode = document.createElement('STRONG')
-                      strongNode.appendChild(emNode)
-
-                      targetNode.appendChild(strongNode)
-                      targetNode = emNode
-                    }
-
-                    lastFlushCursor += syntaxSize
+                    targetNode.appendChild(strongNode)
+                    targetNode = emNode
                   }
+
+                  lastFlushCursor += syntaxSize
 
                   ff = syntaxSize
                 }
@@ -589,7 +679,7 @@ const parse = (markdownText, opt = {}) => {
                   lineCursorMax = fromIndex + endTagIndex
 
                   const sNode = document.createElement('S')
-                  sNode.ffOnTextEnd = syntaxSize
+                  sNode._ffOnTextEnd = syntaxSize
 
                   targetNode.appendChild(sNode)
                   targetNode = sNode
@@ -625,12 +715,16 @@ const parse = (markdownText, opt = {}) => {
 
               if (allowFootnote
               && next(1) === '^') {
+                /** @type {null|RegExpExecArray} */
                 const refMatch = /\^([\d\w]+)]/.exec(restLineText)
 
-                if (refMatch) {
+                if (refMatch != null) {
                   flush()
 
+                  /** @type {string} */
                   const id = refMatch[1]
+
+                  /** @type {undefined|number} */
                   let refNb
 
                   if (fnIdList.has(id) === false) {
@@ -641,15 +735,25 @@ const parse = (markdownText, opt = {}) => {
                     refNb = fnIdNb.get(id)
                   }
 
+                  if (refNb == null) {
+                    throw new Error()
+                  }
+
+                  /** @type {Element} */
                   const supNode = document.createElement('SUP')
-                  supNode.textContent = refNb
+                  supNode.textContent = refNb.toString()
 
                   const linkNode = document.createElement('A')
                   linkNode.setAttribute('href', `#reference${refNb}`)
                   linkNode.appendChild(supNode)
-                  linkNode.onAttach = opt.onReference != null
-                    ? node => opt.onReference(node, id)
-                    : undefined
+                  /**
+                   * @param {Element} node
+                   */
+                  linkNode.onAttach = node => {
+                    if (typeof opt?.onReference === 'function') {
+                      opt.onReference(node, id)
+                    }
+                  }
 
                   targetNode.appendChild(linkNode)
 
@@ -669,7 +773,7 @@ const parse = (markdownText, opt = {}) => {
                   const linkNode = document.createElement('A')
                   linkNode.setAttribute('href', url)
                   linkNode.textContent = title
-                  linkNode.onAttach = opt.onLink
+                  linkNode.onAttach = opt?.onLink
 
                   targetNode.appendChild(linkNode)
 
@@ -693,7 +797,7 @@ const parse = (markdownText, opt = {}) => {
                   const attrs = endMatch[3]
 
                   const imageNode = document.createElement('IMG')
-                  imageNode.onAttach = opt.onImage
+                  imageNode.onAttach = opt?.onImage
                   imageNode.setAttribute('src', url)
                   imageNode.setAttribute('alt', altText)
 
@@ -719,7 +823,7 @@ const parse = (markdownText, opt = {}) => {
                 const content = restLineText.substring(0, endTagIndex)
                 const codeNode = document.createElement('CODE')
                 codeNode.textContent = content
-                codeNode.onAttach = opt.onCode
+                codeNode.onAttach = opt?.onCode
 
                 targetNode.appendChild(codeNode)
 
@@ -753,6 +857,7 @@ const parse = (markdownText, opt = {}) => {
       const refValue = fnNote[ref]
 
       if (refValue != null) {
+        /** @type {Element} */
         const contentParsed = parse(refValue, Object.assign({}, opt, {
           allowHeader: false,
           allowImage: false,
@@ -764,11 +869,14 @@ const parse = (markdownText, opt = {}) => {
           allowFootnote: false,
         }))
 
-        const contentNode = contentParsed.firstChild
+        /** @type {null|Element} */
+        const contentNode = contentParsed?.firstChildElement
 
-        // childNodes is theoretically a live NodeList
-        for (const node of Array.from(contentNode.childNodes)) {
-          itemNode.appendChild(node)
+        if (contentNode != null) {
+          // childNodes is theoretically a live NodeList
+          for (const node of Array.from(contentNode.childNodes)) {
+            itemNode.appendChild(node)
+          }
         }
       }
 
@@ -787,6 +895,4 @@ const parse = (markdownText, opt = {}) => {
   return body
 }
 
-module.exports.Element = Element
-module.exports.Text = Text
-module.exports.parse = parse
+export default { Element, Text, parse }

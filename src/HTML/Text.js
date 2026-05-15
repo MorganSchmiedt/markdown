@@ -1,16 +1,33 @@
-'use strict'
+// @ts-check
 
-const HTML_ENTITY = require('./Entity.js')
+import HTML_ENTITY from './Entity.js'
+/** @import Element from './Element.js' */
 
-class Text {
+export default class Text {
+  /** @public */
+  /** @type {Symbol} */
+  _symbol
+
+  /** @private */
+  /** @type {string} */
+  #_data
+
+  /** @public */
+  /** @type {null|Element} */
+  _parentNode
+
+  /**
+   * @constructor
+   * @param {string|number} text
+   */
   constructor(text) {
     this._symbol = Symbol()
-    this._data = text.toString()
+    this.#_data = text.toString()
     this._parentNode = null
   }
 
   get outerHTML() {
-    return this._data.replace(/[&<>]/g, char => HTML_ENTITY[char])
+    return this.#_data.replace(/[&<>]/g, char => HTML_ENTITY[char])
   }
 
   get parentNode() {
@@ -18,8 +35,6 @@ class Text {
   }
 
   get textContent() {
-    return this._data
+    return this.#_data
   }
 }
-
-module.exports = Text

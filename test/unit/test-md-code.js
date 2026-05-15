@@ -1,48 +1,44 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
 
-test('Code', function (t) {
+test('Code', () => {
   const input = 'A `code` text'
   const output = '<p>A <code>code</code> text</p>'
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Code with callback', function (t) {
+test('Code with callback', (t, done) => {
   const input = 'A `keyword` text'
 
+  /** @type {ParserOptions} */
   const opt = {
     onCode: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'CODE', 'Tagname is valid')
-      t.equal(node.textContent, 'keyword', 'Tagname is valid')
-      t.end()
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'CODE', 'Tagname is valid')
+      assert.strictEqual(node.textContent, 'keyword', 'Tagname is valid')
+      done()
     },
   }
 
   parse(input, opt)
 })
 
-test('Code with allowCode flag to false', function (t) {
+test('Code with allowCode flag to false', () => {
   const input = 'A `code` text'
   const output = '<p>A `code` text</p>'
   const opt = {
     allowCode: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Multiline code', function (t) {
+test('Multiline code', () => {
   const input = `
     \`\`\`
     Multiline code 1
@@ -50,11 +46,10 @@ test('Multiline code', function (t) {
     \`\`\``
   const output = '<pre><code>Multiline code 1\nMultiline code 2</code></pre>'
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Multiline code with language name', function (t) {
+test('Multiline code with language name', () => {
   const input = `
     Some text before
     \`\`\`javascript
@@ -64,11 +59,10 @@ test('Multiline code with language name', function (t) {
     Some more text`
   const output = '<p>Some text before</p><pre><code>Multiline code 1\nMultiline code 2</code></pre><p>Some more text</p>'
 
-  t.equal(parse(input).innerHTML, output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parse(input).innerHTML, output, 'Output is valid')
 })
 
-test('Multiline code twice', function (t) {
+test('Multiline code twice', () => {
   const input = `
     Once:
     \`\`\`
@@ -84,11 +78,10 @@ test('Multiline code twice', function (t) {
     <p>Twice:</p>
     <pre><code>Multiline code 2</code></pre>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Multiline code with leading space', function (t) {
+test('Multiline code with leading space', () => {
   const input = `
     Once:
     \`\`\`
@@ -102,11 +95,10 @@ test('Multiline code with leading space', function (t) {
     \`\`\``
   const output = '<p>Once:</p><pre><code>  Line 1.1\n  Line 1.2</code></pre><p>Twice:</p><pre><code>  Line 2.1\n  Line 2.2</code></pre>'
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Multiline code without EOF before end of syntax', function (t) {
+test('Multiline code without EOF before end of syntax', () => {
   const input = `
     \`\`\`
     Multiline code 1
@@ -119,11 +111,10 @@ test('Multiline code without EOF before end of syntax', function (t) {
       <br>Multiline code 2\`\`\`
     </p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Multiline code with callback', function (t) {
+test('Multiline code with callback', (t, done) => {
   const input = `
     This is some multicode with language
     name:
@@ -133,19 +124,20 @@ test('Multiline code with callback', function (t) {
     \`\`\`
     Some more text`
 
+  /** @type {ParserOptions} */
   const opt = {
     onMultilineCode: (node, language) => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'PRE', 'Tagname is valid')
-      t.equal(language, 'javascript', 'language is valid')
-      t.end()
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'PRE', 'Tagname is valid')
+      assert.strictEqual(language, 'javascript', 'language is valid')
+      done()
     },
   }
 
   parse(input, opt)
 })
 
-test('Multiline Code with allowMultilineCode flag to false', function (t) {
+test('Multiline Code with allowMultilineCode flag to false', () => {
   const input = `
     \`\`\`javascript
     Multiline code 1
@@ -157,6 +149,5 @@ test('Multiline Code with allowMultilineCode flag to false', function (t) {
     allowMultilineCode: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })

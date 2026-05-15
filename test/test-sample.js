@@ -1,9 +1,5 @@
-'use strict'
-/* eslint-disable no-console */
-
-const {
-  parse,
-} = require('./test-lib.js')
+// @ts-check
+import { parse } from './test-lib.js'
 
 const input = `
   ![alt text](https://example.com/image){style=height:100px}`

@@ -1,6 +1,7 @@
-'use strict'
+// @ts-check
 
-module.exports = {
+/** @type {Object<string, string>} */
+export default {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',

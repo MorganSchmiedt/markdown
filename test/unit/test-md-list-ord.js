@@ -1,14 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
-
-test('Ordered List', function (t) {
+test('Ordered List', () => {
   const input = `
     1. First list number
     2. Second list number
@@ -20,11 +16,10 @@ test('Ordered List', function (t) {
       <li>Third list number</li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List with extra LF between items', function (t) {
+test('Ordered List with extra LF between items', () => {
   const input = `
     1. First list number
 
@@ -38,11 +33,10 @@ test('Ordered List with extra LF between items', function (t) {
       <li>Third list number</li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List with complex texts', function (t) {
+test('Ordered List with complex texts', () => {
   const input = `
     1. *Italic* item
     2. Item **bold**
@@ -59,11 +53,10 @@ test('Ordered List with complex texts', function (t) {
       <li><a href="url">Link</a></li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List with wrong numbers', function (t) {
+test('Ordered List with wrong numbers', () => {
   const input = `
     1. *Italic* item
     1. Item **bold**
@@ -80,11 +73,10 @@ test('Ordered List with wrong numbers', function (t) {
       <li><a href="url">Link</a></li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List with 3-space-LF', function (t) {
+test('Ordered List with 3-space-LF', () => {
   const input = `
     1. First item
        Following first item
@@ -96,11 +88,10 @@ test('Ordered List with 3-space-LF', function (t) {
       <li>Second item<br>Following second item</li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List with LF between item contents', function (t) {
+test('Ordered List with LF between item contents', () => {
   const input = `
     1. Item 1
        Item 1.1
@@ -114,11 +105,10 @@ test('Ordered List with LF between item contents', function (t) {
       <li>Item 2<br>Item 2.1</li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List with newlines (2 spaces only)', function (t) {
+test('Ordered List with newlines (2 spaces only)', () => {
   const input = `
     1. First item
       Following first item`
@@ -128,11 +118,10 @@ test('Ordered List with newlines (2 spaces only)', function (t) {
     </ol>
     <p>  Following first item</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List with newlines (> 3 spaces)', function (t) {
+test('Ordered List with newlines (> 3 spaces)', () => {
   const input = `
     1. First item
         Following first item
@@ -144,48 +133,49 @@ test('Ordered List with newlines (> 3 spaces)', function (t) {
       <li>Second item<br>Following second item</li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered List not at EOF with callback', function (t) {
+test('Ordered List not at EOF with callback', (t, done) => {
   const input = `
     Some text
     1. List 1, Item 1
     2. List 1, Item 2
     Not at the end of the file`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'OL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'OL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(3)
   parse(input, opt)
 })
 
-test('Ordered List at EOF with callback', function (t) {
+test('Ordered List at EOF with callback', (t, done) => {
   const input = `
     Some text
     1. List 1, Item 1
     2. List 1, Item 2 at the end of the file`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'OL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'OL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(3)
   parse(input, opt)
 })
 
-test('Ordered List with extra LF between items and callback', function (t) {
+test('Ordered List with extra LF between items and callback', (t, done) => {
   const input = `
     1. First list item
 
@@ -193,17 +183,18 @@ test('Ordered List with extra LF between items and callback', function (t) {
 
     3. Third list item`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.equal(node.children.length, 3, 'Number of children is valid')
+      assert.strictEqual(node.children.length, 3, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
 })
 
-test('Ordered List with extra LF between items, callback, and allowOrderedNestedList to false', function (t) {
+test('Ordered List with extra LF between items, callback, and allowOrderedNestedList to false', (t, done) => {
   const input = `
     1. First list item
 
@@ -211,91 +202,94 @@ test('Ordered List with extra LF between items, callback, and allowOrderedNested
 
     3. Third list item`
 
+  /** @type {ParserOptions} */
   const opt = {
     allowOrderedNestedList: false,
     onOrderedList: node => {
-      t.equal(node.children.length, 3, 'Number of children is valid')
+      assert.strictEqual(node.children.length, 3, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
 })
 
-test('Ordered List with newline in first item and callback', function (t) {
+test('Ordered List with newline in first item and callback', (t, done) => {
   const input = `
     Some text
     1. List 1, Item 1
        Following Item 1
     2. List 1, Item 2`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'OL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(node.firstChild.textContent, 'List 1, Item 1Following Item 1', 'TextContent is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'OL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      assert.strictEqual(node.firstChild.textContent, 'List 1, Item 1Following Item 1', 'TextContent is valid')
+      done()
     },
   }
 
-  t.plan(4)
   parse(input, opt)
 })
 
-test('Ordered List with newline in last item and callback', function (t) {
+test('Ordered List with newline in last item and callback', (t, done) => {
   const input = `
     Some text
     1. List 1, Item 1
     2. List 1, Item 2
        Following Item 2`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.notEqual(node, null, 'Parameter is populated')
-      t.equal(node.tagName, 'OL', 'Tagname is valid')
-      t.equal(node.children.length, 2, 'Number of children is valid')
-      t.equal(node.lastChild.textContent, 'List 1, Item 2Following Item 2', 'TextContent is valid')
+      assert.notEqual(node, null, 'Parameter is populated')
+      assert.strictEqual(node.tagName, 'OL', 'Tagname is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      assert.strictEqual(node.lastChild?.textContent, 'List 1, Item 2Following Item 2', 'TextContent is valid')
+      done()
     },
   }
 
-  t.plan(4)
   parse(input, opt)
 })
 
-test('Ordered List with 2-space-LF and callback', function (t) {
+test('Ordered List with 2-space-LF and callback', (t, done) => {
   const input = `
     1. Item 1
       Not Line 2`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.equal(node.firstChild.textContent, 'Item 1', 'Content is valid')
+      assert.strictEqual(node.firstChild.textContent, 'Item 1', 'Content is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
-  t.end()
 })
 
-test('Ordered List with 4-space-LF and callback', function (t) {
+test('Ordered List with 4-space-LF and callback', (t, done) => {
   const input = `
     1. Item 1
         Line 2
           Line 3`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.equal(node.firstChild.textContent, 'Item 1Line 2Line 3', 'Content is valid')
+      assert.strictEqual(node.firstChild.textContent, 'Item 1Line 2Line 3', 'Content is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
-  t.end()
 })
 
-test('Ordered List with extra LF between item content and callback', function (t) {
+test('Ordered List with extra LF between item content and callback', (t, done) => {
   const input = `
     1. First list item
        Line 2
@@ -303,17 +297,18 @@ test('Ordered List with extra LF between item content and callback', function (t
        Line 3
     2. Second list item`
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
-      t.equal(node.children.length, 2, 'Number of children is valid')
+      assert.strictEqual(node.children.length, 2, 'Number of children is valid')
+      done()
     },
   }
 
-  t.plan(1)
   parse(input, opt)
 })
 
-test('Ordered list with allowOrderedList flag to false', function (t) {
+test('Ordered list with allowOrderedList flag to false', () => {
   const input = `
     1. First list item
     2. Second list item
@@ -324,6 +319,5 @@ test('Ordered list with allowOrderedList flag to false', function (t) {
     allowOrderedList: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })

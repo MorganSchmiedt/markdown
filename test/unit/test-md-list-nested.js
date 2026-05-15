@@ -1,14 +1,10 @@
-'use strict'
-/* eslint-disable prefer-arrow-callback */
+// @ts-check
+import test from 'node:test'
+import assert from 'node:assert'
+import { parse, parseToHtml, inlineHtml } from '../test-lib.js'
+/** @import { ParserOptions } from '../../src/markdown.js' */
 
-const {
-  parse,
-  parseToHtml,
-  inlineHtml,
-  test,
-} = require('../test-lib.js')
-
-test('Unordered Nested List', function (t) {
+test('Unordered Nested List', () => {
   const input = `
     - Item 1
       - Item 1.1
@@ -41,11 +37,10 @@ test('Unordered Nested List', function (t) {
       <li>Item 4</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Nested List with only 1 space', function (t) {
+test('Nested List with only 1 space', () => {
   const input = `
     - Item 1
      - Item 1.1`
@@ -56,11 +51,10 @@ test('Nested List with only 1 space', function (t) {
     </ul>
     <p> - Item 1.1</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Unordered Nested List with LF', function (t) {
+test('Unordered Nested List with LF', () => {
   const input = `
     - Item 1
       - Item 1.1
@@ -84,11 +78,10 @@ test('Unordered Nested List with LF', function (t) {
       </li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered Nested List', function (t) {
+test('Ordered Nested List', () => {
   const input = `
     1. Item 1
        1. Item 1.1
@@ -121,11 +114,10 @@ test('Ordered Nested List', function (t) {
       <li>Item 4</li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Nested Ord. List with only 2 spaces', function (t) {
+test('Nested Ord. List with only 2 spaces', () => {
   const input = `
     1. Item 1
       1. Item 1.1`
@@ -136,11 +128,10 @@ test('Nested Ord. List with only 2 spaces', function (t) {
     </ol>
     <p>  1. Item 1.1</p>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Ordered Nested List', function (t) {
+test('Ordered Nested List', () => {
   const input = `
     1. Item 1
        1. Item 1.1
@@ -164,11 +155,10 @@ test('Ordered Nested List', function (t) {
       </li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Nested List with ordered in unordered', function (t) {
+test('Nested List with ordered in unordered', () => {
   const input = `
     - Item 1
       1. Item 1.1
@@ -187,11 +177,10 @@ test('Nested List with ordered in unordered', function (t) {
       <li>Item 2</li>
     </ul>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Nested List with unordered in ordered', function (t) {
+test('Nested List with unordered in ordered', () => {
   const input = `
     1. Item 1
        - Item 1.1
@@ -210,11 +199,10 @@ test('Nested List with unordered in ordered', function (t) {
       <li>Item 2</li>
     </ol>`
 
-  t.equal(parseToHtml(input), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input), output, 'Output is valid')
 })
 
-test('Nested unordered List with callback', function (t) {
+test('Nested unordered List with callback', (t, done) => {
   const input = `
     - Item 1
       - Item 1.1
@@ -224,12 +212,15 @@ test('Nested unordered List with callback', function (t) {
 
   let level = 2
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
       if (level === 1) {
-        t.equal(node.children.length, 3, 'Level 1: Number of children is valid')
+        // @ts-ignore
+        t.assert.strictEqual(node.children.length, 3, 'Level 1: Number of children is valid')
       } else if (level === 2) {
-        t.equal(node.children.length, 2, 'Level 2: Number of children is valid')
+        // @ts-ignore
+        t.assert.strictEqual(node.children.length, 2, 'Level 2: Number of children is valid')
         level -= 1
       }
     },
@@ -237,9 +228,10 @@ test('Nested unordered List with callback', function (t) {
 
   t.plan(2)
   parse(input, opt)
+  done()
 })
 
-test('Nested ordered List with callback', function (t) {
+test('Nested ordered List with callback', (t, done) => {
   const input = `
     1. Item 1
        1. Item 1.1
@@ -247,12 +239,15 @@ test('Nested ordered List with callback', function (t) {
 
   let level = 2
 
+  /** @type {ParserOptions} */
   const opt = {
     onOrderedList: node => {
       if (level === 1) {
-        t.equal(node.children.length, 1, 'Level 1: Number of children is valid')
+        // @ts-ignore
+        t.assert.strictEqual(node.children.length, 1, 'Level 1: Number of children is valid')
       } else {
-        t.equal(node.children.length, 2, 'Level 2: Number of children is valid')
+        // @ts-ignore
+        t.assert.strictEqual(node.children.length, 2, 'Level 2: Number of children is valid')
         level -= 1
       }
     },
@@ -260,9 +255,10 @@ test('Nested ordered List with callback', function (t) {
 
   t.plan(2)
   parse(input, opt)
+  done()
 })
 
-test('Nested List with ordered in unordered and callback', function (t) {
+test('Nested List with ordered in unordered and callback', (t, done) => {
   const input = `
     - Item 1
       1. Item 1.1
@@ -270,21 +266,24 @@ test('Nested List with ordered in unordered and callback', function (t) {
       3. Item 1.3
     - Item 2`
 
+  /** @type {ParserOptions} */
   const opt = {
     onUnorderedList: node => {
-      t.equal(node.children.length, 2, 'Children count in unord list is valid')
+      // @ts-ignore
+      t.assert.strictEqual(node.children.length, 2, 'Children count in unord list is valid')
     },
     onOrderedList: node => {
-      t.equal(node.children.length, 3, 'Children count in ord list is valid')
+      // @ts-ignore
+      t.assert.strictEqual(node.children.length, 3, 'Children count in ord list is valid')
     },
   }
 
   t.plan(2)
   parse(input, opt)
-  t.end()
+  done()
 })
 
-test('Unordered Nested List with allowUnorderedNestedList to false', function (t) {
+test('Unordered Nested List with allowUnorderedNestedList to false', () => {
   const input = `
     - Item 1
       - Item 1.1`
@@ -299,11 +298,10 @@ test('Unordered Nested List with allowUnorderedNestedList to false', function (t
     allowUnorderedNestedList: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
 
-test('Ordered Nested List with allowOrderedNestedList to false', function (t) {
+test('Ordered Nested List with allowOrderedNestedList to false', () => {
   const input = `
     1. Item 1
        1. Item 1.1`
@@ -318,6 +316,5 @@ test('Ordered Nested List with allowOrderedNestedList to false', function (t) {
     allowOrderedNestedList: false,
   }
 
-  t.equal(parseToHtml(input, opt), output, 'Output is valid')
-  t.end()
+  assert.strictEqual(parseToHtml(input, opt), output, 'Output is valid')
 })
