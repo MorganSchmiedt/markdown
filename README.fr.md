@@ -12,7 +12,8 @@ Un module pour le navigateur est aussi disponible ici: [@deskeen/markdown-browse
 ## Utilisation
 
 ```javascript
-const parser = require('@deskeen/markdown')
+import parser from '@deskeen/markdown'
+
 const html = parser.parse('mon texte markdown').innerHTML
 
 // html === '<p>mon texte markdown</p>'
@@ -68,13 +69,13 @@ npm install @deskeen/markdown
 Pour importer le parseur à votre coe JavaScript: 
 
 ```javascript
-const parseur = require('@deskeen/markdown')
+import parser from '@deskeen/markdown'
 ```
 
 Pour parser du texte et le transformer en HTML, utilisez:
 
 ```javascript
-const codeHtml = parseur.parse('du texte markdown').innerHTML
+const codeHtml = parser.parse('du texte markdown').innerHTML
 ```
 
 Le parseur a été testé avec les versions 10+ de Node.js mais il se peut qu'il fonctionne aussi sur des versions précédentes.
@@ -159,7 +160,10 @@ Les propriétés disponibles sont:
 De nouveaux éléments peuvent être créés en utilisant la classe `Element` et du texte peut être créé en utilisant la class `Text`:
 
 ```javascript
-const { Element, Text } = require('@deskeen/markdown')
+import parser from '@deskeen/markdown'
+
+const Element = parser.Element
+const Text = parser.Text
 
 const monElementDiv = new Element('div')
 const monTexte = new Text('du text')

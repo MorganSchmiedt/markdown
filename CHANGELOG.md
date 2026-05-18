@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.0.1 - 2026-05-18
+
+**🌟 New**
+- Named exports added.
+
 ## 6.0.0 - 2026-05-15
 
 **🌟 New**

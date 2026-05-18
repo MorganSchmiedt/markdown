@@ -895,4 +895,6 @@ const parse = (markdownText, opt) => {
   return body
 }
 
+export { Element, Text, parse }
+
 export default { Element, Text, parse }

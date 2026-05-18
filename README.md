@@ -12,7 +12,8 @@ A browser module is also available here: [@deskeen/markdown-browser](https://git
 ## Usage
 
 ```javascript
-const parser = require('@deskeen/markdown')
+import parser from '@deskeen/markdown'
+
 const html = parser.parse('some markdown text').innerHTML
 
 // html === '<p>some markdown text</p>'
@@ -69,7 +70,7 @@ npm install @deskeen/markdown
 To import the parser to your JavaScript code, use: 
 
 ```javascript
-const parser = require('@deskeen/markdown')
+import parser from '@deskeen/markdown'
 ```
 
 To parse a text and transform it into HTML, use:
@@ -160,7 +161,10 @@ Available properties are:
 New elements can be created by using the `Element` class and text can be created using the `Text` class:
 
 ```javascript
-const { Element, Text } = require('@deskeen/markdown')
+import parser from '@deskeen/markdown'
+
+const Element = parser.Element
+const Text = parser.Text
 
 const myDivElement = new Element('div')
 const myText = new Text('Some text')
